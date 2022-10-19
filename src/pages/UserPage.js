@@ -4,7 +4,6 @@ import Trending from "../Components/Trending/Trending"
 
 export default function UserPage() {
     return (
-
         <Wrapper>
             <Title>
                 <h1>nome usuario</h1>
