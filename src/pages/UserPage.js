@@ -1,27 +1,26 @@
 import styled from "styled-components"
-import Post from "../Post/Post.js"
-import FormBox from "../FormBox/FormBox.js"
-import Trending from "../Trending/Trending.js"
+import Post from "../Components/Post/Post"
+import Trending from "../Components/Trending/Trending"
 
 export default function UserPage() {
-    
     return (
+
         <Wrapper>
             <Title>
                 <h1>nome usuario</h1>
             </Title>
-            <ContentWrapper>
-                <PostWrapper>
-                    <Post />
-                    <Post />
+             <ContentWrapper>
+                 <PostWrapper>
+                     <Post />
+                     <Post />
                     
-                </PostWrapper>
+                 </PostWrapper>
 
-                <Trending />
+                 <Trending />
 
-            </ContentWrapper>
+             </ContentWrapper>
 
-        </Wrapper>
+         </Wrapper>
 
     )
 }
