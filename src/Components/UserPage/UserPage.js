@@ -18,7 +18,7 @@ export default function UserPage() {
                     <FormBox />
                     <Post />
                     <Post />
-                    <Post />
+                    
                 </PostWrapper>
 
                 <Trending />
@@ -73,7 +73,6 @@ background: blue;
 
 const PostWrapper = styled.div`
 width: 80vw;
-
 display: flex;
 flex-direction: column;
 background-color: red;

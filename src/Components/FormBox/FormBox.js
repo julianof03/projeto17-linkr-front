@@ -56,7 +56,6 @@ height:100%;
 margin-left: 25px;
 margin-right: 25px;
 background-color: #fff ;
-
 `
 const Answer = styled.h1`
 font-size: 20px;
@@ -92,7 +91,7 @@ button{
 
     width: 100px;
     height: 30px;
-    margin-top: 5px;
+    margin-top: 10px;
 
     background-color: #1877F2;
     border-radius: 5px;
@@ -104,7 +103,6 @@ button{
     justify-content: center;
     align-items: center;
 
-    
 }
 `
 
