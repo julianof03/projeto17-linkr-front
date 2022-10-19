@@ -6,8 +6,8 @@ export default function App(){
     return(
             <BrowserRouter>
                 <Routes>
-                    <Route path='/' element={<Home/>}/>
-                    <Route path='/timeline' element={<Home/>}/>
+                    {/* <Route path='/' element={</>}/>
+                    <Route path='/timeline' element={</>}/> */}
                 </Routes>
             </BrowserRouter>
     )
