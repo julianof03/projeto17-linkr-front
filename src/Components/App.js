@@ -5,7 +5,7 @@ import GlobalContext from './Context/globalContext';
 
 // import LogIn from './LogIn/LogIn';
 // import SingUp from './SignUp/SignUp';
-import UserPage from './UserPage/UserPage.js';
+import TimeLine from './Timeline/TimeLine.js';
 
 
 export default function App() {
@@ -19,7 +19,7 @@ export default function App() {
                     <Routes>
                         {/* <Route path="/" element={<LogIn />} />
                         <Route path="/signup" element={<SingUp />} /> */}
-                        <Route path="/" element={<UserPage />} />
+                        <Route path="/" element={<TimeLine />} />
                     </Routes>
                 </BrowserRouter>
             </GlobalContext.Provider>

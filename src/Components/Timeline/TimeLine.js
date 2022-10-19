@@ -3,9 +3,7 @@ import Post from "../Post/Post.js"
 import FormBox from "../FormBox/FormBox.js"
 import Trending from "../Trending/Trending.js"
 
-export default function UserPage() {
-
-
+export default function TimeLine() {
 
     return (
         <Wrapper>

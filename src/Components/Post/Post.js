@@ -5,30 +5,25 @@ import { MdModeEdit } from "react-icons/md";
 
 export default function Post() {
 
-    let like = true
+    
+    let like = 'false'
 
     return (
         <PostWrapper>
 
-            <ImgWrapper>
+            <ImgWrapper like = {like}>
                 <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
-                <div like = {like}>
-                    {like ? (
+                <div >
+                    {like === 'true' ? (
                         <BsHeartFill
                             size='20px'
                         />
-
                     ) : (
                         <BsHeart
                             size='20px'
                         />
-
                     )}
-
-
                 </div>
-
-
             </ImgWrapper>
 
 
@@ -87,7 +82,7 @@ align-items: center;
 
 
 div{
-    color: ${props => props.like === true ? 'red' : 'white'};;
+    color: ${props => props.like === 'true' ? 'red' : 'white'};
 }
 
 img{
