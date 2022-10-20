@@ -1,14 +1,28 @@
 import styled from "styled-components";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
-export default function Post() {
+export default function Post(
+    { username,
+        img,
+        text,
+        link,
+        likesQtd,
+        liked }
+) {
 
-    const [like, setLike] = useState(false)
+    const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
     const [isShown, setIsShown] = useState(false)
+
+    useEffect(()=>{
+        if(like){
+            setProps('true')
+        }
+    })
+    
 
     return (
         <PostWrapper>
@@ -50,7 +64,7 @@ export default function Post() {
 
             <Main>
                 <Title>
-                    <h1>Nomezin Bacana</h1>
+                    <h1>{username}</h1>
                     <IconsWrapper>
                         <MdModeEdit
                             color='white'
@@ -71,14 +85,14 @@ export default function Post() {
 
                 <TextWrapper>
                     <p>
-                        super texto com várias palavrinhas.......super texto com várias palavrinhas.......super texto com várias palavrinhas.......#semrepetir #originalidade
+                        {text}
 
                     </p>
 
                 </TextWrapper>
 
                 <LinkWrapper>
-                            {'vai entrar o link aqui'}
+                    {link}
                 </LinkWrapper>
 
             </Main>
@@ -165,6 +179,7 @@ height: 200px;
 margin-bottom: 10px;
 border: solid 1px gray;
 border-radius: 16px;
+color: white;
 
 `
 const Likes = styled.div`

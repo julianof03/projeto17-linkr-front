@@ -32,6 +32,11 @@ function logOut(getConfig) {
 
 }
 
+function getTimeLine(getConfig){
+    return /* axios.get(`${URL}/timeLine`, getConfig) */
+
+}
+
 export {
     signUp,
     logIn,
@@ -39,5 +44,6 @@ export {
     getBalance,
     deleteRegister,
     updateRegister,
-    logOut
+    logOut,
+    getTimeLine
 }

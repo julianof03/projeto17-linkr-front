@@ -2,8 +2,52 @@ import styled from "styled-components"
 import Post from "../Post/Post.js"
 import FormBox from "../FormBox/FormBox.js"
 import Trending from "../Trending/Trending.js"
+import getConfig from '../../Services/getConfig.js'
+import { getTimeLine } from '../../Services/api.js'
+import { useEffect } from "react"
 
 export default function TimeLine() {
+
+    const array = [
+        {
+            username: 'gojo satoru',
+            img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
+            text: 'textinho bacanozo',
+            link: 'link',
+            likesQtd: 15,
+            liked: true
+        }, {
+            username: 'gojo satoru',
+            img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
+            text: 'outro texto',
+            link: 'link',
+            likesQtd: 15,
+            liked: false
+        },{
+            username: 'gojo satoru',
+            img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
+            text: 'textinho bacanozo',
+            link: 'link diferente',
+            likesQtd: 15,
+            liked: true
+        },{
+            username: 'gojo satoru',
+            img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
+            text: 'textinho bacanozo',
+            link: 'link',
+            likesQtd: 15,
+            liked: false
+        }
+
+    ]
+    
+    // useEffect(() => {
+    //     getTimeLine(getConfig)
+    //         .then((res)=>{
+    //             console.log('passou')
+    //         })
+
+    // }, [])
 
     return (
         <Wrapper>
@@ -16,12 +60,17 @@ export default function TimeLine() {
 
                 <PostWrapper>
                     <FormBox />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
+                    {array.map(value => 
+                    <Post 
+                        username={value.username}
+                        img={value.img}
+                        text={value.text}
+                        link={value.link}
+                        likesQtd={value.likesQtd}
+                        liked={value.liked}
+                    />
+                    )}
+                   
 
                 </PostWrapper>
 

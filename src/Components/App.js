@@ -7,14 +7,18 @@ import GlobalContext from './Context/globalContext';
 // import SingUp from './SignUp/SignUp';
 import TimeLine from './Timeline/TimeLine.js';
 
-
 export default function App() {
     const [reRender, setReRender] = useState(true);
-
+    const [post, setPost] = useState({
+        img: '',
+        name: '',
+        likesQtd:'',
+        liked:''
+    })
     return (
         <>
             <GlobalStyle />
-            <GlobalContext.Provider value={{ reRender, setReRender }}>
+            <GlobalContext.Provider value={{ reRender, setReRender, post, setPost }}>
                 <BrowserRouter>
                     <Routes>
                         {/* <Route path="/" element={<LogIn />} />
