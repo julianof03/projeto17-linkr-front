@@ -1,9 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import GlobalStyle from '../src/Styles/globalStyle';
-import GlobalContext from '../src/Styles/globalStyle';
+import GlobalContext from '../src/Components/Context/globalContext';
 import UserPage from '../src/pages/UserPage';
-
 
 export default function App() {
     const [reRender, setReRender] = useState(true);
