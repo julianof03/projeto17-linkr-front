@@ -1,8 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"
 
 export default function FormBox() {
+    const navigate = useNavigate()
 
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})

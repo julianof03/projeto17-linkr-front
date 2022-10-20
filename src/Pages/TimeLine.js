@@ -58,6 +58,7 @@ export default function TimeLine() {
 
             <AsideContent>
                 <TrendingWrapper>
+                    <Trending/>
                 </TrendingWrapper>
             </AsideContent>
 
