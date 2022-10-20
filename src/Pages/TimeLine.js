@@ -51,16 +51,10 @@ export default function TimeLine() {
 
     return (
         <Wrapper>
-
-            <LeftWrapper>
-                <Title>
-                    <h1>timeline</h1>
-
-                </Title>
-
-                <PostWrapper>
-                    <FormBox />
-                    {array.map(value => 
+            <MainContent>
+                <Title> <h1>timeline</h1> </Title>
+                <FormBox />
+                {array.map(value => 
                     <Post 
                         username={value.username}
                         img={value.img}
@@ -70,17 +64,13 @@ export default function TimeLine() {
                         liked={value.liked}
                     />
                     )}
-                   
+            </MainContent>
 
-                </PostWrapper>
-
-            </LeftWrapper>
-
-            <RightWrapper>
+            <AsideContent>
                 <TrendingWrapper>
-                    <Trending />
+                    <Trending/>
                 </TrendingWrapper>
-            </RightWrapper>
+            </AsideContent>
 
         </Wrapper>
 
@@ -88,27 +78,24 @@ export default function TimeLine() {
 }
 
 const Wrapper = styled.div`
-width: 100%;
-height: 100%;
-padding-top: 80px;
-
-background-color: #333333 ;
-
-display: flex;
-justify-content: center;
-
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding-top: 80px;
+    background-color: #333333 ;
 `
-const RightWrapper = styled.div`
-height: 500px;
-width: 21vw;
-
-position:relative;
+const AsideContent = styled.div`
+    height: 500px;
+    width: 21vw;
+    position:relative;
+    background-color: violet;
 `
-const LeftWrapper = styled.div`
-width: 42vw;
-
-display: flex;
-flex-direction: column;
+const MainContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 610px;
+    background-color: black;
 `
 const Title = styled.div`
 width:100%;
@@ -124,18 +111,10 @@ h1{
 }
 
 `
-const PostWrapper = styled.div`
-width: 100%;
-display: flex;
-flex-direction: column;
-/* background-color: red; */
 
-border-radius: 10px;
-
-`
 const TrendingWrapper = styled.div`
 height: 100%;
-/* background-color: aqua; */
 position:absolute;
 top:50px;
+/* background-color: aqua; */
 `
