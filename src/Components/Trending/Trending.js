@@ -3,8 +3,6 @@ import styled from "styled-components";
 export default function Trending() {
 
 
-
-
     return (
         <TrendingWrapper>
             <h2>Trending</h2>
@@ -24,11 +22,11 @@ export default function Trending() {
 }
 
 const TrendingWrapper = styled.div`
-width: 350px;
+width: 300px;
 background-color: #171717;
 border-radius:16px;
 padding: 15px;
-margin: 5px;
+margin-left: 15px;
 
 h2{
     font-size: 27px;
