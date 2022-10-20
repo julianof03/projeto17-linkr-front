@@ -54,6 +54,16 @@ export default function TimeLine() {
             <MainContent>
                 <Title> <h1>timeline</h1> </Title>
                 <FormBox />
+                {array.map(value => 
+                    <Post 
+                        username={value.username}
+                        img={value.img}
+                        text={value.text}
+                        link={value.link}
+                        likesQtd={value.likesQtd}
+                        liked={value.liked}
+                    />
+                    )}
             </MainContent>
 
             <AsideContent>
