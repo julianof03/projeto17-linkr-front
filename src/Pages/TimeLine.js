@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import Post from "../Post/Post.js"
-import FormBox from "../FormBox/FormBox.js"
-import Trending from "../Trending/Trending.js"
-import getConfig from '../../Services/getConfig.js'
-import { getTimeLine } from '../../Services/api.js'
+import Post from "../Components/Post/Post.js"
+import FormBox from "../Components/FormBox/FormBox.js"
+import Trending from "../Components/Trending/Trending.js"
+import getConfig from '../Services/getConfig.js'
+import { getTimeLine } from '../Services/api.js'
 import { useEffect } from "react"
 
 export default function TimeLine() {
@@ -110,7 +110,6 @@ width: 42vw;
 display: flex;
 flex-direction: column;
 `
-
 const Title = styled.div`
 width:100%;
 display: flex;

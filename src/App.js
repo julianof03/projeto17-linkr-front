@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import GlobalStyle from '../Styles/globalStyle';
+import GlobalStyle from './Styles/globalStyle';
 import { useState } from 'react';
-import GlobalContext from './Context/globalContext';
+import GlobalContext from './contexts/globalContext';
 
 // import LogIn from './LogIn/LogIn';
 // import SingUp from './SignUp/SignUp';
-import TimeLine from './Timeline/TimeLine.js';
+import TimeLine from './Pages/TimeLine.js';
 
 export default function App() {
     const [reRender, setReRender] = useState(true);

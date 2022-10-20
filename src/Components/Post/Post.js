@@ -199,5 +199,5 @@ p{
 }
 
 position: absolute;
-top:45%;
+top:50%;
 `
