@@ -1,13 +1,18 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 export default function Trending() {
+    const navigate = useNavigate();
 
+    function goHashtagPage() {
+        navigate("/hashtag/:hashtag");
+    }
 
     return (
         <TrendingWrapper>
             <h2>Trending</h2>
             <Line />
-            <p># javascript</p>
+            <p onClick={goHashtagPage}># javascript</p>
             <p># react</p>
             <p># react-native</p>
             <p># material</p>
@@ -39,6 +44,7 @@ p{
     font-size: 19px;
     font-weight: 500;
     color: #fff;
+    cursor: pointer;
 }
 
 `;
