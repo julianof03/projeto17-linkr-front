@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Post from "../Components/Post/Post.js";
 import Trending from "../Components/Trending/Trending.js";
+import { useParams } from "react-router-dom";
 const array = [
   {
     username: "gojo satoru",
@@ -35,12 +36,15 @@ const array = [
     liked: false,
   },
 ];
+
 export default function Hashtag() {
+    const { hashtag } = useParams();
+    
   return (
     <Wrapper>
       <LeftWrapper>
         <Title>
-          <h1>#nomehashtag</h1>
+          <h1># {hashtag}</h1>
         </Title>
 
         <PostWrapper>
