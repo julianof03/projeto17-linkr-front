@@ -32,6 +32,7 @@ background-color: #171717;
 border-radius:16px;
 padding: 15px;
 margin-left: 15px;
+margin-top: 8vh;
 
 h2{
     font-size: 27px;
