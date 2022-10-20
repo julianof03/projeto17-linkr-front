@@ -18,8 +18,8 @@ export default function FormBox() {
         
         const body = {
             userId : 21,
-            email: form.email,
-            password: form.password,
+            link: form.link,
+            text: form.text,
         }
         console.log('pre promise')
         const promise = axios.post('http://localhost:4000/timeline', body)
