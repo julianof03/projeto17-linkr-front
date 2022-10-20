@@ -52,7 +52,7 @@ export default function TimeLine() {
     return (
         <Wrapper>
 
-            <ContentWrapper>
+            <LeftWrapper>
                 <Title>
                     <h1>timeline</h1>
 
@@ -74,13 +74,13 @@ export default function TimeLine() {
 
                 </PostWrapper>
 
-            </ContentWrapper>
+            </LeftWrapper>
 
-            <Wrapper2>
+            <RightWrapper>
                 <TrendingWrapper>
                     <Trending />
                 </TrendingWrapper>
-            </Wrapper2>
+            </RightWrapper>
 
         </Wrapper>
 
@@ -98,13 +98,13 @@ display: flex;
 justify-content: center;
 
 `
-const Wrapper2 = styled.div`
+const RightWrapper = styled.div`
 height: 500px;
 width: 21vw;
 
 position:relative;
 `
-const ContentWrapper = styled.div`
+const LeftWrapper = styled.div`
 width: 42vw;
 
 display: flex;
