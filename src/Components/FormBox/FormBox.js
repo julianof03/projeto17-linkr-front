@@ -1,0 +1,183 @@
+import { useState } from "react";
+import styled from "styled-components";
+
+export default function FormBox() {
+
+    const [disable, setDisable] = useState(false)
+    const [form, setForm] = useState({
+        link: '',
+        text: '',
+    })
+
+    function handleForm(e) {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+
+    }
+
+    function sendForm(e) {
+        e.preventDefault()
+
+        if (disable === true) {
+            return;
+        }
+        setDisable(true)
+
+        const body = {
+            email: form.email,
+            password: form.password,
+        }
+
+        // função axios para post
+        setTimeout(() => {
+            console.log('enviou o post', form)
+            clearForm()
+
+        })
+    }
+
+    function clearForm() {
+        setForm({
+            link: '',
+            text: '',
+
+        })
+        setDisable(false)
+    }
+
+    return (
+        <FormBoxWrapper >
+            <ImgWrapper src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+            <Main onSubmit={sendForm}>
+                <Answer>
+                    What are you going to share today?
+                </Answer>
+
+                <LinkInput
+                    type='link'
+                    name='link'
+                    placeholder="http..."
+                    onChange={handleForm}
+                    value={form.link}
+                    disabled={disable}
+                    required
+                >
+                </LinkInput >
+
+                <TextInput
+                    type='text'
+                    name='text'
+                    placeholder="manda seu textão"
+                    onChange={handleForm}
+                    value={form.text}
+                    disabled={disable}
+                    required
+                >
+                    
+                </TextInput>
+
+                <ButtonWrapper type='submit'>
+                    <button>Publish</button>
+                </ButtonWrapper>
+
+            </Main>
+
+
+        </FormBoxWrapper>
+    )
+}
+
+const FormBoxWrapper = styled.div`
+width: 100%;
+height: 250px;
+margin-bottom: 10px;
+
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+background-color: #FFFFFF;
+border-radius: 16px;
+
+display: flex;
+
+font-family: 'Lato';
+`
+const ImgWrapper = styled.img`
+margin: 10px;
+width:70px;
+height:70px;
+border-radius: 50%;
+object-fit: cover;
+
+`
+const Main = styled.form`
+width:85%;
+height:100%;
+margin-left: 25px;
+margin-right: 25px;
+background-color: #fff ;
+`
+const Answer = styled.h1`
+font-size: 20px;
+color: #707070;
+
+margin-top: 10px;
+margin-bottom: 10px;
+`
+const LinkInput = styled.input`
+width:100%;
+height:30px;
+background-color: #EFEFEF;
+border-radius:5px;
+margin-top: 10px;
+border: unset;
+
+::placeholder{
+    font-size: 18px;
+    font-weight: 300;
+    color: #949494;
+}
+`
+const TextInput = styled.input`
+width:100%;
+min-height:100px;
+background-color: #EFEFEF;
+border-radius:5px;
+border: unset;
+margin-top: 10px;
+
+::placeholder{
+    font-size: 18px;
+    font-weight: 300;
+    color: #949494;
+}
+`
+const ButtonWrapper = styled.div`
+
+width: 100%;
+display: flex;
+justify-content: flex-end;
+margin-bottom: 10px;
+
+
+button{
+
+    width: 100px;
+    height: 30px;
+    margin-top: 10px;
+
+    background-color: #1877F2;
+    border-radius: 5px;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 600;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+}
+`
+
