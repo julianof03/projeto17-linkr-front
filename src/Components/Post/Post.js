@@ -48,18 +48,21 @@ export default function Post() {
                 </Likes>
             </ImgWrapper>
 
-
             <Main>
                 <Title>
                     <h1>Nomezin Bacana</h1>
                     <IconsWrapper>
                         <MdModeEdit
                             color='white'
+                            style={{
+                                cursor: 'pointer'
+                            }}
                         />
                         <BsFillTrashFill
                             color='white'
                             style={{
-                                marginLeft: '10px'
+                                marginLeft: '10px',
+                                cursor: 'pointer'
                             }}
                             size='15px'
                         />
@@ -75,7 +78,7 @@ export default function Post() {
                 </TextWrapper>
 
                 <LinkWrapper>
-
+                            {'vai entrar o link aqui'}
                 </LinkWrapper>
 
             </Main>

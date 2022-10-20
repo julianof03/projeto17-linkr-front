@@ -7,21 +7,31 @@ export default function TimeLine() {
 
     return (
         <Wrapper>
-            <Title>
-                <h1>timeline</h1>
 
-            </Title>
             <ContentWrapper>
+                <Title>
+                    <h1>timeline</h1>
+
+                </Title>
+
                 <PostWrapper>
                     <FormBox />
                     <Post />
                     <Post />
-                    
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+
                 </PostWrapper>
 
-                <Trending />
-
             </ContentWrapper>
+
+            <Wrapper2>
+                <TrendingWrapper>
+                    <Trending />
+                </TrendingWrapper>
+            </Wrapper2>
 
         </Wrapper>
 
@@ -29,23 +39,33 @@ export default function TimeLine() {
 }
 
 const Wrapper = styled.div`
-width: 100vw;
-height: 100vh;
+width: 100%;
+height: 100%;
 padding-top: 80px;
 
-background-color: #333333;
+background-color: #333333 ;
+
+display: flex;
+justify-content: center;
+
+`
+const Wrapper2 = styled.div`
+height: 500px;
+width: 21vw;
+
+position:relative;
+`
+const ContentWrapper = styled.div`
+width: 42vw;
 
 display: flex;
 flex-direction: column;
-justify-content: center;
-align-items:center;
-
-/* position: relative; */
-
 `
 
 const Title = styled.div`
-width:80vw;
+width:100%;
+display: flex;
+justify-content: flex-start;
 
 h1{
     font-size: 43px;
@@ -56,26 +76,18 @@ h1{
 }
 
 `
-
-const ContentWrapper = styled.div`
-
-width: 80vw;
-
-display: flex;
-justify-content: center;
-align-items: center;
-
-background: blue;
-
-`
-
 const PostWrapper = styled.div`
-width: 80vw;
+width: 100%;
 display: flex;
 flex-direction: column;
-background-color: red;
+/* background-color: red; */
 
 border-radius: 10px;
 
-
+`
+const TrendingWrapper = styled.div`
+height: 100%;
+/* background-color: aqua; */
+position:absolute;
+top:50px;
 `

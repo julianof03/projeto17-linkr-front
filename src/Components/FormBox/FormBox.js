@@ -1,29 +1,89 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 export default function FormBox() {
 
+    const [disable, setDisable] = useState(false)
+    const [form, setForm] = useState({
+        link: '',
+        text: '',
+    })
 
+    function handleForm(e) {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
 
+    }
+
+    function sendForm(e) {
+        e.preventDefault()
+
+        if (disable === true) {
+            return;
+        }
+        setDisable(true)
+
+        const body = {
+            email: form.email,
+            password: form.password,
+        }
+
+        // função axios para post
+        setTimeout(() => {
+            console.log('enviou o post', form)
+            clearForm()
+
+        })
+    }
+
+    function clearForm() {
+        setForm({
+            link: '',
+            text: '',
+
+        })
+        setDisable(false)
+    }
 
     return (
-        <FormBoxWrapper>
+        <FormBoxWrapper >
             <ImgWrapper src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
-            <Main>
+            <Main onSubmit={sendForm}>
                 <Answer>
                     What are you going to share today?
                 </Answer>
 
-                <LinkInput placeHolder='http...'>
+                <LinkInput
+                    type='link'
+                    name='link'
+                    placeholder="http..."
+                    onChange={handleForm}
+                    value={form.link}
+                    disabled={disable}
+                    required
+                >
                 </LinkInput >
-                
-                <TextInput/>
 
-                <ButtonWrapper>
+                <TextInput
+                    type='text'
+                    name='text'
+                    placeholder="manda seu textão"
+                    onChange={handleForm}
+                    value={form.text}
+                    disabled={disable}
+                    required
+                >
+                    
+                </TextInput>
+
+                <ButtonWrapper type='submit'>
                     <button>Publish</button>
                 </ButtonWrapper>
-                
+
             </Main>
-            
+
 
         </FormBoxWrapper>
     )
@@ -50,7 +110,7 @@ border-radius: 50%;
 object-fit: cover;
 
 `
-const Main = styled.div`
+const Main = styled.form`
 width:85%;
 height:100%;
 margin-left: 25px;
@@ -62,8 +122,8 @@ font-size: 20px;
 color: #707070;
 
 margin-top: 10px;
+margin-bottom: 10px;
 `
-
 const LinkInput = styled.input`
 width:100%;
 height:30px;
@@ -71,6 +131,12 @@ background-color: #EFEFEF;
 border-radius:5px;
 margin-top: 10px;
 border: unset;
+
+::placeholder{
+    font-size: 18px;
+    font-weight: 300;
+    color: #949494;
+}
 `
 const TextInput = styled.input`
 width:100%;
@@ -79,8 +145,13 @@ background-color: #EFEFEF;
 border-radius:5px;
 border: unset;
 margin-top: 10px;
-`
 
+::placeholder{
+    font-size: 18px;
+    font-weight: 300;
+    color: #949494;
+}
+`
 const ButtonWrapper = styled.div`
 
 width: 100%;
