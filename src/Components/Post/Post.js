@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
+import React from "react";
 
 
 export default function Post(
@@ -21,14 +22,14 @@ export default function Post(
         if(like){
             setProps('true')
         }
-    })
+    },[like]);
     
 
     return (
         <PostWrapper>
 
             <ImgWrapper props={props}>
-                <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+                <img alt='' src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
                 <div >
                     {props === 'true' ? (
                         <BsHeartFill

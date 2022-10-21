@@ -1,10 +1,11 @@
 import styled from "styled-components"
-import Post from "../Components/Post/Post.js"
-import FormBox from "../Components/FormBox/FormBox.js"
-import Trending from "../Components/Trending/Trending.js"
-import getConfig from '../Services/getConfig.js'
-import { getTimeLine } from '../Services/api.js'
-import { useEffect } from "react"
+import Post from "../components/Post/Post.js"
+import FormBox from "../components/FormBox/FormBox.js"
+import Trending from "../components/Trending/Trending.js"
+// import getConfig from '../Services/getConfig.js'
+// import { getTimeLine } from '../Services/api.js'
+// import { useEffect } from "react";
+import React from 'react';
 
 export default function TimeLine() {
 

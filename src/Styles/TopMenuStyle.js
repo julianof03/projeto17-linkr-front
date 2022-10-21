@@ -17,6 +17,29 @@ const MenuBar = styled.div`
 const Title = styled.h2`
     font-size: 49px;
     color: #fff;
+    font-family: Passion One;
 `;
 
-export{MenuBar};
+const UserBox = styled.div`
+    display: flex;
+    width: 85px;
+    align-items: center;
+    justify-content: space-between;
+
+    img{
+        width: 55px;
+        height: 55px;
+        background-image: ${({ profileImage }) => `url(${profileImage})`};
+        background-size: cover;
+        background-position: center;
+        border-radius:50%;
+    }
+
+    react-icons{
+        font-size:36px;
+        color:#fff;
+    }
+`;
+
+
+export{MenuBar, UserBox, Title};
