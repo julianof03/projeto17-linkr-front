@@ -12,7 +12,7 @@ export default function TimeLine() {
         {
             username: 'gojo satoru',
             img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
-            text: 'textinho bacanozo',
+            text: 'textinho bacanozo AAAAAAAAA AAAAAAAAA AAAAAA AAAAAA AAAA AAAAA AAA AAAAAAAAA AAAAAAA AAAAAAA AAAAAAA AAAAAAAAAAAAAA AAAAAAA AAA AAA AAAA',
             link: 'link',
             likesQtd: 15,
             liked: true
@@ -53,7 +53,7 @@ export default function TimeLine() {
         <Wrapper>
             <MainContent>
                 <Title> <h1>timeline</h1> </Title>
-                <FormBox />
+                {/* <FormBox /> */}
                 {array.map(value => 
                     <Post 
                         username={value.username}
@@ -66,11 +66,11 @@ export default function TimeLine() {
                     )}
             </MainContent>
 
-            <AsideContent>
+            {/* <AsideContent>
                 <TrendingWrapper>
                     <Trending/>
                 </TrendingWrapper>
-            </AsideContent>
+            </AsideContent> */}
 
         </Wrapper>
 
@@ -89,13 +89,14 @@ const AsideContent = styled.div`
     height: 500px;
     width: 21vw;
     position:relative;
-    background-color: violet;
+    /* background-color: violet; */
 `
+
 const MainContent = styled.div`
     display: flex;
     flex-direction: column;
     width: 610px;
-    background-color: black;
+    /* background-color: black; */
 `
 const Title = styled.div`
 width:100%;
@@ -111,7 +112,6 @@ h1{
 }
 
 `
-
 const TrendingWrapper = styled.div`
 height: 100%;
 position:absolute;

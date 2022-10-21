@@ -84,11 +84,7 @@ export default function Post(
                 </Title>
 
                 <TextWrapper>
-                    <p>
-                        {text}
-
-                    </p>
-
+                    <p> {text} </p>
                 </TextWrapper>
 
                 <LinkWrapper>
@@ -102,102 +98,82 @@ export default function Post(
 }
 
 const PostWrapper = styled.div`
-width: 100%;
-height: auto;
-margin-bottom: 10px;
-
-border-radius:16px;
-background-color: #171717;
-font-family: 'Lato';
-
-display: flex;
-
-position: relative;
-
+    display: flex;
+    position: relative;
+    width: 610px;
+    border-radius:16px;
+    margin-bottom: 16px;
+    background-color:  #171717;
 `
 const ImgWrapper = styled.div`
-
-display: flex;
-flex-direction: column;
-align-items: center;
-
-
-div{
-    color: ${props => props.props === 'true' ? 'red' : 'white'};
-    cursor: pointer;
-}
-
-img{
-margin: 10px 10px 30px 10px ;
-width:70px;
-height:70px;
-border-radius: 50%;
-object-fit: cover;
-}
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    div{
+        color: ${props => props.props === 'true' ? 'red' : 'white'};
+        cursor: pointer;
+    }
+    img{
+        margin: 18px 18px 30px 18px ;
+        width:50px;
+        height:50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
 `
 const Main = styled.div`
-width:85%;
-height:100%;
-margin-left: 25px;
-margin-right: 25px;
-background-color: #171717 ;
+    width:85%;
+    height:100%;
+    margin-left: 25px;
+    margin-right: 25px;
+    background-color: #171717 ;
 `
 const Title = styled.div`
-width: 100%;
-/* background-color: aliceblue; */
-margin-top: 10px;
-padding: 5px;
-
-display: flex;
-justify-content: space-between;
-
-h1{
-    font-size: 19px;
-    font-weight: 400;
-    color: #FFF;
-
-    cursor: pointer;
-}
-
-
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 0 7px 0;
+    margin-top: 16px;
+    /* background-color: blue; */
+    h1{
+        font-size: 19px;
+        font-weight: 400;
+        line-height: 22.8px;
+        color: #FFF;
+        cursor: pointer;
+    }
 `
 const IconsWrapper = styled.div`
-color: blue;
-
+    color: blue;
 `
 const TextWrapper = styled.div`
-margin-bottom: 10px;
-font-size: 17px;
-font-weight: 700;
-color: #B7B7B7;
-
+    margin-bottom: 15px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #B7B7B7;
+    background-color: yellow;
 `
 const LinkWrapper = styled.div`
-width: 100%;
-height: 200px;
-margin-bottom: 10px;
-border: solid 1px gray;
-border-radius: 16px;
-color: white;
-
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+    border: solid 1px gray;
+    border-radius: 16px;
+    color: white;
 `
 const Likes = styled.div`
-width: auto;
-height: auto;
-padding: 5px;
-
-background-color: #FFF;
-opacity:${props => props.isShown ? '1' : '0'};
-z-index: ${props => props.isShown ? '1' : '-1'};;
-transition: all 0.5s ease-out;
-
-p{
-    color: #505050;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-position: absolute;
-top:50%;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    background-color: #FFF;
+    opacity:${props => props.isShown ? '1' : '0'};
+    z-index: ${props => props.isShown ? '1' : '-1'};;
+    transition: all 0.5s ease-out;
+    p{
+        color: #505050;
+        font-size: 13px;
+        font-weight: 700;
+    }
+    position: absolute;
+    top:50%;
 `
