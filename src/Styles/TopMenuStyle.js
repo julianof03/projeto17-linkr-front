@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { VscChevronUp } from 'react-icons/vsc';
 
 const MenuBar = styled.div`
     width: 100%;
@@ -12,6 +13,7 @@ const MenuBar = styled.div`
     padding-right: 10px;
     align-items: center;
     background-color: #151515;
+    z-index: 1;
 `;
 
 const Title = styled.h2`
@@ -22,24 +24,44 @@ const Title = styled.h2`
 
 const UserBox = styled.div`
     display: flex;
-    width: 85px;
+    width: 90px;
     align-items: center;
     justify-content: space-between;
 
-    img{
+    div{
         width: 55px;
         height: 55px;
-        background-image: ${({ profileImage }) => `url(${profileImage})`};
+        background-image: url(${(props) => props.profileImage});
         background-size: cover;
         background-position: center;
         border-radius:50%;
     }
-
-    react-icons{
-        font-size:36px;
-        color:#fff;
-    }
 `;
+const LogoutBox = styled.div`
+    width: 120px;
+    height: 50px;
+    border-radius: 0 0 0 20px;
+    background-color: #151515;
+    display: ${(props) => props.visible ? 'flex':'none'};
+    align-items: center;
+    justify-content: center;
+    position:fixed;
+    right: 0;
+    top: 80px;
+    color: #fff;
+
+    h3{
+        font-family: Lato;
+        color: #fff;
+        font-size: 17px;
+    }
+
+`
+const StyledIcon = styled(VscChevronUp)`
+color: #fff;
+transform: scale(2);
+rotate:${(props)=> props.isUp? '0':'180deg'};
+`
 
 
-export{MenuBar, UserBox, Title};
+export{MenuBar, UserBox, Title, LogoutBox,StyledIcon};

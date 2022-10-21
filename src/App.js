@@ -13,7 +13,7 @@ import TimeLine from './Pages/TimeLine.js';
 export default function App() {
     const [config,setConfig] = useState({});
     const [profileImage, setProfileImage] = useState({});
-    
+
     const [reRender, setReRender] = useState(true);
     const [post, setPost] = useState({
         img: '',
