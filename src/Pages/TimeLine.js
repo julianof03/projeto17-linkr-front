@@ -101,6 +101,7 @@ const Title = styled.div`
 width:100%;
 display: flex;
 justify-content: flex-start;
+margin-bottom: 8vh;
 
 h1{
     font-size: 43px;
