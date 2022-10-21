@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const hashtagsArray = [
   "javascript",
   "react",
@@ -15,7 +16,7 @@ const hashtagsArray = [
 
 export default function Trending() {
   const navigate = useNavigate();
-  
+
   function goHashtagPage(h) {
     if (h !== null) {
       navigate(`/hashtag/${h}`);
@@ -26,7 +27,7 @@ export default function Trending() {
       <h2>Trending</h2>
       <Line />
       {hashtagsArray.map((h) => (
-        <p onClick={goHashtagPage(h)}># {h}</p>
+        <p onClick={() => goHashtagPage(h)}># {h}</p>
       ))}
     </TrendingWrapper>
   );
