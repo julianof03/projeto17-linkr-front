@@ -110,7 +110,7 @@ const LinkInput = styled.input`
 `
 const TextInput = styled.input`
     width:100%;
-    height:66px;
+    height: 66px;   /* ARRUMAR ISSO AE */
     border: unset;
     border-radius:5px;
     margin-top: 10px;

@@ -6,6 +6,7 @@ import getConfig from '../Services/getConfig.js'
 import { getTimeLine } from '../Services/api.js'
 import { useEffect } from "react"
 
+
 export default function TimeLine() {
 
     const array = [
@@ -53,7 +54,7 @@ export default function TimeLine() {
         <Wrapper>
             <MainContent>
                 <Title> <h1>timeline</h1> </Title>
-                {/* <FormBox /> */}
+                <FormBox />
                 {array.map(value => 
                     <Post 
                         username={value.username}
@@ -66,14 +67,12 @@ export default function TimeLine() {
                     )}
             </MainContent>
 
-            {/* <AsideContent>
+            <AsideContent>
                 <TrendingWrapper>
                     <Trending/>
                 </TrendingWrapper>
-            </AsideContent> */}
-
+            </AsideContent>
         </Wrapper>
-
     )
 }
 
@@ -99,18 +98,16 @@ const MainContent = styled.div`
     /* background-color: black; */
 `
 const Title = styled.div`
-width:100%;
-display: flex;
-justify-content: flex-start;
-
-h1{
-    font-size: 43px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: #fff;
-    font-family: 'Oswald';
-}
-
+    width:100%;
+    display: flex;
+    justify-content: flex-start;
+    h1{
+        font-size: 43px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #fff;
+        font-family: 'Oswald';
+    }
 `
 const TrendingWrapper = styled.div`
 height: 100%;

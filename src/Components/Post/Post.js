@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
-
+import Microlink, { imageProxy } from '@microlink/react'
+import mql from '@microlink/mql'
 
 export default function Post(
     { username,
@@ -12,98 +13,157 @@ export default function Post(
         likesQtd,
         liked }
 ) {
-
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
     const [isShown, setIsShown] = useState(false)
+    const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
 
-    useEffect(()=>{
-        if(like){
-            setProps('true')
-        }
-    })
-    
-
+    useEffect( async () => { 
+        if(like) {setProps('true')} 
+        const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
+                data: {
+                    avatar: {
+                    selector: '#avatar',
+                    type: 'image',
+                    attr: 'src'
+                    }}
+                })
+                setUrlMetadataOBJ(data)    
+    }, [])
     return (
-        <PostWrapper>
+        <>
+        {(!urlMetadataOBJ.url) ? ( <p>LOADING</p> ) 
+            : (
+                <PostHTML>
+                    <ImgWrapper props={props}>
+                        <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+                        <div>
+                            {props === 'true' ? (
+                                <BsHeartFill
+                                    size='20px'
+                                    onClick={() => {
+                                        setLike(!like)
+                                        setProps('false')
+                                    }}
+                                    onMouseEnter={() => setIsShown(true)}
+                                    onMouseLeave={() => setIsShown(false)}
+                                />
+                            ) : (
+                                <BsHeart
+                                    size='20px'
+                                    onClick={() => {
+                                        setLike(!like)
+                                        setProps('true')
+                                    }}
+                                    onMouseEnter={() => setIsShown(true)}
+                                    onMouseLeave={() => setIsShown(false)}
+                                />
+                            )}
+                        </div>
 
-            <ImgWrapper props={props}>
-                <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
-                <div >
-                    {props === 'true' ? (
-                        <BsHeartFill
-                            size='20px'
-                            onClick={() => {
-                                setLike(!like)
-                                setProps('false')
-                            }}
+                        <Likes
                             onMouseEnter={() => setIsShown(true)}
                             onMouseLeave={() => setIsShown(false)}
-                        />
-                    ) : (
-                        <BsHeart
-                            size='20px'
-                            onClick={() => {
-                                setLike(!like)
-                                setProps('true')
-                            }}
-                            onMouseEnter={() => setIsShown(true)}
-                            onMouseLeave={() => setIsShown(false)}
-                        />
-                    )}
-                </div>
-
-                <Likes
-                    onMouseEnter={() => setIsShown(true)}
-                    onMouseLeave={() => setIsShown(false)}
-                    isShown={isShown}
-                >
-                    <p>vários likes pra tu ficá feliz</p>
-                </Likes>
-            </ImgWrapper>
-
-            <Main>
-                <Title>
-                    <h1>{username}</h1>
-                    <IconsWrapper>
-                        <MdModeEdit
-                            color='white'
-                            style={{
-                                cursor: 'pointer'
-                            }}
-                        />
-                        <BsFillTrashFill
-                            color='white'
-                            style={{
-                                marginLeft: '10px',
-                                cursor: 'pointer'
-                            }}
-                            size='15px'
-                        />
-                    </IconsWrapper>
-                </Title>
-
-                <TextWrapper>
-                    <p> {text} </p>
-                </TextWrapper>
-
-                <LinkWrapper>
-                    {link}
-                </LinkWrapper>
-
-            </Main>
-
-        </PostWrapper>
+                            isShown={isShown}
+                        >
+                            <p>vários likes pra tu ficá feliz</p>
+                        </Likes>
+                    </ImgWrapper>
+                    <Main>
+                        <Title>
+                            <h1>{username}</h1>
+                            <IconsWrapper>
+                                <MdModeEdit
+                                    color='white'
+                                    style={{
+                                        cursor: 'pointer'
+                                    }}
+                                />
+                                <BsFillTrashFill
+                                    color='white'
+                                    style={{
+                                        marginLeft: '10px',
+                                        cursor: 'pointer'
+                                    }}
+                                    size='15px'
+                                />
+                            </IconsWrapper>
+                        </Title>
+                        <Description>
+                            <p> {text} </p>
+                        </Description>
+                        <UrlMetadaSpace>
+                            <UrlMetadaDetails>
+                                <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                            </UrlMetadaDetails>
+                            <ImageUrl>
+                                {console.log(urlMetadataOBJ)}
+                                <img    src={urlMetadataOBJ.image.url}
+                                        alt="description of image"/>
+                            </ImageUrl>
+                        </UrlMetadaSpace>
+                    </Main>
+                </PostHTML>
+            )
+        }
+        </>
     )
 }
 
-const PostWrapper = styled.div`
+const TitleUrl = styled.h1`
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #CECECE;
+    margin-bottom: 10px;
+`
+const DescriptionUrl = styled.p`
+    font-family: Lato;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #9B9595;
+
+`
+const LinkUrl = styled.p`
+    font-family: Lato;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #9B9595;
+    position: absolute;
+    bottom: 10px;
+
+`
+const UrlMetadaDetails = styled.div`
     display: flex;
+    flex-direction: column;
     position: relative;
+    padding: 24px 27px 5px 19px ;
+`
+const ImageUrl = styled.div`
+    img {
+        width: 154px;
+        height: 153px;
+        border-radius:  0 16px 16px 0 ;
+        object-fit: cover 
+    }
+`
+const PostHTML = styled.div`
+    display: flex;
     width: 610px;
     border-radius:16px;
     margin-bottom: 16px;
-    background-color:  #171717;
+    background-color:  black;
 `
 const ImgWrapper = styled.div`
     display: flex;
@@ -122,11 +182,8 @@ const ImgWrapper = styled.div`
     }
 `
 const Main = styled.div`
-    width:85%;
-    height:100%;
-    margin-left: 25px;
-    margin-right: 25px;
-    background-color: #171717 ;
+    padding: 0 21px 20px 0;
+    /* background-color: blue; */
 `
 const Title = styled.div`
     display: flex;
@@ -146,20 +203,23 @@ const Title = styled.div`
 const IconsWrapper = styled.div`
     color: blue;
 `
-const TextWrapper = styled.div`
+const Description = styled.div`
     margin-bottom: 15px;
     font-size: 17px;
     font-weight: 700;
     color: #B7B7B7;
-    background-color: yellow;
+    /* background-color: yellow; */
 `
-const LinkWrapper = styled.div`
-    width: 100%;
-    height: 200px;
+const UrlMetadaSpace = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 503px;
+    height: 155px;
     margin-bottom: 10px;
     border: solid 1px gray;
     border-radius: 16px;
     color: white;
+    /* background-color: red; */
 `
 const Likes = styled.div`
     width: auto;
