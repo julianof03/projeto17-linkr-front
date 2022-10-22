@@ -5,6 +5,7 @@ import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
 import mql from '@microlink/mql'
+import { useNavigate } from "react-router-dom";
 
 export default function Post(
     { username,
@@ -14,10 +15,13 @@ export default function Post(
         likesQtd,
         liked }
 ) {
+
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
+
+    const navigate = useNavigate()
 
     useEffect(async () => {
         if (like) { setProps('true') }
@@ -32,6 +36,11 @@ export default function Post(
         })
         setUrlMetadataOBJ(data)
     }, [])
+
+    function goTo(tag){
+        const newTag = tag.replace('#', '')
+        navigate(`/hashtag/${newTag}`)
+    }
     return (
         <>
             {(!urlMetadataOBJ.url) ? (<p>LOADING</p>)
@@ -101,8 +110,7 @@ export default function Post(
                                 <ReactTagify
                                     colors={"white"}
                                     tagClicked={(tag) => {
-                                        console.log(tag)
-                                        console.log(typeof(text))
+                                        goTo(tag)
                                     }}
                                 >
                                      {text}
@@ -116,7 +124,6 @@ export default function Post(
                                     <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
                                 </UrlMetadaDetails>
                                 <ImageUrl>
-                                    {console.log(urlMetadataOBJ)}
                                     <img src={urlMetadataOBJ.image.url}
                                         alt="description of image" />
                                 </ImageUrl>
