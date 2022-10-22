@@ -36,11 +36,10 @@ export default function TopMenu(){
 
     return(
         <div>
-        <SearchBar />
         <LogoutBox visible={logout} onClick={logoutUser}>
             <h3> Logout</h3>
         </LogoutBox>
-
+        <SearchBar />
         <MenuBar>
             <Title>linkr</Title>
             <UserBox onClick={cliked} profileImage={profileImage}> 

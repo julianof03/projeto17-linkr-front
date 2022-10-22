@@ -31,6 +31,7 @@ const UserBox = styled.div`
     div{
         width: 55px;
         height: 55px;
+        display: flex;
         background-image: url(${(props) => props.profileImage});
         background-size: cover;
         background-position: center;

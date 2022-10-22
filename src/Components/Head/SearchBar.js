@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { SearchBox, SearchIcon, FoundUsers, usersImage } from "../../Styles/SearchMenuStyle.js";
+import { SearchBox, SearchIcon, FoundUsers, UsersImage, ImageUsers, UsersName} from "../../Styles/SearchMenuStyle.js";
 import { searchUsers } from "../../Services/api.js";
 import { UserContext } from "../../contexts/userContext";
 import { useContext } from 'react';
@@ -18,10 +18,6 @@ const teste = [
     {
         pictureUrl:'https://s2.glbimg.com/i86mB2uvgqlN0IshyMvh7fsgx6E=/smart/e.glbimg.com/og/ed/f/original/2019/07/24/gato-chapeu-feito-com-proprio-gato04.jpg',
         name:'edson'
-    },
-    {
-        pictureUrl:'https://static.wikia.nocookie.net/epicrapbattlesofhistory/images/9/9f/Cat-in-the-hat31944906-1432-1079.jpg/revision/latest?cb=20131226162210&path-prefix=pt-br',
-        name:'mickey'
     },
     {
         pictureUrl:'https://images-americanas.b2w.io/produtos/1606130352/imagens/cap-bonito-chapeu-gato-traje-cosplay-filhote-de-cachorro-gatos-caes-engracado-perna-de-frango-laco-de-cabelo-cabeca-desgaste-pet-chapeu/1606130352_1_large.jpg',
@@ -55,9 +51,15 @@ export default function SearchBar(){
     
         return () => clearTimeout(dalaySearchUsers)
     }else{
+        setFindUsers([])
         return;
     }
       }, [search]);
+
+    function goToUserpage(name){
+        console.log(name);
+        setFindUsers([])
+    };
 
     return(
         <div>
@@ -66,24 +68,20 @@ export default function SearchBar(){
                 <input type='text' placeholder="Search for people" onChange={handleSearch}></input>
             </SearchBox>
 
-            {
-                (!findUsers?(
-                    <></>
-                ):(
-                    <FoundUsers>
-                        {findUsers.map((u)=>{
-                            return(
-                            <div>
-                                <usersImage profileImage={u.pictureUrl}></usersImage>
-                                <p>{u.name}</p>
-                            </div>
-                            )
-                        })}
-                    </FoundUsers>
+            <FoundUsers>
+                {(!findUsers?(<></>):(
+                        findUsers.map((u)=>
+                        <div>
+                                <UsersImage onClick={()=>{goToUserpage(u.name)}}>
+                                    <ImageUsers profileImage={u.pictureUrl} />
+                                    <UsersName>{u.name}</UsersName>
+                                </UsersImage>
+                        </div>
+                        )
                         
-                ))
-
-            }
+                ))}
+                        
+            </FoundUsers>
         </div>
     )
 };

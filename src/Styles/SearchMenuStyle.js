@@ -27,6 +27,14 @@ const SearchBox = styled.div`
         background-color: transparent;
     }
 
+    @media only screen and (max-width:600px) {
+        width: calc(90vw);
+        position: fixed;
+        left: calc(5vw);
+        top: 90px;
+        z-index: 3;
+
+    }
 `
 
 const SearchIcon = styled(BiSearchAlt)`
@@ -36,29 +44,56 @@ const SearchIcon = styled(BiSearchAlt)`
     left: calc(70vw);
     top: 30px;
     z-index: 4;
+
+    @media only screen and (max-width:600px) {
+        position: fixed;
+        left: calc(85vw);
+        top: 110px;
+        z-index: 4;
+
+    }
 `
 
 const FoundUsers = styled.div`
     width: calc(50vw);
-    padding: 0 10px 10px 10px;
     background-color: #E7E7E7;
     position: fixed;
     top:60px;
     left: calc(25vw);
+    display: flex;
+    flex-direction: column;
     z-index: 2;
+    border-radius: 0 0 20px 20px;
+    @media only screen and (max-width:600px) {
+        width: calc(90vw);
+        position: fixed;
+        left: calc(5vw);
+        top: 135px;
+        z-index: 2;
 
-    div{
-        display: flex;
-        height: 40px;
-        align-items: center;
-        justify-content: left;
-        margin-top: 5px;
-        color: #515151;
-        font-size: 15px;
     }
+
 `
 
-const usersImage = styled.div`
+const UsersImage = styled.div`
+        display: flex;
+        height: 40px;
+        width: calc(50vw);
+        align-items: center;
+        margin: 10px;
+        border-top: 1px gray;
+
+        @media only screen and (max-width:600px) {
+        width: calc(90vw);
+    }
+`
+const UsersName = styled.p`
+    color: #515151;
+    font-size: 15px;
+    margin-left: 10px;
+    `
+
+const ImageUsers = styled.div`
         width: 40px;
         height: 40px;
         background-image: url(${(props) => props.profileImage});
@@ -66,5 +101,6 @@ const usersImage = styled.div`
         background-position: center;
         border-radius:50%;
         margin-right: 10px;
+        
 `
-export{SearchBox, SearchIcon, usersImage, FoundUsers}
+export{SearchBox, SearchIcon, UsersImage, FoundUsers, ImageUsers, UsersName}
