@@ -28,7 +28,7 @@ export default function Trending() {
         ? ""
         : trendingHashtags.map((tag, index) => (
             <p key={index} onClick={() => goHashtagPage(tag)}>
-              {tag.name}
+              #{tag.name}
             </p>
           ))}
     </TrendingWrapper>
