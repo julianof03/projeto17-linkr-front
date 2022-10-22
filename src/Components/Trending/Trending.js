@@ -28,8 +28,9 @@ export default function Trending() {
       <Line />
       {hashtagsArray.map((h, index) => (
         <p
-          onClick={() => goHashtagPage(h)}
           key={index}
+          onClick={() => goHashtagPage(h)}
+
         >
           # {h}
         </p>

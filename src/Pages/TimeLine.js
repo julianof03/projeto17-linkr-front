@@ -13,7 +13,7 @@ export default function TimeLine() {
         {
             username: 'gojo satoru',
             img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
-            text: 'textinho bacanozo #AAAAAAAAA AAAAAAAAA AAAAAA AAAAAA AAAA #AAAAA AAA AAAAAAAAA AAAAAAA AAAAAAA AAAAAAA AAAAAAAAAAAAAA AAAAAAA AAA AAA AAAA',
+            text: 'textinho bacanozo #javascript AAAAAAAAA AAAAAA AAAAAA AAAA #AAAAA AAA AAAAAAAAA AAAAAAA AAAAAAA AAAAAAA AAAAAAAAAAAAAA AAAAAAA AAA AAA AAAA',
             link: 'link',
             likesQtd: 15,
             liked: true
