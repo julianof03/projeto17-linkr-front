@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+
 const hashtagsArray = [
   "javascript",
   "react",
