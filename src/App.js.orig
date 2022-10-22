@@ -39,6 +39,16 @@ export default function App() {
                 }
             }>
                 <BrowserRouter>
+<<<<<<< HEAD
+                    <UserContext.Provider value={{config, setConfig, profileImage, setProfileImage}}>
+                        <Routes>
+                            {/* <Route path="/" element={<LogIn />} />
+                            <Route path="/signup" element={<SingUp />} /> */}
+                            <Route path="/" element={<TimeLine />} />
+                        </Routes>
+                        <Header />
+                    </UserContext.Provider>
+=======
                     <Routes>
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/signup" element={<SingUp />} />
@@ -46,6 +56,7 @@ export default function App() {
                         <Route path="/user/:id" element={<UserPage />} />
                         <Route path="/hashtag/:hashtag" element={<Hashtag />} />
                     </Routes>
+>>>>>>> main
                 </BrowserRouter>
             </GlobalContext.Provider>
         </div>

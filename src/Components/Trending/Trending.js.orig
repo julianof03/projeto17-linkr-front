@@ -1,7 +1,11 @@
 import styled from "styled-components";
+<<<<<<< HEAD
+import React from "react";
+=======
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getHashtagTrending } from "../../Services/api.js";
+>>>>>>> main
 
 export default function Trending() {
   const [trendingHashtags, setTrendingHashtags] = useState([]);

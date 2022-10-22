@@ -1,10 +1,10 @@
 import React from "react";
 import { useContext } from "react";
-import { UserContext } from "../contexts/userContext.js";
+import  GlobalContext  from "../contexts/globalContext.js";
 
 export default function keepToken(token){
 
-    const { config,setConfig } = useContext(UserContext);
+    const { config,setConfig } = useContext(GlobalContext);
 
     setConfig({headers:{Authorization: `Bearer ${token}`}});
 

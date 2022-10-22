@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import {useNavigate} from 'react-router-dom';
-import { UserContext } from "../contexts/userContext.js";
+import { GlobalContext } from "../contexts/globalContext.js";
 
-export default function VirifyLogin(){
+export default function VerifyLogin(){
 
-    const {config,setConfig} = useContext(UserContext);
+    const {config,setConfig} = useContext(GlobalContext);
 
     const navigate = useNavigate();
 

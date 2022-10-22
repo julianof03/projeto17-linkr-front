@@ -63,8 +63,11 @@ export {
     updateRegister,
     logOut,
     getTimeLine,
-    getHashtagTrending,
-    getHashtagPosts,
+<<<<<<< HEAD
     searchUsers,
     userImage
+=======
+    getHashtagTrending,
+    getHashtagPosts
+>>>>>>> main
 }

@@ -4,8 +4,13 @@ import { ReactTagify } from "react-tagify";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
+<<<<<<< HEAD
+import React from "react";
+
+=======
 import mql from '@microlink/mql'
 import { useNavigate } from "react-router-dom";
+>>>>>>> main
 
 export default function Post(
     { username,
@@ -21,7 +26,16 @@ export default function Post(
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
 
+<<<<<<< HEAD
+    useEffect(()=>{
+        if(like){
+            setProps('true')
+        }
+    },[like]);
+    
+=======
     const navigate = useNavigate()
+>>>>>>> main
 
     useEffect(async () => {
       if (like) { setProps('true') }
@@ -71,7 +85,35 @@ export default function Post(
                                     />
                                 )}
 
+<<<<<<< HEAD
+            <ImgWrapper props={props}>
+                <img alt='' src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+                <div >
+                    {props === 'true' ? (
+                        <BsHeartFill
+                            size='20px'
+                            onClick={() => {
+                                setLike(!like)
+                                setProps('false')
+                            }}
+                            onMouseEnter={() => setIsShown(true)}
+                            onMouseLeave={() => setIsShown(false)}
+                        />
+                    ) : (
+                        <BsHeart
+                            size='20px'
+                            onClick={() => {
+                                setLike(!like)
+                                setProps('true')
+                            }}
+                            onMouseEnter={() => setIsShown(true)}
+                            onMouseLeave={() => setIsShown(false)}
+                        />
+                    )}
+                </div>
+=======
                             </div>
+>>>>>>> main
 
                             <p>{likesQtd}</p>
 
