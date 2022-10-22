@@ -71,7 +71,7 @@ const FormBoxWrapper = styled.div`
     width: 610px;
     height: 210px;
     font-family: 'Lato';
-    margin-bottom: 10px;
+    margin-bottom: 29px;
     border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     background-color: #FFFFFF;
@@ -110,7 +110,7 @@ const LinkInput = styled.input`
 `
 const TextInput = styled.input`
     width:100%;
-    height:66px;
+    height: 66px;   /* ARRUMAR ISSO AE */
     border: unset;
     border-radius:5px;
     margin-top: 10px;

@@ -6,13 +6,14 @@ import getConfig from '../Services/getConfig.js'
 import { getTimeLine } from '../Services/api.js'
 import { useEffect } from "react"
 
+
 export default function TimeLine() {
 
     const array = [
         {
             username: 'gojo satoru',
             img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
-            text: 'textinho bacanozo',
+            text: 'textinho bacanozo AAAAAAAAA AAAAAAAAA AAAAAA AAAAAA AAAA AAAAA AAA AAAAAAAAA AAAAAAA AAAAAAA AAAAAAA AAAAAAAAAAAAAA AAAAAAA AAA AAA AAAA',
             link: 'link',
             likesQtd: 15,
             liked: true
@@ -71,9 +72,7 @@ export default function TimeLine() {
                     <Trending/>
                 </TrendingWrapper>
             </AsideContent>
-
         </Wrapper>
-
     )
 }
 
@@ -89,30 +88,27 @@ const AsideContent = styled.div`
     height: 500px;
     width: 21vw;
     position:relative;
-    background-color: violet;
+    /* background-color: violet; */
 `
+
 const MainContent = styled.div`
     display: flex;
     flex-direction: column;
     width: 610px;
-    background-color: black;
+    /* background-color: black; */
 `
 const Title = styled.div`
-width:100%;
-display: flex;
-justify-content: flex-start;
-margin-bottom: 8vh;
-
-h1{
-    font-size: 43px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: #fff;
-    font-family: 'Oswald';
-}
-
+    width:100%;
+    display: flex;
+    justify-content: flex-start;
+    h1{
+        font-size: 43px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #fff;
+        font-family: 'Oswald';
+    }
 `
-
 const TrendingWrapper = styled.div`
 height: 100%;
 position:absolute;
