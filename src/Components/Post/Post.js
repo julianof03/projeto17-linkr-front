@@ -24,18 +24,18 @@ export default function Post(
     const navigate = useNavigate()
 
     useEffect(async () => {
-        if (like) { setProps('true') }
-        const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
-            data: {
-                avatar: {
-                    selector: '#avatar',
-                    type: 'image',
-                    attr: 'src'
-                }
-            }
-        })
-        setUrlMetadataOBJ(data)
-    }, [])
+      if (like) { setProps('true') }
+      const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
+          data: {
+              avatar: {
+                  selector: '#avatar',
+                  type: 'image',
+                  attr: 'src'
+              }
+          }
+      })
+      setUrlMetadataOBJ(data)
+  }, [])
 
     function goTo(tag){
         const newTag = tag.replace('#', '')

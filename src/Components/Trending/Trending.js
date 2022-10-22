@@ -1,54 +1,36 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import axios from "axios";
-
-const hashtagsArray = [
-  "#hashtag14",
-  "javascript",
-  "react",
-  "react-native",
-  "material",
-  "web-dev",
-  "mobile",
-  "css",
-  "html",
-  "node",
-  "sql",
-];
+import { useEffect, useState } from "react";
+import { getHashtagTrending } from "../../Services/api.js";
 
 export default function Trending() {
+  const [trendingHashtags, setTrendingHashtags] = useState([]);
   useEffect(() => {
-    const promise = axios.get(`https://projeto17linkr.herokuapp.com/hashtag/`);
-    promise.then((res) => {
-      console.log(res.data);
+    getHashtagTrending().then((res) => {
+      setTrendingHashtags(res.data);
     });
 
-    promise.catch((res) => {
-      console.log("algo deu errado");
+    getHashtagTrending().catch((res) => {
+      console.log(res);
     });
   }, []);
 
   const navigate = useNavigate();
 
-  function goHashtagPage(h) {
-    if (h !== null) {
-      navigate(`/hashtag/${h}`);
-    }
+  function goHashtagPage(tag) {
+    navigate(`/hashtag/${tag.name}`);
   }
   return (
     <TrendingWrapper>
       <h2>Trending</h2>
       <Line />
-      {hashtagsArray.map((h, index) => (
-        <p
-          key={index}
-          onClick={() => goHashtagPage(h)}
-
-        >
-          # {h}
-        </p>
-      ))}
+      {trendingHashtags.length === 0
+        ? ""
+        : trendingHashtags.map((tag, index) => (
+            <p key={index} onClick={() => goHashtagPage(tag)}>
+              {tag.name}
+            </p>
+          ))}
     </TrendingWrapper>
   );
 }

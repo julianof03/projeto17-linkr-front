@@ -37,6 +37,10 @@ function getTimeLine(getConfig){
 
 }
 
+function getHashtagTrending(){
+    return axios.get(`${URL}/trending`);
+
+}
 export {
     signUp,
     signIn,
@@ -45,5 +49,6 @@ export {
     deleteRegister,
     updateRegister,
     logOut,
-    getTimeLine
+    getTimeLine,
+    getHashtagTrending
 }
