@@ -22,10 +22,10 @@ export default function FormBox() {
             text: form.text,
         }
         console.log('pre promise')
-        const promise = axios.post('http://localhost:4000/timeline', body)
+        const promise = axios.post('http://localhost:5000/timeline', body)
         promise.then( (res) => { 
             console.log('then')
-            navigate('/') } )
+            navigate('/timeline') } )
         promise.catch( (err) => console.log('Deu Erro logout',err) )
 
         setTimeout(() => {

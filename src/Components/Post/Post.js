@@ -24,18 +24,18 @@ export default function Post(
     const navigate = useNavigate()
 
     useEffect(async () => {
-        if (like) { setProps('true') }
-        const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
-            data: {
-                avatar: {
-                    selector: '#avatar',
-                    type: 'image',
-                    attr: 'src'
-                }
-            }
-        })
-        setUrlMetadataOBJ(data)
-    }, [])
+      if (like) { setProps('true') }
+      const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
+          data: {
+              avatar: {
+                  selector: '#avatar',
+                  type: 'image',
+                  attr: 'src'
+              }
+          }
+      })
+      setUrlMetadataOBJ(data)
+  }, [])
 
     function goTo(tag){
         const newTag = tag.replace('#', '')
@@ -137,58 +137,56 @@ export default function Post(
 }
 
 const TitleUrl = styled.h1`
-    font-family: Lato;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 19px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #CECECE;
-    margin-bottom: 10px;
-`
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #cecece;
+  margin-bottom: 10px;
+`;
 const DescriptionUrl = styled.p`
-    font-family: Lato;
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 13px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #9B9595;
-
-`
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #9b9595;
+`;
 const LinkUrl = styled.p`
-    font-family: Lato;
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 13px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #9B9595;
-    position: absolute;
-    bottom: 10px;
-
-`
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #9b9595;
+  position: absolute;
+  bottom: 10px;
+`;
 const UrlMetadaDetails = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding: 24px 27px 5px 19px ;
-`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 24px 27px 5px 19px;
+`;
 const ImageUrl = styled.div`
-    img {
-        width: 154px;
-        height: 153px;
-        border-radius:  0 16px 16px 0 ;
-        object-fit: cover 
-    }
-`
+  img {
+    width: 154px;
+    height: 153px;
+    border-radius: 0 16px 16px 0;
+    object-fit: cover;
+  }
+`;
 const PostHTML = styled.div`
-    display: flex;
-    width: 610px;
-    border-radius:16px;
-    margin-bottom: 16px;
-    background-color:  black;
-`
+  display: flex;
+  width: 610px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  background-color: black;
+`;
 const ImgWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -212,27 +210,27 @@ const ImgWrapper = styled.div`
     }
 `
 const Main = styled.div`
-    padding: 0 21px 20px 0;
-    /* background-color: blue; */
-`
+  padding: 0 21px 20px 0;
+  /* background-color: blue; */
+`;
 const Title = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 5px 0 7px 0;
-    margin-top: 16px;
-    /* background-color: blue; */
-    h1{
-        font-size: 19px;
-        font-weight: 400;
-        line-height: 22.8px;
-        color: #FFF;
-        cursor: pointer;
-    }
-`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px 0 7px 0;
+  margin-top: 16px;
+  /* background-color: blue; */
+  h1 {
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 22.8px;
+    color: #fff;
+    cursor: pointer;
+  }
+`;
 const IconsWrapper = styled.div`
-    color: blue;
-`
+  color: blue;
+`;
 const Description = styled.div`
     margin-bottom: 15px;
     font-size: 17px;
@@ -241,16 +239,16 @@ const Description = styled.div`
     /* background-color: yellow; */
 `
 const UrlMetadaSpace = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 503px;
-    height: 155px;
-    margin-bottom: 10px;
-    border: solid 1px gray;
-    border-radius: 16px;
-    color: white;
-    /* background-color: red; */
-`
+  display: flex;
+  justify-content: space-between;
+  width: 503px;
+  height: 155px;
+  margin-bottom: 10px;
+  border: solid 1px gray;
+  border-radius: 16px;
+  color: white;
+  /* background-color: red; */
+`;
 const Likes = styled.div`
     width: auto;
     height: auto;
