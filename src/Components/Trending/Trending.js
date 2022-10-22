@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 const hashtagsArray = [
+  "#hashtag14",
   "javascript",
   "react",
   "react-native",
@@ -15,6 +18,17 @@ const hashtagsArray = [
 ];
 
 export default function Trending() {
+  useEffect(() => {
+    const promise = axios.get(`https://projeto17linkr.herokuapp.com/hashtag/`);
+    promise.then((res) => {
+      console.log(res.data);
+    });
+
+    promise.catch((res) => {
+      console.log("algo deu errado");
+    });
+  }, []);
+
   const navigate = useNavigate();
 
   function goHashtagPage(h) {

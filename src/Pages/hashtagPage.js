@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import Post from "../Components/Post/Post.js";
 import Trending from "../Components/Trending/Trending.js";
+import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 const array = [
   {
     username: "gojo satoru",
@@ -39,6 +41,21 @@ const array = [
 
 export default function Hashtag() {
     const { hashtag } = useParams();
+    
+
+    useEffect(() => {
+      console.log(hashtag)
+      const promise = axios.get(`https://projeto17linkr.herokuapp.com/hashtag/${hashtag}`);
+      promise.then((res) => {
+        console.log(res.data);
+      });
+  
+      promise.catch((res) => {
+        console.log("algo deu errado");
+      });
+    }, []);
+
+    
     
   return (
     <Wrapper>
