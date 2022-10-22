@@ -1,37 +1,54 @@
-import { VscChevronUp } from 'react-icons/vsc';
-import {IconContext} from "react-icons"
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserBox, MenuBar, Title, LogoutBox,StyledIcon } from "../../Styles/TopMenuStyle.js";
-//import { UserContext } from "../../contexts/userContext";
+import { UserContext } from "../../contexts/userContext";
+import { useContext } from 'react';
 import SearchBar from './SearchBar.js';
+import { userImage, logOut } from '../../Services/api.js';
 
 
 export default function TopMenu(){
-    //const { profileImage } = useContext(UserContext);
     const [logout, setLogout] = useState(false);
+    const [profileImage, setProfileImage] = useState('');
+
+    const {config} = useContext(UserContext);
+
+    useEffect(async()=>{
+        try {
+            //const userData = await userImage(config);
+            //setProfileImage(userData.data.pictureUrl);
+            setProfileImage('https://uploads.metropoles.com/wp-content/uploads/2021/08/24151411/scale-2-1024x683.jpg')
+        } catch (error) {
+            console.log(error);
+            alert('Algo de errado aconteceu! :(');
+            return;
+        }
+    },[])
 
     function cliked(){
         setLogout(!logout);
     };
     function logoutUser(){
-        return console.log('existo')
-    }
+        const body = {};
+        console.log('biee')
+        logOut(config, body);
+    };
 
     return(
         <div>
         <SearchBar />
+        <LogoutBox visible={logout} onClick={logoutUser}>
+            <h3> Logout</h3>
+        </LogoutBox>
+
         <MenuBar>
             <Title>linkr</Title>
-            <UserBox onClick={cliked} profileImage="https://miro.medium.com/max/480/1*Iohnw2aOQ5EBghVoqKA7VA.png"> 
+            <UserBox onClick={cliked} profileImage={profileImage}> 
                 <StyledIcon isUp={logout}/>
                 <div>
                 </div>
             </UserBox>
         </MenuBar>
-        <LogoutBox visible={logout} OnClick={logoutUser}>
-            <h3> Logout</h3>
-        </LogoutBox>
         </div>
     )
 };

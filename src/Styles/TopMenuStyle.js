@@ -42,7 +42,8 @@ const LogoutBox = styled.div`
     height: 50px;
     border-radius: 0 0 0 20px;
     background-color: #151515;
-    display: ${(props) => props.visible ? 'flex':'none'};
+    display: flex;
+    visibility: ${(props) => props.visible ? 'visible':'hidden'};
     align-items: center;
     justify-content: center;
     position:fixed;

@@ -27,8 +27,18 @@ function deleteRegister(id, getConfig) {
     return axios.delete(`${URL}/deleteRegister/${id}`, getConfig);
 };
 
-function logOut(getConfig) {
-    return axios.delete(`${URL}/logOut`, getConfig);
+// Headers ---------------------------------
+
+function userImage(getConfig) {
+    return axios.get(`${URL}/userImage`, getConfig);
+};
+
+function searchUsers(getConfig, startsWith) {
+    return axios.get(`${URL}/userImage/${startsWith}`, getConfig);
+};
+
+function logOut(getConfig,body) {
+    return axios.put(`${URL}/signout`, getConfig, body);
 
 };
 
@@ -45,5 +55,7 @@ export {
     deleteRegister,
     updateRegister,
     logOut,
-    getTimeLine
+    getTimeLine,
+    searchUsers,
+    userImage
 }
