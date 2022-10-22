@@ -55,6 +55,7 @@ a {
 button{
 	all:unset;
 }
+
 input{
 	color: #666666;
 }
