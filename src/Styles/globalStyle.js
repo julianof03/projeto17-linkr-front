@@ -75,4 +75,4 @@ body, input, button{
 } 
 `
 
-export default GlobalStyle
+export default GlobalStyle;
