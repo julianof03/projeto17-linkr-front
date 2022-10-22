@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import {signUp} from '../../services/api';
+import { signUp } from '../../Services/api';
 
-export default function SignUp(){
+export default function SignUp() {
 
     const navigate = useNavigate();
     const [user, setUser] = useState({});
@@ -15,20 +15,20 @@ export default function SignUp(){
         })
     }
 
-    async function sendForm(e){
+    async function sendForm(e) {
 
         e.preventDefault();
 
-        const { name, email, password, pictureUrl} = user;
-        
-        if(!name || !email || !password || !pictureUrl){
+        const { name, email, password, pictureUrl } = user;
+
+        if (!name || !email || !password || !pictureUrl) {
             return alert('Todos os campos são obrigatórios!');
         }
 
-        try{
+        try {
             await signUp(user)
-            navigate('/')
-        }catch(error){
+            navigate('/signin')
+        } catch (error) {
             alert(error.response.data);
         }
     }
@@ -42,32 +42,32 @@ export default function SignUp(){
                 </LogoBox>
             </Web>
             <Mobile onSubmit={sendForm}>
-                <input 
-                placeholder="e-mail"
-                type="email"
-                name="email"
-                onChange={handleForm}
-                required></input>
-                <input 
-                placeholder="password"
-                type="password"
-                name="password"
-                onChange={handleForm}
-                required></input>
-                <input 
-                placeholder="username"
-                type="text"
-                name="name"
-                onChange={handleForm}
-                required></input>
-                <input 
-                placeholder="picture url"
-                type="url"
-                name="pictureUrl"
-                onChange={handleForm}
-                required></input>
+                <input
+                    placeholder="e-mail"
+                    type="email"
+                    name="email"
+                    onChange={handleForm}
+                    required></input>
+                <input
+                    placeholder="password"
+                    type="password"
+                    name="password"
+                    onChange={handleForm}
+                    required></input>
+                <input
+                    placeholder="username"
+                    type="text"
+                    name="name"
+                    onChange={handleForm}
+                    required></input>
+                <input
+                    placeholder="picture url"
+                    type="url"
+                    name="pictureUrl"
+                    onChange={handleForm}
+                    required></input>
                 <Register>Sign Up</Register>
-                <Login to="/">Switch back to log in</Login>
+                <Login to="/signin">Switch back to log in</Login>
             </Mobile>
         </Container>
     )

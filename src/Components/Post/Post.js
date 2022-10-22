@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import React from "react";
+import { ReactTagify } from "react-tagify";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
-import Microlink, { imageProxy } from '@microlink/react'
 import mql from '@microlink/mql'
 
 export default function Post(
@@ -18,96 +19,112 @@ export default function Post(
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
 
-    useEffect( async () => { 
-        if(like) {setProps('true')} 
+    useEffect(async () => {
+        if (like) { setProps('true') }
         const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
-                data: {
-                    avatar: {
+            data: {
+                avatar: {
                     selector: '#avatar',
                     type: 'image',
                     attr: 'src'
-                    }}
-                })
-                setUrlMetadataOBJ(data)    
+                }
+            }
+        })
+        setUrlMetadataOBJ(data)
     }, [])
     return (
         <>
-        {(!urlMetadataOBJ.url) ? ( <p>LOADING</p> ) 
-            : (
-                <PostHTML>
-                    <ImgWrapper props={props}>
-                        <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
-                        <div>
-                            {props === 'true' ? (
-                                <BsHeartFill
-                                    size='20px'
-                                    onClick={() => {
-                                        setLike(!like)
-                                        setProps('false')
-                                    }}
-                                    onMouseEnter={() => setIsShown(true)}
-                                    onMouseLeave={() => setIsShown(false)}
-                                />
-                            ) : (
-                                <BsHeart
-                                    size='20px'
-                                    onClick={() => {
-                                        setLike(!like)
-                                        setProps('true')
-                                    }}
-                                    onMouseEnter={() => setIsShown(true)}
-                                    onMouseLeave={() => setIsShown(false)}
-                                />
-                            )}
-                        </div>
+            {(!urlMetadataOBJ.url) ? (<p>LOADING</p>)
+                : (
+                    <PostHTML>
+                        <ImgWrapper props={props}>
+                            <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+                            <div>
+                                {props === 'true' ? (
+                                    <BsHeartFill
+                                        size='20px'
+                                        onClick={() => {
+                                            setLike(!like)
+                                            setProps('false')
+                                        }}
+                                        onMouseEnter={() => setIsShown(true)}
+                                        onMouseLeave={() => setIsShown(false)}
+                                    />
+                                ) : (
+                                    <BsHeart
+                                        size='20px'
+                                        onClick={() => {
+                                            setLike(!like)
+                                            setProps('true')
+                                        }}
+                                        onMouseEnter={() => setIsShown(true)}
+                                        onMouseLeave={() => setIsShown(false)}
+                                    />
+                                )}
 
-                        <Likes
-                            onMouseEnter={() => setIsShown(true)}
-                            onMouseLeave={() => setIsShown(false)}
-                            isShown={isShown}
-                        >
-                            <p>vários likes pra tu ficá feliz</p>
-                        </Likes>
-                    </ImgWrapper>
-                    <Main>
-                        <Title>
-                            <h1>{username}</h1>
-                            <IconsWrapper>
-                                <MdModeEdit
-                                    color='white'
-                                    style={{
-                                        cursor: 'pointer'
+                            </div>
+
+                            <p>{likesQtd}</p>
+
+
+                            <Likes
+                                onMouseEnter={() => setIsShown(true)}
+                                onMouseLeave={() => setIsShown(false)}
+                                isShown={isShown}
+                            >
+                                <p>vários likes pra tu ficá feliz</p>
+
+                            </Likes>
+
+                        </ImgWrapper>
+                        <Main>
+                            <Title>
+                                <h1>{username}</h1>
+                                <IconsWrapper>
+                                    <MdModeEdit
+                                        color='white'
+                                        style={{
+                                            cursor: 'pointer'
+                                        }}
+                                    />
+                                    <BsFillTrashFill
+                                        color='white'
+                                        style={{
+                                            marginLeft: '10px',
+                                            cursor: 'pointer'
+                                        }}
+                                        size='15px'
+                                    />
+                                </IconsWrapper>
+                            </Title>
+                            <Description>
+                                <ReactTagify
+                                    colors={"white"}
+                                    tagClicked={(tag) => {
+                                        console.log(tag)
+                                        console.log(typeof(text))
                                     }}
-                                />
-                                <BsFillTrashFill
-                                    color='white'
-                                    style={{
-                                        marginLeft: '10px',
-                                        cursor: 'pointer'
-                                    }}
-                                    size='15px'
-                                />
-                            </IconsWrapper>
-                        </Title>
-                        <Description>
-                            <p> {text} </p>
-                        </Description>
-                        <UrlMetadaSpace>
-                            <UrlMetadaDetails>
-                                <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                                <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                                <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                            </UrlMetadaDetails>
-                            <ImageUrl>
-                                {console.log(urlMetadataOBJ)}
-                                <img    src={urlMetadataOBJ.image.url}
-                                        alt="description of image"/>
-                            </ImageUrl>
-                        </UrlMetadaSpace>
-                    </Main>
-                </PostHTML>
-            )
-        }
+                                >
+                                     {text}
+                                </ReactTagify>
+                            </Description>
+
+                            <UrlMetadaSpace>
+                                <UrlMetadaDetails>
+                                    <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                    <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                    <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                                </UrlMetadaDetails>
+                                <ImageUrl>
+                                    {console.log(urlMetadataOBJ)}
+                                    <img src={urlMetadataOBJ.image.url}
+                                        alt="description of image" />
+                                </ImageUrl>
+                            </UrlMetadaSpace>
+                        </Main>
+                    </PostHTML>
+                )
+            }
         </>
     )
 }
@@ -173,12 +190,18 @@ const ImgWrapper = styled.div`
         color: ${props => props.props === 'true' ? 'red' : 'white'};
         cursor: pointer;
     }
+
     img{
         margin: 18px 18px 30px 18px ;
         width:50px;
         height:50px;
         border-radius: 50%;
         object-fit: cover;
+    }
+
+    p{
+        margin-top: 5px;
+        color: white;
     }
 `
 const Main = styled.div`
@@ -206,7 +229,7 @@ const IconsWrapper = styled.div`
 const Description = styled.div`
     margin-bottom: 15px;
     font-size: 17px;
-    font-weight: 700;
+    font-weight: 600;
     color: #B7B7B7;
     /* background-color: yellow; */
 `
@@ -229,6 +252,7 @@ const Likes = styled.div`
     opacity:${props => props.isShown ? '1' : '0'};
     z-index: ${props => props.isShown ? '1' : '-1'};;
     transition: all 0.5s ease-out;
+
     p{
         color: #505050;
         font-size: 13px;

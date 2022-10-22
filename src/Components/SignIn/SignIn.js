@@ -1,37 +1,38 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
-import userContext from '../../context/userContext';
-import { signIn } from '../../services/api';
+import  GlobalContext  from '../../contexts/globalContext';
+import { signIn } from '../../Services/api';
 
-export default function SignIn(){
+export default function SignIn() {
 
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
-    const[password, setPassword] = useState('');
-    const { setToken } = useContext(userContext);
-    const { setUser } = useContext(userContext);
+    const [password, setPassword] = useState('');
+    const { token, setToken } = useContext(GlobalContext);
+    const { setUser } = useContext(GlobalContext);
 
-    async function sendForm(e){
+    async function sendForm(e) {
 
         e.preventDefault();
 
-        const body = {email, password};
+        const body = { email, password };
 
-        try{
+        try {
             const login = await signIn(body);
             setToken(login.data.token);
             setUser(login.data.name);
+
+            localStorage.setItem("token",`${token}`);
             navigate('/timeline')
-        }catch(error){
+        } catch (error) {
             console.log(error.response.data);
-            if (error.response.status === 401){
+            if (error.response.status === 401) {
                 alert('Email ou Senha incorretos! Tente novamente.');
                 return
             }
         }
     }
-
 
     return (
         <Container>
@@ -41,19 +42,20 @@ export default function SignIn(){
                     <p>save, share and discover the best links on the web</p>
                 </LogoBox>
             </Web>
+            
             <Mobile onSubmit={sendForm}>
-                <input 
-                placeholder="e-mail"
-                type="email"
-                name="email"
-                onChange={e => setEmail(e.target.value)}
-                required></input>
-                <input 
-                placeholder="password"
-                type="password"
-                name="password"
-                onChange={e => setPassword(e.target.value)}
-                required></input>
+                <input
+                    placeholder="e-mail"
+                    type="email"
+                    name="email"
+                    onChange={e => setEmail(e.target.value)}
+                    required></input>
+                <input
+                    placeholder="password"
+                    type="password"
+                    name="password"
+                    onChange={e => setPassword(e.target.value)}
+                    required></input>
                 <Register type="submit">Log In</Register>
                 <Login to="/signup">First time? Create an account!</Login>
             </Mobile>
