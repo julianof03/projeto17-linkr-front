@@ -7,7 +7,7 @@ function signUp(body) {
     return axios.post(`${URL}/signup`, body)
 }
 // LogIn
-function logIn(body) {
+function signIn(body) {
     return axios.post(`${URL}/signin`, body)
 }
 // createRegister
@@ -34,7 +34,7 @@ function logOut(getConfig) {
 
 export {
     signUp,
-    logIn,
+    signIn,
     createRegister,
     getBalance,
     deleteRegister,

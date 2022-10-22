@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
-import axios from 'axios';
 import userContext from '../../context/userContext';
+import { signIn } from '../../services/api';
 
 export default function SignIn(){
 
@@ -18,23 +18,17 @@ export default function SignIn(){
 
         const body = {email, password};
 
-        if (body === null){
-            alert('Email ou Senha devem ser preenchidos corretamente.');
-            return
-        }
-
-        if (!email || !password){
-            alert('Email ou Senha incorretos! Tente novamente.');
-            return
-        }
-
         try{
-            const login = await axios.post('http://localhost:5000/signin', body);
+            const login = await signIn(body);
             setToken(login.data.token);
             setUser(login.data.name);
             navigate('/timeline')
         }catch(error){
-            alert(error.response.data);
+            console.log(error.response.data);
+            if (error.response.status === 401){
+                alert('Email ou Senha incorretos! Tente novamente.');
+                return
+            }
         }
     }
 

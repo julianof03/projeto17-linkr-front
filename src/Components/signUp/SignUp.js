@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
+import {signUp} from '../../services/api';
 
 export default function SignUp(){
 
@@ -20,25 +20,18 @@ export default function SignUp(){
         e.preventDefault();
 
         const { name, email, password, pictureUrl} = user;
-        // const validEmail = user.email;
         
         if(!name || !email || !password || !pictureUrl){
             return alert('Todos os campos são obrigatórios!');
         }
 
-        // if(validEmail === email){
-        //     return alert('email já existe!')
-        // }
-
         try{
-            await axios.post('http://localhost:5000/signup', user)
+            await signUp(user)
             navigate('/')
         }catch(error){
-            console.log(error)
             alert(error.response.data);
         }
     }
-
 
     return (
         <Container>
