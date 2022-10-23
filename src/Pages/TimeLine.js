@@ -1,14 +1,19 @@
 import styled from "styled-components"
-import Post from "../Components/Post/Post.js"
+import Post from "../Components/Post/Post.js";
 import FormBox from "../Components/FormBox/FormBox.js"
 import Trending from "../Components/Trending/Trending.js"
-import getConfig from '../Services/getConfig.js'
-import { getTimeLine } from '../Services/api.js'
-import { useEffect } from "react"
+// import getConfig from '../Services/getConfig.js'
+// import { getTimeLine } from '../Services/api.js'
+// import { useEffect } from "react";
+import React from 'react';
+import { useContext } from "react";
+import GlobalContext from "../contexts/globalContext.js";
 
 
 export default function TimeLine() {
-
+    const { setHeader } = useContext(GlobalContext);
+    setHeader(true);
+    
     const array = [
         {
             username: 'gojo satoru',
