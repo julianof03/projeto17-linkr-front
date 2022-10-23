@@ -11,22 +11,23 @@ export default function Hashtag() {
   setHeader(true);
 
   const { hashtag } = useParams();
-  const { reRender, setReRender, hashposts, setHashposts } = useContext(GlobalContext);
+  const { reRender, setReRender, hashposts, setHashposts, setClicked, clicked } = useContext(GlobalContext);
   const [n, setN] = useState(0);
 
   useEffect(() => {
-   console.log("no useeffect")
+   setClicked(false)
     getHashtagPosts(hashtag).then((res) => {
       setHashposts({
         array: res.data.slice(n, n + 50),
         size: res.data.length,
       });
     });
+    
 
     getHashtagPosts(hashtag).catch((res) => {
       console.log("algo deu errado");
     });
-  }, [hashtag, reRender]);
+  }, [clicked, reRender]);
 
   function nextPage() {
    

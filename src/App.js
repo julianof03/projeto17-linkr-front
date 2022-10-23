@@ -27,7 +27,7 @@ export default function App() {
         array: [],
         size: 0,
       });
-
+      const [clicked, setClicked] = useState(false);
 
     return (
         <div>
@@ -40,7 +40,8 @@ export default function App() {
                     user, setUser,
                     config, setConfig,
                     header, setHeader,
-                    hashposts, setHashposts
+                    hashposts, setHashposts,
+                    clicked, setClicked
                 }
             }>
                 <BrowserRouter>

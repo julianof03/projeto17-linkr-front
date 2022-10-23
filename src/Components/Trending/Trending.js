@@ -7,7 +7,7 @@ import GlobalContext from "../../contexts/globalContext.js"
 
 export default function Trending() {
   const [trendingHashtags, setTrendingHashtags] = useState([]);
-  const {hashposts, setHashposts} = useContext(GlobalContext)
+  const { setHashposts, setClicked} = useContext(GlobalContext)
   useEffect(() => {
     getHashtagTrending().then((res) => {
       setTrendingHashtags(res.data);
@@ -25,6 +25,7 @@ export default function Trending() {
       array: [],
       size: 0,
     });
+    setClicked(true)
     navigate(`/hashtag/${tag.name}`);
   }
   return (
