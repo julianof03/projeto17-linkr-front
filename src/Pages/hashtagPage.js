@@ -43,6 +43,7 @@ const array = [
 ];
 
 export default function Hashtag() {
+
   const { setHeader } = useContext(GlobalContext);
   setHeader(true);
 

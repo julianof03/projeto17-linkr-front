@@ -5,11 +5,13 @@ import { UserBox, MenuBar, Title, LogoutBox,StyledIcon } from "../../Styles/TopM
 import GlobalContext from '../../contexts/globalContext.js';
 import SearchBar from './SearchBar.js';
 import { userImage, logOut } from '../../Services/api.js';
+import getConfig from "../../Services/getConfig.js";
 
 
 export default function TopMenu(){
     const navigate = useNavigate();
 
+    const token = localStorage.getItem("token") 
     const [logout, setLogout] = useState(false);
     const [profileImage, setProfileImage] = useState('');
     const { config, header,setHeader } = useContext(GlobalContext);
@@ -21,8 +23,9 @@ export default function TopMenu(){
             return;
         } else{
             try {
-                const userData = await userImage(config);
+                const userData = await userImage(getConfig(token));
                 setProfileImage(userData.data.pictureUrl);
+                console.log(userData.data.pictureUrl)
                 } catch (error) {
                 console.log(error);
                 return;
@@ -36,12 +39,14 @@ export default function TopMenu(){
 
     function cliked(){
         setLogout(!logout);
+        console.log(profileImage)
     };
     function logoutUser(){
         const body = {};
         setHeader(false);
         logOut(config, body);
         navigate('/signin');
+
         
     };
 
