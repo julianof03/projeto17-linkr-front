@@ -16,8 +16,9 @@ export default function TimeLine() {
         array: [],
         size:0
     })
+
     const [n, setN] = useState(0)
-    // const [arraySize, setArraySize] = useState(0)
+    const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
 
     useEffect(() => {
         getTimeLine(getConfig)
@@ -37,47 +38,39 @@ export default function TimeLine() {
 
     }, [reRender])
 
-
-
-
-
     function nextPage() {
-        // console.log(arraySize)
-        // console.log(posts.length, n)
         if (n + 50 > 1000000) {
-
             let add = 1000000 - n
-
-            if (add > 0) {
-                setN(n + add)
-            }
+            if (add > 0) setN(n + add)
             return
         }
-
         setN(n + 50)
-        console.log('carregar página')
-
-        // window.scrollTo(0, 0)
         setReRender(!reRender)
+    }
 
+    function FunctionDeleteScreen(){
+        return(
+            <DeleteScreenHTML>
+                
+            </DeleteScreenHTML>
+        )
     }
 
     return (
 
         <>
             {(posts.array.length === 0) ? (
-                <div onClick={console.log('console',posts.array.length)}
-                >
-                    LOADING
-                </div> //CRIAR O LOADING
+                <div> LOADING </div>
             ) : (
-
+                // {if(deleteScreen) { functionDeleteScreen()} }
                 <Wrapper>
                     <MainContent>
                         <Title> <h1>timeline</h1> </Title>
                         <FormBox />
-                        {posts.array.map((value, index) =>
+                        {console.log('POSTSS : ', posts)}
+                        {posts.array.map((value, index) => 
                             <Post
+                                id={value.id}
                                 key={index}
                                 username={value.username}
                                 img={value.img}
@@ -85,6 +78,7 @@ export default function TimeLine() {
                                 link={value.link}
                                 likesQtd={value.likesQtd}
                                 liked={value.liked}
+                                postUserId={value.userId}
                             />
                         )}
                         <NextPage
@@ -100,15 +94,15 @@ export default function TimeLine() {
                         </TrendingWrapper>
                     </AsideContent>
                 </Wrapper>
-
-            )
-            }
-
-
+            )}
         </>
 
     )
 }
+
+const DeleteScreenHTML = styled.div`
+    display: flex;
+`
 
 const Wrapper = styled.div`
     display: flex;

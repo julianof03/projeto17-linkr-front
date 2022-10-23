@@ -11,6 +11,7 @@ export default function SignIn() {
     const [password, setPassword] = useState('');
     const { token, setToken } = useContext(GlobalContext);
     const { setUser } = useContext(GlobalContext);
+    const {userId, setUserId} = useContext(GlobalContext)
 
     async function sendForm(e) {
 
@@ -21,8 +22,8 @@ export default function SignIn() {
         try {
             const login = await signIn(body);
             setToken(login.data.token);
-            setUser(login.data.name);
-
+            console.log(`LOGIN TOKEN E USERNAME :`, login.data.token, login.data.userId)
+            setUserId(login.data.userId)
             localStorage.setItem("token",`${token}`);
             navigate('/timeline')
         } catch (error) {

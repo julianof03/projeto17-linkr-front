@@ -3,9 +3,13 @@ import React from "react";
 import { ReactTagify } from "react-tagify";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useContext ,useEffect, useState } from "react";
 import mql from '@microlink/mql'
 import { useNavigate } from "react-router-dom";
+import GlobalContext from "../../contexts/globalContext";
+// import jwt from 'jsonwebtoken'
+// import dotenv from 'dotenv'
+// dotenv.config()
 
 export default function Post(
     { username,
@@ -13,14 +17,14 @@ export default function Post(
         text,
         link,
         likesQtd,
-        liked }
+        liked,
+        postUserId }
 ) {
-
+    const {userId} = useContext(GlobalContext)
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
-
     const navigate = useNavigate()
 
     useEffect(async () => {
@@ -45,11 +49,9 @@ export default function Post(
     return (
         <>
             {(!urlMetadataOBJ.url) ?
-                (
-                    <p>LOADING</p> // COLOCAR BOTÃO DE LOADING
-                )
-                : (
-                    <PostHTML>
+                ( <p>LOADING</p> ) 
+                    : 
+                    (<PostHTML>
                         <ImgWrapper props={props}>
                             <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
                             <div>
@@ -92,23 +94,27 @@ export default function Post(
                         </ImgWrapper>
                         <Main>
                             <Title>
-                                <h1>{username}</h1>
-                                <IconsWrapper>
-                                    <MdModeEdit
-                                        color='white'
-                                        style={{
-                                            cursor: 'pointer'
-                                        }}
-                                    />
-                                    <BsFillTrashFill
-                                        color='white'
-                                        style={{
-                                            marginLeft: '10px',
-                                            cursor: 'pointer'
-                                        }}
-                                        size='15px'
-                                    />
-                                </IconsWrapper>
+                                {(userId !== postUserId) ? 
+                                    ( <h1>{username}</h1> ) 
+                                        : 
+                                    (<> <h1>{username}</h1>
+                                        <IconsWrapper>
+                                            <MdModeEdit
+                                            
+                                                color='white'
+                                                style={{
+                                                    cursor: 'pointer'
+                                                }}
+                                            />
+                                            <BsFillTrashFill
+                                                color='white'
+                                                style={{
+                                                    marginLeft: '10px',
+                                                    cursor: 'pointer'
+                                                }}
+                                                size='15px'
+                                            />
+                                        </IconsWrapper></>)}  
                             </Title>
                             <Description>
                                 <ReactTagify

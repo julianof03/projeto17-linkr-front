@@ -19,12 +19,13 @@ export default function App() {
         name: '',
         likesQtd: '',
         liked: ''
-    })
+    });
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
-    const [config, setConfig] = useState({})
-    const [header, setHeader] = useState(false)
-
+    const [config, setConfig] = useState({});
+    const [header, setHeader] = useState(false);
+    const [userId, setUserId] = useState('')
+    const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:{} } )
     return (
         <div>
             <GlobalStyle />
@@ -35,7 +36,9 @@ export default function App() {
                     token, setToken,
                     user, setUser,
                     config, setConfig,
-                    header, setHeader
+                    header, setHeader,
+                    userId, setUserId,
+                    deleteScreen, setDeleteScreen
                 }
             }>
                 <BrowserRouter>
