@@ -25,7 +25,8 @@ export default function App() {
     const [config, setConfig] = useState({});
     const [header, setHeader] = useState(false);
     const [userId, setUserId] = useState('')
-    const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:{} } )
+    const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:'' } )
+    const [postId_global, setPostId_global] = useState('')
     return (
         <div>
             <GlobalStyle />
@@ -38,7 +39,8 @@ export default function App() {
                     config, setConfig,
                     header, setHeader,
                     userId, setUserId,
-                    deleteScreen, setDeleteScreen
+                    deleteScreen, setDeleteScreen,
+                    postId_global, setPostId_global
                 }
             }>
                 <BrowserRouter>

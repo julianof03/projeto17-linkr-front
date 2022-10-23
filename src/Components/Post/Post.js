@@ -7,9 +7,6 @@ import { useContext ,useEffect, useState } from "react";
 import mql from '@microlink/mql'
 import { useNavigate } from "react-router-dom";
 import GlobalContext from "../../contexts/globalContext";
-// import jwt from 'jsonwebtoken'
-// import dotenv from 'dotenv'
-// dotenv.config()
 
 export default function Post(
     { username,
@@ -18,7 +15,8 @@ export default function Post(
         link,
         likesQtd,
         liked,
-        postUserId }
+        postUserId,
+        postId}
 ) {
     const {userId} = useContext(GlobalContext)
     const [like, setLike] = useState(liked)
@@ -26,6 +24,8 @@ export default function Post(
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
     const navigate = useNavigate()
+    const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
+    const {postId_global, setPostId_global} = useContext(GlobalContext)
 
     useEffect(async () => {
         if (like) { setProps('true') }
@@ -45,7 +45,6 @@ export default function Post(
         const newTag = tag.replace('#', '')
         navigate(`/hashtag/${newTag}`)
     }
-
     return (
         <>
             {(!urlMetadataOBJ.url) ?
@@ -94,19 +93,23 @@ export default function Post(
                         </ImgWrapper>
                         <Main>
                             <Title>
-                                {(userId !== postUserId) ? 
+                                {(userId === 41) ? 
                                     ( <h1>{username}</h1> ) 
                                         : 
-                                    (<> <h1>{username}</h1>
+                                    (<> 
+                                        <h1>{username}</h1>
                                         <IconsWrapper>
                                             <MdModeEdit
-                                            
                                                 color='white'
                                                 style={{
                                                     cursor: 'pointer'
                                                 }}
                                             />
                                             <BsFillTrashFill
+                                                id={postId}
+                                                onClick={(e) =>{ let postId_CONST = e.currentTarget.id
+                                                                    setDeleteScreen({postId: e.currentTarget.id, status: true})
+                                                                    console.log('screenDelete :', deleteScreen)}}
                                                 color='white'
                                                 style={{
                                                     marginLeft: '10px',
@@ -114,7 +117,8 @@ export default function Post(
                                                 }}
                                                 size='15px'
                                             />
-                                        </IconsWrapper></>)}  
+                                        </IconsWrapper>
+                                    </>)}  
                             </Title>
                             <Description>
                                 <ReactTagify

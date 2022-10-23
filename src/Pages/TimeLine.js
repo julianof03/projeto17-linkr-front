@@ -6,6 +6,7 @@ import getConfig from '../Services/getConfig.js'
 import { getTimeLine } from '../Services/api.js'
 import { useContext, useEffect, useState } from "react"
 import GlobalContext from "../contexts/globalContext.js"
+import { MdYoutubeSearchedFor } from "react-icons/md";
 
 
 export default function TimeLine() {
@@ -48,62 +49,134 @@ export default function TimeLine() {
         setReRender(!reRender)
     }
 
-    function FunctionDeleteScreen(){
+    function DeleteBox(){
         return(
-            <DeleteScreenHTML>
-                
-            </DeleteScreenHTML>
+            <FullScreen>
+                <Box> 
+                    <h1> Are you sure you want to delete this post? </h1>
+                    <DeleteOpcions>
+                        <NoGoBack >
+                            <span>No, go back</span>
+                        </NoGoBack>
+                        <YesDeleteIt>
+                            <span>Yes, delete it</span>
+                        </YesDeleteIt>
+                    </DeleteOpcions>  
+                </Box>
+            </FullScreen>
+        )
+    }
+    
+    if(posts.array.length === 0){
+        return (
+            <div> LOADING </div>
         )
     }
 
-    return (
+    return ( 
+        <Wrapper>
+            {(deleteScreen.status) ? ( <DeleteBox/> ) : ( <></> )}
+            <MainContent>
+                <Title> <h1>timeline</h1> </Title>
+                <FormBox />
+                {posts.array.map((value, index) => 
+                    {
+                    return <Post
+                        postId={value.postId}
+                        key={index}
+                        username={value.username}
+                        img={value.img}
+                        text={value.text}
+                        link={value.link}
+                        likesQtd={value.likesQtd}
+                        liked={value.liked}
+                        postUserId={value.userId}
+                    />}
+                )}
+                <NextPage onClick={() => { nextPage() }} >
+                    Carregar mais
+                </NextPage>
+            </MainContent>
 
-        <>
-            {(posts.array.length === 0) ? (
-                <div> LOADING </div>
-            ) : (
-                // {if(deleteScreen) { functionDeleteScreen()} }
-                <Wrapper>
-                    <MainContent>
-                        <Title> <h1>timeline</h1> </Title>
-                        <FormBox />
-                        {console.log('POSTSS : ', posts)}
-                        {posts.array.map((value, index) => 
-                            <Post
-                                id={value.id}
-                                key={index}
-                                username={value.username}
-                                img={value.img}
-                                text={value.text}
-                                link={value.link}
-                                likesQtd={value.likesQtd}
-                                liked={value.liked}
-                                postUserId={value.userId}
-                            />
-                        )}
-                        <NextPage
-                            onClick={() => { nextPage() }}
-                        >
-                            Carregar mais
-                        </NextPage>
-                    </MainContent>
-
-                    <AsideContent>
-                        <TrendingWrapper>
-                            <Trending />
-                        </TrendingWrapper>
-                    </AsideContent>
-                </Wrapper>
-            )}
-        </>
-
+            <AsideContent>
+                <TrendingWrapper>
+                    <Trending />
+                </TrendingWrapper>
+            </AsideContent>
+        </Wrapper>
     )
 }
 
-const DeleteScreenHTML = styled.div`
+const DeleteOpcions = styled.div`
     display: flex;
+    margin-top: 40px;
+    justify-content: space-around;
 `
-
+const NoGoBack = styled.div`
+    display: flex;
+    width: 134px;
+    height: 37px;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    span{
+        font-family: Lato;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 22px;
+        letter-spacing: 0em;
+        text-align: center;
+        color: #1877F2;
+    }
+    background-color: #FFFFFF;
+`
+const YesDeleteIt = styled.div`
+    display: flex;
+    width: 134px;
+    height: 37px;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    span{
+        font-family: Lato;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 22px;
+        letter-spacing: 0em;
+        text-align: center;
+        color: #FFF;
+    }
+    background-color: #1877F2;
+`
+const FullScreen = styled.div`
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+`
+const Box = styled.div`
+    height: 262px;
+    width: 597px;
+    border-radius: 50px;
+    background-color: #333333;
+    padding: 35px 110px 30px 110px ;
+    h1 {
+        font-family: Lato;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 41px;
+        letter-spacing: 0em;
+        text-align: center;
+        color: #FFF;
+    }
+`
 const Wrapper = styled.div`
     display: flex;
     justify-content: center;
@@ -116,15 +189,12 @@ const Wrapper = styled.div`
 const AsideContent = styled.div`
     height: 500px;
     width: 21vw;
-    /* position:relative; */
-    /* background-color: violet; */
 `
 const MainContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 610px;
-    /* background-color: black; */
 `
 const Title = styled.div`
     width:100%;
@@ -140,25 +210,19 @@ const Title = styled.div`
     }
 `
 const TrendingWrapper = styled.div`
-height: 100%;
-/* position:absolute; */
-top:50px;
-/* background-color: aqua; */
+    height: 100%;
+    top:50px;
 `
 const NextPage = styled.div`
-width: 200px;
-height: 70px;
-margin-top: 20px;
-margin-bottom:20px;
-
-
-background-color: black;
-border-radius: 10px;
-color: white;
-
-display: flex;
-justify-content: center;
-align-items: center;
-
-cursor: pointer;
+    width: 200px;
+    height: 70px;
+    margin-top: 20px;
+    margin-bottom:20px;
+    background-color: black;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 `
