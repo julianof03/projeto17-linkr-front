@@ -7,21 +7,17 @@ import { getHashtagPosts } from "../Services/api.js";
 import GlobalContext from "../contexts/globalContext.js";
 
 export default function Hashtag() {
-
   const { setHeader } = useContext(GlobalContext);
   setHeader(true);
 
   const { hashtag } = useParams();
-  const { reRender, setReRender } = useContext(GlobalContext);
+  const { reRender, setReRender, hashposts, setHashposts } = useContext(GlobalContext);
   const [n, setN] = useState(0);
-  const [posts, setPosts] = useState({
-    array: [],
-    size: 0,
-  });
 
   useEffect(() => {
+   console.log("no useeffect")
     getHashtagPosts(hashtag).then((res) => {
-      setPosts({
+      setHashposts({
         array: res.data.slice(n, n + 50),
         size: res.data.length,
       });
@@ -30,14 +26,12 @@ export default function Hashtag() {
     getHashtagPosts(hashtag).catch((res) => {
       console.log("algo deu errado");
     });
-  }, [reRender]);
+  }, [hashtag, reRender]);
 
-  console.log(posts);
   function nextPage() {
-    // console.log(arraySize)
-    console.log(posts.size, n);
-    if (n + 50 > posts.size) {
-      let add = posts.size - n;
+   
+    if (n + 50 > hashposts.size) {
+      let add = hashposts.size - n;
 
       if (add > 0) {
         setN(n + add);
@@ -46,7 +40,7 @@ export default function Hashtag() {
     }
 
     setN(n + 50);
-    console.log("carregar página");
+    
 
     // window.scrollTo(0, 0)
     setReRender(!reRender);
@@ -59,9 +53,11 @@ export default function Hashtag() {
           <Title>
             <h1># {hashtag}</h1>
           </Title>
-          {posts.array.length === 0
-            ? ""
-            : posts.array.map((value, index) => (
+          {hashposts.array.length === 0 ? (
+            ""
+          ) : (
+            <>
+              {hashposts.array.map((value, index) => (
                 <>
                   <Post
                     key={index}
@@ -72,15 +68,17 @@ export default function Hashtag() {
                     likesQtd={value.likesQtd}
                     liked={value.liked}
                   />
-                  {/* <NextPage
-                    onClick={() => {
-                      nextPage();
-                    }}
-                  >
-                    Carregar mais
-                  </NextPage> */}
                 </>
               ))}
+              <NextPage
+                onClick={() => {
+                  nextPage();
+                }}
+              >
+                Carregar mais
+              </NextPage>
+            </>
+          )}
         </MainContent>
         <AsideContent>
           <TrendingWrapper>
