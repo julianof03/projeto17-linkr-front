@@ -20,10 +20,11 @@ export default function SignIn() {
 
         try {
             const login = await signIn(body);
-            setToken(login.data.token);
-            setUser(login.data.name);
 
-            localStorage.setItem("token",`${token}`);
+            setToken(login.data);
+            // setUser(login.data.name);
+
+            localStorage.setItem("token",`${login.data}`);
             navigate('/timeline')
         } catch (error) {
             console.log(error.response.data);

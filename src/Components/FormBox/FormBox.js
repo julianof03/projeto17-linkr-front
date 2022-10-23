@@ -1,11 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useNavigate } from "react-router-dom"
 import React from "react";
+import getConfig from "../../Services/getConfig"
+import { createPost } from "../../Services/api";
 
 export default function FormBox() {
     const navigate = useNavigate()
+
+    const token = localStorage.getItem("token")
 
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
@@ -18,12 +21,13 @@ export default function FormBox() {
         setDisable(true)
         
         const body = {
-            userId : 21,
             link: form.link,
             text: form.text,
         }
         console.log('pre promise')
-        const promise = axios.post('http://localhost:5000/timeline', body)
+        console.log('token',token)
+        const promise = createPost(getConfig(token), body )
+
         promise.then( (res) => { 
             console.log('then')
             navigate('/timeline') } )

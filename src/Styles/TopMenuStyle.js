@@ -63,6 +63,8 @@ const StyledIcon = styled(VscChevronUp)`
 color: #fff;
 transform: scale(2);
 rotate:${(props)=> props.isUp? '0':'180deg'};
+
+cursor: pointer;
 `
 
 
