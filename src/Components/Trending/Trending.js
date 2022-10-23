@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getHashtagTrending } from "../../Services/api.js";
 
+
 export default function Trending() {
   const [trendingHashtags, setTrendingHashtags] = useState([]);
   useEffect(() => {
