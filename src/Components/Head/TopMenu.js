@@ -26,7 +26,6 @@ export default function TopMenu(){
                 
                 const userData = await userImage(getConfig(token));
                 setProfileImage(userData.data);
-                console.log(userData.data)
                 
             } catch (error) {
                 console.log(error,'erro');
@@ -59,7 +58,7 @@ export default function TopMenu(){
         </LogoutBox>
         <SearchBar />
         <MenuBar>
-            <Title>linkr</Title>
+            <Title onClick={()=>navigate('/timeline')}>linkr</Title>
             <UserBox onClick={cliked}> 
                 <StyledIcon isup={logout}/>
                 <ProfileImg profileImage={profileImage}/>

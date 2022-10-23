@@ -20,6 +20,7 @@ const Title = styled.h2`
     font-size: 49px;
     color: #fff;
     font-family: Passion One;
+    cursor: pointer;
 `;
 
 const UserBox = styled.div`
