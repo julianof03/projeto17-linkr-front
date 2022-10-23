@@ -24,6 +24,7 @@ export default function Post(
     const navigate = useNavigate()
 
     useEffect(async () => {
+        // console.log(like, props)
         if (like) { setProps('true') }
         const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
             data: {
@@ -37,19 +38,24 @@ export default function Post(
         setUrlMetadataOBJ(data)
     }, [])
 
-    function goTo(tag){
+    function goTo(tag) {
         const newTag = tag.replace('#', '')
         navigate(`/hashtag/${newTag}`)
     }
+
     return (
         <>
-            {(!urlMetadataOBJ.url) ? (<p>LOADING</p>)
+            {(!urlMetadataOBJ.url) ?
+                (
+                    <p>LOADING</p> // COLOCAR BOTÃO DE LOADING
+                )
                 : (
                     <PostHTML>
                         <ImgWrapper props={props}>
                             <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
                             <div>
-                                {props === 'true' ? (
+                                {props === 'true' ? 
+                                (
                                     <BsHeartFill
                                         size='20px'
                                         onClick={() => {
@@ -74,7 +80,6 @@ export default function Post(
                             </div>
 
                             <p>{likesQtd}</p>
-
 
                             <Likes
                                 onMouseEnter={() => setIsShown(true)}
@@ -113,7 +118,7 @@ export default function Post(
                                         goTo(tag)
                                     }}
                                 >
-                                     {text}
+                                    {text}
                                 </ReactTagify>
                             </Description>
 
@@ -136,6 +141,15 @@ export default function Post(
     )
 }
 
+const PostHTML = styled.div`
+    display: flex;
+    width: 610px;
+    border-radius:16px;
+    margin-bottom: 16px;
+    background-color:  black;
+
+    position: relative;
+`
 const TitleUrl = styled.h1`
     font-family: Lato;
     font-size: 16px;
@@ -181,13 +195,6 @@ const ImageUrl = styled.div`
         border-radius:  0 16px 16px 0 ;
         object-fit: cover 
     }
-`
-const PostHTML = styled.div`
-    display: flex;
-    width: 610px;
-    border-radius:16px;
-    margin-bottom: 16px;
-    background-color:  black;
 `
 const ImgWrapper = styled.div`
     display: flex;
