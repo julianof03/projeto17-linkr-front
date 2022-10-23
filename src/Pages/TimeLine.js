@@ -29,8 +29,8 @@ export default function TimeLine() {
 
                 // console.log('arraySize',arraySize)
 
-                console.log(posts)
-                console.log(posts.array)
+                // console.log(posts)
+                // console.log(posts.array)
 
                 // MUDAR 4 PARA 20
             })

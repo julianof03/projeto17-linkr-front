@@ -134,7 +134,6 @@ export default function Post(
                                     <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
                                 </UrlMetadaDetails>
                                 <ImageUrl>
-                                    {console.log(urlMetadataOBJ)}
                                     <img
                                         src={urlMetadataOBJ.image?.url}
                                         alt='image not found 
