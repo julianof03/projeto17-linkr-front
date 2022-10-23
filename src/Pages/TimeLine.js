@@ -24,7 +24,7 @@ export default function TimeLine() {
             .then((res) => {
                 setPosts({
                     array:res.data.slice(n, n + 50),
-                    Size: res.data.length
+                    size: res.data.length
                 })
 
                 // console.log('arraySize',arraySize)
@@ -39,14 +39,12 @@ export default function TimeLine() {
 
 
 
-
-
     function nextPage() {
         // console.log(arraySize)
-        // console.log(posts.length, n)
-        if (n + 50 > 1000000) {
+        console.log(posts.size, n)
+        if (n + 50 > posts.size) {
 
-            let add = 1000000 - n
+            let add = posts.size - n
 
             if (add > 0) {
                 setN(n + add)
@@ -66,7 +64,7 @@ export default function TimeLine() {
 
         <>
             {(posts.array.length === 0) ? (
-                <div onClick={console.log('console',posts.array.length)}
+                <div /* onClick={console.log('console',posts.array.length)} */
                 >
                     LOADING
                 </div> //CRIAR O LOADING

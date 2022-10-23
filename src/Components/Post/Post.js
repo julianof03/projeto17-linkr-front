@@ -23,9 +23,12 @@ export default function Post(
 
     const navigate = useNavigate()
 
+    let bolinha = 'https://www.youtube.com/watch?v=rSL3LX8YYOw'
+
     useEffect(async () => {
         if (like) { setProps('true') }
-        const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
+
+        const { data } = await mql(link, {
             data: {
                 avatar: {
                     selector: '#avatar',
@@ -34,6 +37,9 @@ export default function Post(
                 }
             }
         })
+        // if(){
+
+        // }
         setUrlMetadataOBJ(data)
     }, [])
 
@@ -53,28 +59,28 @@ export default function Post(
                         <ImgWrapper props={props}>
                             <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
                             <div>
-                                {props === 'true' ? 
-                                (
-                                    <BsHeartFill
-                                        size='20px'
-                                        onClick={() => {
-                                            setLike(!like)
-                                            setProps('false')
-                                        }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
-                                    />
-                                ) : (
-                                    <BsHeart
-                                        size='20px'
-                                        onClick={() => {
-                                            setLike(!like)
-                                            setProps('true')
-                                        }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
-                                    />
-                                )}
+                                {props === 'true' ?
+                                    (
+                                        <BsHeartFill
+                                            size='20px'
+                                            onClick={() => {
+                                                setLike(!like)
+                                                setProps('false')
+                                            }}
+                                            onMouseEnter={() => setIsShown(true)}
+                                            onMouseLeave={() => setIsShown(false)}
+                                        />
+                                    ) : (
+                                        <BsHeart
+                                            size='20px'
+                                            onClick={() => {
+                                                setLike(!like)
+                                                setProps('true')
+                                            }}
+                                            onMouseEnter={() => setIsShown(true)}
+                                            onMouseLeave={() => setIsShown(false)}
+                                        />
+                                    )}
 
                             </div>
 
@@ -128,8 +134,11 @@ export default function Post(
                                     <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
                                 </UrlMetadaDetails>
                                 <ImageUrl>
-                                    <img src={urlMetadataOBJ.image.url}
-                                        alt="description of image" />
+                                    {console.log(urlMetadataOBJ)}
+                                    <img
+                                        src={urlMetadataOBJ.image?.url}
+                                        alt='image not found 
+                                        &#x1F625;' />
                                 </ImageUrl>
                             </UrlMetadaSpace>
                         </Main>
