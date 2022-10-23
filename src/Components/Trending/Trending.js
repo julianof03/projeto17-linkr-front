@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getHashtagTrending } from "../../Services/api.js";
+import GlobalContext from "../../contexts/globalContext.js"
+
 
 export default function Trending() {
   const [trendingHashtags, setTrendingHashtags] = useState([]);
+  const { setHashposts, setClicked} = useContext(GlobalContext)
   useEffect(() => {
     getHashtagTrending().then((res) => {
       setTrendingHashtags(res.data);
@@ -18,6 +21,11 @@ export default function Trending() {
   const navigate = useNavigate();
 
   function goHashtagPage(tag) {
+    setHashposts({
+      array: [],
+      size: 0,
+    });
+    setClicked(true)
     navigate(`/hashtag/${tag.name}`);
   }
   return (
@@ -28,7 +36,7 @@ export default function Trending() {
         ? ""
         : trendingHashtags.map((tag, index) => (
             <p key={index} onClick={() => goHashtagPage(tag)}>
-              #{tag.name}
+              # {tag.name}
             </p>
           ))}
     </TrendingWrapper>
@@ -53,6 +61,7 @@ const TrendingWrapper = styled.div`
   p {
     font-size: 19px;
     font-weight: 500;
+    padding: 5px;
     color: #fff;
     cursor: pointer;
   }
