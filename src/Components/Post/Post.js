@@ -23,7 +23,6 @@ export default function Post(
 
     const navigate = useNavigate()
 
-    let bolinha = 'https://www.youtube.com/watch?v=rSL3LX8YYOw'
 
     useEffect(async () => {
         if (like) { setProps('true') }
@@ -37,9 +36,7 @@ export default function Post(
                 }
             }
         })
-        // if(){
 
-        // }
         setUrlMetadataOBJ(data)
     }, [])
 
@@ -55,93 +52,99 @@ export default function Post(
                     <p>LOADING</p> // COLOCAR BOTÃO DE LOADING
                 )
                 : (
-                    <PostHTML>
-                        <ImgWrapper props={props}>
-                            <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
-                            <div>
-                                {props === 'true' ?
-                                    (
-                                        <BsHeartFill
-                                            size='20px'
-                                            onClick={() => {
-                                                setLike(!like)
-                                                setProps('false')
-                                            }}
-                                            onMouseEnter={() => setIsShown(true)}
-                                            onMouseLeave={() => setIsShown(false)}
-                                        />
-                                    ) : (
-                                        <BsHeart
-                                            size='20px'
-                                            onClick={() => {
-                                                setLike(!like)
-                                                setProps('true')
-                                            }}
-                                            onMouseEnter={() => setIsShown(true)}
-                                            onMouseLeave={() => setIsShown(false)}
-                                        />
-                                    )}
+                  
+                        <PostHTML>
+                            <ImgWrapper props={props}>
+                                <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+                                <div>
+                                    {props === 'true' ?
+                                        (
+                                            <BsHeartFill
+                                                size='20px'
+                                                onClick={() => {
+                                                    setLike(!like)
+                                                    setProps('false')
+                                                }}
+                                                onMouseEnter={() => setIsShown(true)}
+                                                onMouseLeave={() => setIsShown(false)}
+                                            />
+                                        ) : (
+                                            <BsHeart
+                                                size='20px'
+                                                onClick={() => {
+                                                    setLike(!like)
+                                                    setProps('true')
+                                                }}
+                                                onMouseEnter={() => setIsShown(true)}
+                                                onMouseLeave={() => setIsShown(false)}
+                                            />
+                                        )}
 
-                            </div>
+                                </div>
 
-                            <p>{likesQtd}</p>
+                                <p>{likesQtd}</p>
 
-                            <Likes
-                                onMouseEnter={() => setIsShown(true)}
-                                onMouseLeave={() => setIsShown(false)}
-                                isShown={isShown}
-                            >
-                                <p>vários likes pra tu ficá feliz</p>
-
-                            </Likes>
-
-                        </ImgWrapper>
-                        <Main>
-                            <Title>
-                                <h1>{username}</h1>
-                                <IconsWrapper>
-                                    <MdModeEdit
-                                        color='white'
-                                        style={{
-                                            cursor: 'pointer'
-                                        }}
-                                    />
-                                    <BsFillTrashFill
-                                        color='white'
-                                        style={{
-                                            marginLeft: '10px',
-                                            cursor: 'pointer'
-                                        }}
-                                        size='15px'
-                                    />
-                                </IconsWrapper>
-                            </Title>
-                            <Description>
-                                <ReactTagify
-                                    colors={"white"}
-                                    tagClicked={(tag) => {
-                                        goTo(tag)
-                                    }}
+                                <Likes
+                                    onMouseEnter={() => setIsShown(true)}
+                                    onMouseLeave={() => setIsShown(false)}
+                                    isShown={isShown}
                                 >
-                                    {text}
-                                </ReactTagify>
-                            </Description>
+                                    <p>vários likes pra tu ficá feliz</p>
 
-                            <UrlMetadaSpace>
-                                <UrlMetadaDetails>
-                                    <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                                    <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                                    <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                                </UrlMetadaDetails>
-                                <ImageUrl>
-                                    <img
-                                        src={urlMetadataOBJ.image?.url}
-                                        alt='image not found 
+                                </Likes>
+
+                            </ImgWrapper>
+                            <Main>
+                                <Title>
+                                    <h1>{username}</h1>
+                                    <IconsWrapper>
+                                        <MdModeEdit
+                                            color='white'
+                                            style={{
+                                                cursor: 'pointer'
+                                            }}
+                                        />
+                                        <BsFillTrashFill
+                                            color='white'
+                                            style={{
+                                                marginLeft: '10px',
+                                                cursor: 'pointer'
+                                            }}
+                                            size='15px'
+                                        />
+                                    </IconsWrapper>
+                                </Title>
+                                <Description>
+                                    <ReactTagify
+                                        colors={"white"}
+                                        tagClicked={(tag) => {
+                                            goTo(tag)
+                                        }}
+                                    >
+                                        {text}
+                                    </ReactTagify>
+                                </Description>
+
+                                <UrlMetadaSpace>
+                                    <UrlMetadaDetails>
+                                        <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                        <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                        <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                                    </UrlMetadaDetails>
+                                    <ImageUrl>
+                                        
+                                        <img
+                                            src={urlMetadataOBJ.image?.url}
+                                            alt='image not found 
                                         &#x1F625;' />
-                                </ImageUrl>
-                            </UrlMetadaSpace>
-                        </Main>
-                    </PostHTML>
+                                    </ImageUrl>
+                                </UrlMetadaSpace>
+                            </Main>
+                        </PostHTML>
+
+                  
+
+
                 )
             }
         </>
@@ -191,7 +194,8 @@ const UrlMetadaDetails = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 24px 27px 5px 19px;
+  padding: 15px 27px 5px 15px;
+  border-radius: 16px;
 `;
 const ImageUrl = styled.div`
     img {

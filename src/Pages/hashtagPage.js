@@ -7,6 +7,7 @@ import { getHashtagPosts } from "../Services/api.js";
 import GlobalContext from "../contexts/globalContext.js";
 
 export default function Hashtag() {
+
   const { setHeader } = useContext(GlobalContext);
   setHeader(true);
 

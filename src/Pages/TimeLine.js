@@ -11,6 +11,8 @@ import GlobalContext from "../contexts/globalContext.js"
 export default function TimeLine() {
     // 0 - 4;5 - 9; 10-14
 
+    const { setHeader } = useContext(GlobalContext);
+    setHeader(true);
     const { reRender, setReRender } = useContext(GlobalContext)
     const [posts, setPosts] = useState({
         array: [],
@@ -23,16 +25,10 @@ export default function TimeLine() {
         getTimeLine(getConfig)
             .then((res) => {
                 setPosts({
-                    array:res.data.slice(n, n + 50),
+                    array:res.data.slice(n, n + 20),
                     size: res.data.length
                 })
 
-                // console.log('arraySize',arraySize)
-
-                // console.log(posts)
-                // console.log(posts.array)
-
-                // MUDAR 4 PARA 20
             })
 
     }, [reRender])
@@ -40,9 +36,7 @@ export default function TimeLine() {
 
 
     function nextPage() {
-        // console.log(arraySize)
-        console.log(posts.size, n)
-        if (n + 50 > posts.size) {
+        if (n + 20 > posts.size) {
 
             let add = posts.size - n
 
@@ -52,12 +46,11 @@ export default function TimeLine() {
             return
         }
 
-        setN(n + 50)
+        setN(n + 20)
         console.log('carregar página')
 
-        // window.scrollTo(0, 0)
+        window.scrollTo(0, 0)
         setReRender(!reRender)
-
     }
 
     return (
