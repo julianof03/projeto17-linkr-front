@@ -2,9 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './Styles/globalStyle';
 import { useState } from 'react';
 import GlobalContext from './contexts/globalContext';
-import { UserContext } from './contexts/userContext';
 import React from 'react';
-import Header from './components/Head/TopMenu.js';
+import Header from './Components/Head/TopMenu.js';
 
 import SignIn from './Components/SignIn/SignIn';
 import SingUp from './Components/SignUp/SignUp';
@@ -13,8 +12,6 @@ import Hashtag from './Pages/hashtagPage';
 import UserPage from './Pages/UserPage';
 
 export default function App() {
-    const [config,setConfig] = useState({});
-    const [profileImage, setProfileImage] = useState({});
 
     const [reRender, setReRender] = useState(true);
     const [post, setPost] = useState({
@@ -25,7 +22,7 @@ export default function App() {
     })
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
-    const [config, setConfig] = useState()
+    const [config, setConfig] = useState({})
     return (
         <div>
             <GlobalStyle />
@@ -46,6 +43,7 @@ export default function App() {
                         <Route path="/user/:id" element={<UserPage />} />
                         <Route path="/hashtag/:hashtag" element={<Hashtag />} />
                     </Routes>
+                    <Header />
                 </BrowserRouter>
             </GlobalContext.Provider>
         </div>

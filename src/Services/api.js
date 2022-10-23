@@ -66,5 +66,5 @@ export {
     getHashtagTrending,
     getHashtagPosts,
     searchUsers,
-    userImage
+    userImage,
 }

@@ -2,7 +2,6 @@
   "name": "projeto17-linkr-front",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@microlink/mql": "^0.10.28",
     "@microlink/react": "^5.5.9",

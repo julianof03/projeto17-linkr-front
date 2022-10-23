@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { UserBox, MenuBar, Title, LogoutBox,StyledIcon } from "../../Styles/TopMenuStyle.js";
-import { UserContext } from "../../contexts/userContext";
+import GlobalContext from '../../contexts/globalContext.js';
 import { useContext } from 'react';
 import SearchBar from './SearchBar.js';
 import { userImage, logOut } from '../../Services/api.js';
@@ -10,17 +10,16 @@ import { userImage, logOut } from '../../Services/api.js';
 export default function TopMenu(){
     const [logout, setLogout] = useState(false);
     const [profileImage, setProfileImage] = useState('');
+    const { config } = useContext(GlobalContext);
 
-    const {config} = useContext(UserContext);
+    
 
     useEffect(async()=>{
         try {
-            //const userData = await userImage(config);
-            //setProfileImage(userData.data.pictureUrl);
-            setProfileImage('https://uploads.metropoles.com/wp-content/uploads/2021/08/24151411/scale-2-1024x683.jpg')
-        } catch (error) {
+            const userData = await userImage(config);
+            setProfileImage(userData.data.pictureUrl);
+            } catch (error) {
             console.log(error);
-            alert('Algo de errado aconteceu! :(');
             return;
         }
     },[])
