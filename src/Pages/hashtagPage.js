@@ -4,6 +4,9 @@ import Trending from "../Components/Trending/Trending.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getHashtagPosts } from "../Services/api.js";
+import { useContext } from "react";
+import GlobalContext from "../contexts/globalContext.js";
+
 const array = [
   {
     username: "gojo satoru",
@@ -40,6 +43,9 @@ const array = [
 ];
 
 export default function Hashtag() {
+  const { setHeader } = useContext(GlobalContext);
+  setHeader(true);
+
   const { hashtag } = useParams();
   const [hashtagPosts, setHashtagPosts] = useState([]);
 

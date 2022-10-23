@@ -6,10 +6,14 @@ import Trending from "../Components/Trending/Trending.js"
 // import { getTimeLine } from '../Services/api.js'
 // import { useEffect } from "react";
 import React from 'react';
+import { useContext } from "react";
+import GlobalContext from "../contexts/globalContext.js";
 
 
 export default function TimeLine() {
-
+    const { setHeader } = useContext(GlobalContext);
+    setHeader(true);
+    
     const array = [
         {
             username: 'gojo satoru',

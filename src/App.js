@@ -23,6 +23,8 @@ export default function App() {
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
     const [config, setConfig] = useState({})
+    const [header, setHeader] = useState(false)
+
     return (
         <div>
             <GlobalStyle />
@@ -32,7 +34,8 @@ export default function App() {
                     post, setPost,
                     token, setToken,
                     user, setUser,
-                    config, setConfig
+                    config, setConfig,
+                    header, setHeader
                 }
             }>
                 <BrowserRouter>
