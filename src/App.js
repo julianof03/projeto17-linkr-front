@@ -23,8 +23,11 @@ export default function App() {
     const [user, setUser] = useState('');
     const [config, setConfig] = useState({})
     const [header, setHeader] = useState(false)
-    const [hashtagPosts, setHashtagPosts] = useState([]);
-
+    const [hashposts, setHashposts] = useState({
+        array: [],
+        size: 0,
+      });
+      const [clicked, setClicked] = useState(false);
 
     return (
         <div>
@@ -37,7 +40,8 @@ export default function App() {
                     user, setUser,
                     config, setConfig,
                     header, setHeader,
-                    hashtagPosts, setHashtagPosts
+                    hashposts, setHashposts,
+                    clicked, setClicked
                 }
             }>
                 <BrowserRouter>
