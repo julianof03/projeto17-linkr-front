@@ -106,10 +106,7 @@ export default function Post(
                                                 }}
                                             />
                                             <BsFillTrashFill
-                                                id={postId}
-                                                onClick={(e) =>{ let postId_CONST = e.currentTarget.id
-                                                                    setDeleteScreen({postId: e.currentTarget.id, status: true})
-                                                                    console.log('screenDelete :', deleteScreen)}}
+                                                onClick={() =>{setDeleteScreen({postId: postId, status: true})}}
                                                 color='white'
                                                 style={{
                                                     marginLeft: '10px',

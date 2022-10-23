@@ -3,7 +3,7 @@ import Post from "../Components/Post/Post.js";
 import FormBox from "../Components/FormBox/FormBox.js"
 import Trending from "../Components/Trending/Trending.js"
 import getConfig from '../Services/getConfig.js'
-import { getTimeLine } from '../Services/api.js'
+import { deletePost, getTimeLine } from '../Services/api.js'
 import { useContext, useEffect, useState } from "react"
 import GlobalContext from "../contexts/globalContext.js"
 import { MdYoutubeSearchedFor } from "react-icons/md";
@@ -20,6 +20,7 @@ export default function TimeLine() {
 
     const [n, setN] = useState(0)
     const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
+    const token = localStorage.getItem("token")
 
     useEffect(() => {
         getTimeLine(getConfig)
@@ -55,10 +56,10 @@ export default function TimeLine() {
                 <Box> 
                     <h1> Are you sure you want to delete this post? </h1>
                     <DeleteOpcions>
-                        <NoGoBack >
+                        <NoGoBack onClick={() => setDeleteScreen({postId: '', status: false})}>
                             <span>No, go back</span>
                         </NoGoBack>
-                        <YesDeleteIt>
+                        <YesDeleteIt onClick={() => deletePost(deleteScreen.postId, getConfig(token))}>
                             <span>Yes, delete it</span>
                         </YesDeleteIt>
                     </DeleteOpcions>  
@@ -73,6 +74,7 @@ export default function TimeLine() {
         )
     }
 
+    console.log('screenDelete :', deleteScreen)
     return ( 
         <Wrapper>
             {(deleteScreen.status) ? ( <DeleteBox/> ) : ( <></> )}

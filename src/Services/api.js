@@ -26,6 +26,10 @@ function updateRegister(type, body, id, getConfig) {
 function deleteRegister(id, getConfig) {
     return axios.delete(`${URL}/deleteRegister/${id}`, getConfig);
 };
+function deletePost(id, getConfig) {
+    return axios.delete(`${URL}/timeline/${id}`, getConfig)
+};
+
 
 // Headers ---------------------------------
 
@@ -54,6 +58,7 @@ function getHashtagTrending(){
 function getHashtagPosts(hashtag){
     return axios.get(`${URL}/hashtag/${hashtag}`);
 }
+
 export {
     signUp,
     signIn,
@@ -67,4 +72,5 @@ export {
     getHashtagPosts,
     searchUsers,
     userImage,
+    deletePost
 }
