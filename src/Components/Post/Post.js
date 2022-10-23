@@ -24,32 +24,37 @@ export default function Post(
     const navigate = useNavigate()
 
     useEffect(async () => {
-      if (like) { setProps('true') }
-      const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
-          data: {
-              avatar: {
-                  selector: '#avatar',
-                  type: 'image',
-                  attr: 'src'
-              }
-          }
-      })
-      setUrlMetadataOBJ(data)
-  }, [])
+        if (like) { setProps('true') }
+        const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
+            data: {
+                avatar: {
+                    selector: '#avatar',
+                    type: 'image',
+                    attr: 'src'
+                }
+            }
+        })
+        setUrlMetadataOBJ(data)
+    }, [])
 
-    function goTo(tag){
+    function goTo(tag) {
         const newTag = tag.replace('#', '')
         navigate(`/hashtag/${newTag}`)
     }
+
     return (
         <>
-            {(!urlMetadataOBJ.url) ? (<p>LOADING</p>)
+            {(!urlMetadataOBJ.url) ?
+                (
+                    <p>LOADING</p> // COLOCAR BOTÃO DE LOADING
+                )
                 : (
                     <PostHTML>
                         <ImgWrapper props={props}>
                             <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
                             <div>
-                                {props === 'true' ? (
+                                {props === 'true' ? 
+                                (
                                     <BsHeartFill
                                         size='20px'
                                         onClick={() => {
@@ -74,7 +79,6 @@ export default function Post(
                             </div>
 
                             <p>{likesQtd}</p>
-
 
                             <Likes
                                 onMouseEnter={() => setIsShown(true)}
@@ -113,7 +117,7 @@ export default function Post(
                                         goTo(tag)
                                     }}
                                 >
-                                     {text}
+                                    {text}
                                 </ReactTagify>
                             </Description>
 
@@ -136,6 +140,15 @@ export default function Post(
     )
 }
 
+const PostHTML = styled.div`
+    display: flex;
+    width: 610px;
+    border-radius:16px;
+    margin-bottom: 16px;
+    background-color:  black;
+
+    position: relative;
+`
 const TitleUrl = styled.h1`
   font-family: Lato;
   font-size: 16px;
@@ -173,20 +186,13 @@ const UrlMetadaDetails = styled.div`
   padding: 24px 27px 5px 19px;
 `;
 const ImageUrl = styled.div`
-  img {
-    width: 154px;
-    height: 153px;
-    border-radius: 0 16px 16px 0;
-    object-fit: cover;
-  }
-`;
-const PostHTML = styled.div`
-  display: flex;
-  width: 610px;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  background-color: black;
-`;
+    img {
+        width: 154px;
+        height: 153px;
+        border-radius:  0 16px 16px 0 ;
+        object-fit: cover 
+    }
+`
 const ImgWrapper = styled.div`
     display: flex;
     flex-direction: column;

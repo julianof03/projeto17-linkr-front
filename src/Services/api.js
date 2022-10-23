@@ -43,7 +43,7 @@ function logOut(getConfig,body) {
 };
 
 function getTimeLine(getConfig){
-    return /* axios.get(`${URL}/timeLine`, getConfig) */
+    return axios.get(`${URL}/timeLine`, getConfig)
 
 }
 
