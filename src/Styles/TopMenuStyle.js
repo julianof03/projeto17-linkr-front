@@ -28,16 +28,19 @@ const UserBox = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    div{
+`;
+
+const ProfileImg = styled.div`
         width: 55px;
         height: 55px;
-        display: flex;
         background-image: url(${(props) => props.profileImage});
         background-size: cover;
         background-position: center;
         border-radius:50%;
-    }
-`;
+        margin-right: 10px;
+        
+`
+
 const LogoutBox = styled.div`
     width: 120px;
     height: 50px;
@@ -62,10 +65,10 @@ const LogoutBox = styled.div`
 const StyledIcon = styled(VscChevronUp)`
 color: #fff;
 transform: scale(2);
-rotate:${(props)=> props.isUp? '0':'180deg'};
+rotate:${(props)=> props.isup? '0':'180deg'};
 
 cursor: pointer;
 `
 
 
-export{MenuBar, UserBox, Title, LogoutBox,StyledIcon};
+export{MenuBar, UserBox, Title, LogoutBox,StyledIcon, ProfileImg};

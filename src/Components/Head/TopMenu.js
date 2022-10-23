@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserBox, MenuBar, Title, LogoutBox,StyledIcon } from "../../Styles/TopMenuStyle.js";
+import { UserBox, MenuBar, Title, LogoutBox,StyledIcon,ProfileImg } from "../../Styles/TopMenuStyle.js";
 import GlobalContext from '../../contexts/globalContext.js';
 import SearchBar from './SearchBar.js';
 import { userImage, logOut } from '../../Services/api.js';
@@ -14,21 +14,24 @@ export default function TopMenu(){
     const token = localStorage.getItem("token") 
     const [logout, setLogout] = useState(false);
     const [profileImage, setProfileImage] = useState('');
-    const { config, header,setHeader } = useContext(GlobalContext);
+    const { header,setHeader } = useContext(GlobalContext);
 
 
 
     useEffect(async ()=>{
-        if (!header){
+        if (header){
             return;
         } else{
-            try {
+                try {
+                
                 const userData = await userImage(getConfig(token));
-                setProfileImage(userData.data.pictureUrl);
-                console.log(userData.data.pictureUrl)
-                } catch (error) {
-                console.log(error);
+                setProfileImage(userData.data);
+                console.log(userData.data)
+                
+            } catch (error) {
+                console.log(error,'erro');
                 return;
+
             }
          }
     },[setHeader]);
@@ -39,12 +42,11 @@ export default function TopMenu(){
 
     function cliked(){
         setLogout(!logout);
-        console.log(profileImage)
     };
     function logoutUser(){
         const body = {};
         setHeader(false);
-        logOut(config, body);
+        logOut(getConfig(token), body);
         navigate('/signin');
 
         
@@ -58,10 +60,9 @@ export default function TopMenu(){
         <SearchBar />
         <MenuBar>
             <Title>linkr</Title>
-            <UserBox onClick={cliked} profileImage={profileImage}> 
-                <StyledIcon isUp={logout}/>
-                <div>
-                </div>
+            <UserBox onClick={cliked}> 
+                <StyledIcon isup={logout}/>
+                <ProfileImg profileImage={profileImage}/>
             </UserBox>
         </MenuBar>
         </div>
