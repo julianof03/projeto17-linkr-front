@@ -2,6 +2,11 @@ import styled from "styled-components";
 import Post from "../Components/Post/Post.js";
 import Trending from "../Components/Trending/Trending.js";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getHashtagPosts } from "../Services/api.js";
+import { useContext } from "react";
+import GlobalContext from "../contexts/globalContext.js";
+
 const array = [
   {
     username: "gojo satoru",
@@ -38,8 +43,23 @@ const array = [
 ];
 
 export default function Hashtag() {
-    const { hashtag } = useParams();
-    
+  const { setHeader } = useContext(GlobalContext);
+  setHeader(true);
+
+  const { hashtag } = useParams();
+  const [hashtagPosts, setHashtagPosts] = useState([]);
+
+  useEffect(() => {
+    getHashtagPosts(hashtag).then((res) => {
+      console.log(res.data)
+      setHashtagPosts(res.data);
+    });
+
+    getHashtagPosts(hashtag).catch((res) => {
+      console.log("algo deu errado");
+    });
+  }, []);
+
   return (
     <Wrapper>
       <LeftWrapper>
@@ -48,16 +68,18 @@ export default function Hashtag() {
         </Title>
 
         <PostWrapper>
-          {array.map((value) => (
-            <Post
-              username={value.username}
-              img={value.img}
-              text={value.text}
-              link={value.link}
-              likesQtd={value.likesQtd}
-              liked={value.liked}
-            />
-          ))}
+          {hashtagPosts.length === 0
+            ? ""
+            : hashtagPosts.map((value) => (
+                <Post
+                  username={value.username}
+                  img={value.img}
+                  text={value.text}
+                  link={value.link}
+                  likesQtd={value.likesQtd}
+                  liked={value.liked}
+                />
+              ))}
         </PostWrapper>
       </LeftWrapper>
 
@@ -74,9 +96,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   padding-top: 80px;
-
   background-color: #333333;
-
   display: flex;
   justify-content: center;
 `;

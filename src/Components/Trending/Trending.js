@@ -1,40 +1,36 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
-const hashtagsArray = [
-  "javascript",
-  "react",
-  "react-native",
-  "material",
-  "web-dev",
-  "mobile",
-  "css",
-  "html",
-  "node",
-  "sql",
-];
+import { useEffect, useState } from "react";
+import { getHashtagTrending } from "../../Services/api.js";
 
 export default function Trending() {
+  const [trendingHashtags, setTrendingHashtags] = useState([]);
+  useEffect(() => {
+    getHashtagTrending().then((res) => {
+      setTrendingHashtags(res.data);
+    });
+
+    getHashtagTrending().catch((res) => {
+      console.log(res);
+    });
+  }, []);
+
   const navigate = useNavigate();
 
-  function goHashtagPage(h) {
-    if (h !== null) {
-      navigate(`/hashtag/${h}`);
-    }
+  function goHashtagPage(tag) {
+    navigate(`/hashtag/${tag.name}`);
   }
   return (
     <TrendingWrapper>
       <h2>Trending</h2>
       <Line />
-      {hashtagsArray.map((h, index) => (
-        <p
-          key={index}
-          onClick={() => goHashtagPage(h)}
-
-        >
-          # {h}
-        </p>
-      ))}
+      {trendingHashtags.length === 0
+        ? ""
+        : trendingHashtags.map((tag, index) => (
+            <p key={index} onClick={() => goHashtagPage(tag)}>
+              #{tag.name}
+            </p>
+          ))}
     </TrendingWrapper>
   );
 }

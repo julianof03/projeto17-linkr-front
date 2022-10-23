@@ -27,8 +27,18 @@ function deleteRegister(id, getConfig) {
     return axios.delete(`${URL}/deleteRegister/${id}`, getConfig);
 };
 
-function logOut(getConfig) {
-    return axios.delete(`${URL}/logOut`, getConfig);
+// Headers ---------------------------------
+
+function userImage(getConfig) {
+    return axios.get(`${URL}/userImage`, getConfig);
+};
+
+function searchUsers(getConfig, startsWith) {
+    return axios.get(`${URL}/userImage/${startsWith}`, getConfig);
+};
+
+function logOut(getConfig,body) {
+    return axios.put(`${URL}/signout`, getConfig, body);
 
 };
 
@@ -37,6 +47,13 @@ function getTimeLine(getConfig){
 
 }
 
+function getHashtagTrending(){
+    return axios.get(`${URL}/trending`);
+}
+
+function getHashtagPosts(hashtag){
+    return axios.get(`${URL}/hashtag/${hashtag}`);
+}
 export {
     signUp,
     signIn,
@@ -45,5 +62,9 @@ export {
     deleteRegister,
     updateRegister,
     logOut,
-    getTimeLine
+    getTimeLine,
+    getHashtagTrending,
+    getHashtagPosts,
+    searchUsers,
+    userImage,
 }

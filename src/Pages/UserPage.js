@@ -1,9 +1,13 @@
-import styled from "styled-components"
-import Post from "../Components/Post/Post.js"
-import Trending from "../Components/Trending/Trending.js"
-
+import styled from "styled-components";
+import Post from "../Components/Post/Post.js";
+import Trending from "../Components/Trending/Trending.js";
+import GlobalContext from "../contexts/globalContext.js";
+import { useContext } from "react";
 
 export default function UserPage() {
+
+    const { setHeader } = useContext(GlobalContext);
+    setHeader(true);
 
     const array = [
         {
@@ -37,7 +41,7 @@ export default function UserPage() {
         }
 
     ]
-    let name = 'Gojo Satoru'
+    let name = 'Gojo Satoru';
 
 
     return (
@@ -77,8 +81,8 @@ export default function UserPage() {
             </RightWrapper>
 
         </Wrapper>
-    )
-}
+    );
+};
 
 const Wrapper = styled.div`
 width: 100%;
@@ -91,19 +95,19 @@ background-color: #333333 ;
 display: flex;
 justify-content: center;
 
-`
+`;
 const RightWrapper = styled.div`
 height: 500px;
 width: 21vw;
 
 position:relative;
-`
+`;
 const LeftWrapper = styled.div`
 width: 42vw;
 
 display: flex;
 flex-direction: column;
-`
+`;
 const Title = styled.div`
 width:100%;
 display: flex;
@@ -118,7 +122,7 @@ h1{
     font-family: 'Oswald';
 }
 
-`
+`;
 const ImgWrapper = styled.div`
 img{
 margin: 10px 10px 30px 10px ;
@@ -128,7 +132,7 @@ border-radius: 50%;
 object-fit: cover;
 }
 
-`
+`;
 const PostWrapper = styled.div`
 width: 100%;
 display: flex;
@@ -137,10 +141,10 @@ flex-direction: column;
 
 border-radius: 10px;
 
-`
+`;
 const TrendingWrapper = styled.div`
 height: 100%;
 /* background-color: aqua; */
 position:absolute;
 top:112px;
-`
+`;
