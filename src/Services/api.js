@@ -3,7 +3,7 @@ import axios from "axios";
 // dotenv.config()
 
 
-const URL = "https://projeto17linkr.herokuapp.com/";
+const URL = "https://projeto17linkr.herokuapp.com";
 // const URL = process.env.REACT_APP_API_BASE_URL;
 
 // Sign-Up--------------------------------

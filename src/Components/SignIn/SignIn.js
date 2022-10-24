@@ -26,6 +26,7 @@ export default function SignIn() {
             localStorage.setItem("token",`${login.data}`);
             navigate('/timeline')
         } catch (error) {
+            console.log('outro erro')
             console.log(error.response.data);
             if (error.response.status === 401) {
                 alert('Email ou Senha incorretos! Tente novamente.');
