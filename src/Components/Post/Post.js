@@ -1,12 +1,19 @@
 import styled from "styled-components";
-import React from "react";
-import { ReactTagify } from "react-tagify";
+
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
-import { useContext ,useEffect, useState } from "react";
+
+import { ReactTagify } from "react-tagify";
+
+import React from "react";
+import { useContext , useEffect, useState, useRef } from "react";
+
 import mql from '@microlink/mql'
+
 import { useNavigate } from "react-router-dom";
+
 import GlobalContext from "../../contexts/globalContext";
+import { EditPost } from "../../Services/api";
 
 export default function Post(
     { username,
@@ -18,17 +25,30 @@ export default function Post(
         postUserId,
         postId}
 ) {
+    
+    const [message, setMessage] = useState('');
     const {userId} = useContext(GlobalContext)
+
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
+
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
+
     const [form, setForm] = useState({ link: '', text: ''})
-    const navigate = useNavigate()
+    
     const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
     const {editPost, SetEditPost} = useContext(GlobalContext);
     const {postId_global, setPostId_global} = useContext(GlobalContext)
+
+
+    const navigate = useNavigate()
+
     useEffect(async () => {
+
+        if(!message){setMessage(text)}
+        
+
         if (like) { setProps('true') }
         const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
             data: {
@@ -39,23 +59,28 @@ export default function Post(
                 }
             }
         })
+
         setUrlMetadataOBJ(data)
+
     }, [])
+
+    
+    const inputRef = useRef();
+    useEffect(async () => {
+        inputRef.current.focus();
+    }, [])
+
+
     function goTo(tag) {
         const newTag = tag.replace('#', '')
         navigate(`/hashtag/${newTag}`)
     }
-    function handleForm(e) {
-        setForm({ ...form, [e.target.name]: e.target.value })
-    }
-
-    const [message, setMessage] = useState('');
 
 
     const handleChange = event => {
         if(!message){setMessage(text)}
         setMessage(event.target.value);
-      };
+    };
     const handleClick = event => {
         event.preventDefault();
     
@@ -64,7 +89,34 @@ export default function Post(
     
         // 👇️ set value of input field
         setMessage('New value');
-      };
+    };
+
+    function sendForm(e){
+        e.preventDefault()
+        const id = postId;
+        const body = {
+            text: message,
+        }
+        
+
+        const promise = EditPost(body , id)
+
+        
+        promise.then( (res) => { 
+            console.log("mandei tudo: ", id, " ", body);
+            
+            document.location.reload(true);
+            SetEditPost({postId: '', status: false})
+            } )
+        promise.catch( (err) => alert(err.message) )
+    }
+
+    document.onkeydown = function(e) {
+        if(e.key === 'Escape') {
+            setMessage(text);
+            SetEditPost({postId: '', status: false})
+        }
+    }
     
     return (
         <>
@@ -124,6 +176,7 @@ export default function Post(
                                                  onClick={() =>{
                                                     console.log(postId)
                                                     if(editPost.status){
+                                                        setMessage(text);
                                                         SetEditPost({postId: '', status: false})
                                                     }
                                                     else{
@@ -155,28 +208,26 @@ export default function Post(
                                         goTo(tag)
                                         }
                                     }
-                                >
-                                    
-                                    {text}
-                                    
-                                     
+                                >                                    
+                                    {text}                                     
                                 </ReactTagify> 
                                 {
-                                    (editPost.status && postId === editPost.postId) ? 
+                                (editPost.status && postId === editPost.postId) ? 
                                     (
                                         <>
                                         <EditContainer></EditContainer>
+                                        <form onSubmit={sendForm}>
                                          <TextInput 
-                                         type="text"
-                                         id="message"
-                                         name="message"
-                                         onChange={handleChange}
-                                         value={message}
+                                            type="text" id="message"
+                                            name="message" onChange={handleChange}
+                                            required={true} value={message}
+                                            ref={inputRef}
                                         ></TextInput> 
+                                        </form>
                                         </>                            
                                     ) :      
                                     ('')
-                                    } 
+                                } 
                             </Description>
 
                             <UrlMetadaSpace>

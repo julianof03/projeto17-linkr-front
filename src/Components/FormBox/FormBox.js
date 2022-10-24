@@ -34,7 +34,7 @@ export default function FormBox() {
         promise.then( (res) => { 
             console.log('then')
             navigate('/timeline') } )
-        promise.catch( (err) => console.log('Deu Erro logout',err) )
+        promise.catch( (err) => alert(err.message) )
 
         setTimeout(() => {
             SetButtonText("Publish");
