@@ -19,6 +19,13 @@ function createPost(getConfig, body) {
     return axios.post(`${URL}/timeline`, body, getConfig );
 };
 
+function EditPost(body, id) {
+    console.log('body', body)
+
+    return axios.post(`${URL}/timeline/${id}`, body);
+};
+
+// Headers ---------------------------------
 // doLike ---------------------------------
 
 function updateLike(body, getConfig){
@@ -60,4 +67,5 @@ export {
     searchUsers,
     userImage,
     createPost,
+    EditPost,
 }

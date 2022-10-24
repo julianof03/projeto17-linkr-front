@@ -12,6 +12,8 @@ export default function FormBox({img}) {
 
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
+    const [buttonText, SetButtonText] = useState('Publish');
+
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
@@ -19,6 +21,7 @@ export default function FormBox({img}) {
         e.preventDefault()
         if (disable === true) return
         setDisable(true)
+        SetButtonText("Publishing...");
         
         const body = {
             link: form.link,
@@ -31,9 +34,10 @@ export default function FormBox({img}) {
         promise.then( (res) => { 
             console.log('then')
             navigate('/timeline') } )
-        promise.catch( (err) => console.log('Deu Erro logout',err) )
+        promise.catch( (err) => alert(err.message) )
 
         setTimeout(() => {
+            SetButtonText("Publish");
             console.log('enviou o post', form)
             clearForm()
         })
@@ -62,7 +66,7 @@ export default function FormBox({img}) {
                 </TextInput>
                 <ButtonWrapper type='submit'>
                     <button >
-                        Publish
+                    {buttonText}
                     </button>
                 </ButtonWrapper>
             </Main>

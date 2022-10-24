@@ -1,12 +1,20 @@
 import styled from "styled-components";
-import React from "react";
-import { ReactTagify } from "react-tagify";
+
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
-import { useEffect, useState } from "react";
+
+import { ReactTagify } from "react-tagify";
+
+import React from "react";
+import { useContext , useEffect, useState, useRef } from "react";
+
 import mql from '@microlink/mql'
+
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
+
+import GlobalContext from "../../contexts/globalContext";
+import { EditPost } from "../../Services/api";
 
 export default function Post(
     { username,
@@ -14,20 +22,35 @@ export default function Post(
         text,
         link,
         likesQtd,
-        liked }
+        liked,
+        postUserId,
+        postId}
 ) {
+    
+    const [message, setMessage] = useState('');
+    const {userId} = useContext(GlobalContext)
 
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
+
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
 
+    const [form, setForm] = useState({ link: '', text: ''})
+    
+    const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
+    const {editPost, SetEditPost} = useContext(GlobalContext);
+    const {postId_global, setPostId_global} = useContext(GlobalContext)
+
+
     const navigate = useNavigate()
 
-
     useEffect(async () => {
-        if (like) { setProps('true') }
 
+        if(!message){setMessage(text)}
+        
+
+        if (like) { setProps('true') }
         const { data } = await mql(link, {
             data: {
                 avatar: {
@@ -40,57 +63,91 @@ export default function Post(
         setUrlMetadataOBJ(data)
     }, [])
 
+    
+    const inputRef = useRef();
+    useEffect(async () => {
+        inputRef.current.focus();
+    }, [])
+
+
     function goTo(tag) {
         const newTag = tag.replace('#', '')
         navigate(`/hashtag/${newTag}`)
     }
 
-    function doLike() {
 
+    const handleChange = event => {
+        if(!message){setMessage(text)}
+        setMessage(event.target.value);
+    };
+    const handleClick = event => {
+        event.preventDefault();
+    
+        // value of input field
+        console.log('old value: ', message);
+    
+        // set value of input field
+        setMessage('New value');
+    };
+
+    function sendForm(e){
+        e.preventDefault()
+        const id = postId;
+        const body = {
+            text: message,
+        }
+        
+
+        const promise = EditPost(body , id)
+
+        
+        promise.then( (res) => { 
+            console.log("mandei tudo: ", id, " ", body);
+            
+            document.location.reload(true);
+            SetEditPost({postId: '', status: false})
+            } )
+        promise.catch( (err) => alert(err.message) )
     }
 
+    document.onkeydown = function(e) {
+        if(e.key === 'Escape') {
+            setMessage(text);
+            SetEditPost({postId: '', status: false})
+        }
+    }
+    
     return (
         <>
             {(!urlMetadataOBJ.url) ?
-                (
-                    <p>LOADING</p> // COLOCAR BOTÃO DE LOADING
-                )
-                : (
-
-                    <PostHTML>
-                        <ImgWrapper
-                            like={liked}
-                            props={props}
-                        >
-                            <img src={img} />
-                            <div data-tip data-for="registerTip">
-                                {like ?
-                                    (
-                                        <BsHeartFill
-                                            size='20px'
-                                            onClick={() => {
-                                                setLike(!like)
-                                                setProps('false')
-                                            }}
-
-                                        />
-                                    ) : (
-                                        <BsHeart
-                                            size='20px'
-                                            onClick={() => {
-                                                setLike(!like)
-                                                setProps('true')
-                                            }}
-                                        />
-
-                                    )}
-                                <ReactTooltip
-                                    id="registerTip"
-                                    place="bottom"
-                                    effect="solid"
-                                >
-                                    COLOCAR OS LIKES AQUI
-                                </ReactTooltip>
+                ( <p>LOADING</p> ) 
+                    : 
+                    (<PostHTML>
+                        <ImgWrapper props={props}>
+                            <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+                            <div>
+                                {props === 'true' ? 
+                                (
+                                    <BsHeartFill
+                                        size='20px'
+                                        onClick={() => {
+                                            setLike(!like)
+                                            setProps('false')
+                                        }}
+                                        onMouseEnter={() => setIsShown(true)}
+                                        onMouseLeave={() => setIsShown(false)}
+                                    />
+                                ) : (
+                                    <BsHeart
+                                        size='20px'
+                                        onClick={() => {
+                                            setLike(!like)
+                                            setProps('true')
+                                        }}
+                                        onMouseEnter={() => setIsShown(true)}
+                                        onMouseLeave={() => setIsShown(false)}
+                                    />
+                                )}
 
                             </div>
 
@@ -106,54 +163,88 @@ export default function Post(
                             </Likes>
 
                         </ImgWrapper>
-
                         <Main>
                             <Title>
-                                <h1>{username}</h1>
-                                <IconsWrapper>
-                                    <MdModeEdit
-                                        color='white'
-                                        style={{
-                                            cursor: 'pointer'
-                                        }}
-                                    />
-                                    <BsFillTrashFill
-                                        color='white'
-                                        style={{
-                                            marginLeft: '10px',
-                                            cursor: 'pointer'
-                                        }}
-                                        size='15px'
-                                    />
-                                </IconsWrapper>
+                                {postUserId != userId ? 
+                                    ( <h1>{username}</h1> ) 
+                                        : 
+                                    (<> DeleteScreen
+                                        <h1>{username}</h1>
+                                        <IconsWrapper>
+                                            <MdModeEdit
+                                                 onClick={() =>{
+                                                    console.log(postUserId)
+                                                    console.log(userId)
+                                                    if(editPost.status){
+                                                        setMessage(text);
+                                                        SetEditPost({postId: '', status: false})
+                                                    }
+                                                    else{
+                                                        SetEditPost({postId: postId, status: true})
+                                                    }
+                                                    }}
+                                                color='white'DeleteScreen
+                                                style={{
+                                                    marginLeft: '10px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            />
+                                            <BsFillTrashFill
+                                                onClick={() =>{setDeleteScreen({postId: postId, status: true})}}
+                                                color='white'
+                                                style={{
+                                                    marginLeft: '10px',
+                                                    cursor: 'pointer'
+                                                }}
+                                                size='15px'
+                                            />
+                                        </IconsWrapper>
+                                    </>)}  
                             </Title>
                             <Description>
                                 <ReactTagify
                                     colors={"white"}
                                     tagClicked={(tag) => {
                                         goTo(tag)
-                                    }}
-                                >
-                                    {text}
-                                </ReactTagify>
+                                        }
+                                    }
+                                >                                    
+                                    {text}                                     
+                                </ReactTagify> 
+                                {
+                                (editPost.status && postId === editPost.postId) ? 
+                                    (
+                                        <>
+                                        <EditContainer></EditContainer>
+                                        <form onSubmit={sendForm}>
+                                         <TextInput 
+                                            type="text" id="message"
+                                            name="message" onChange={handleChange}
+                                            required={true} value={message}
+                                            ref={inputRef}
+                                        ></TextInput> 
+                                        </form>
+                                        </>                            
+                                    ) :      
+                                    ('')
+                                } 
                             </Description>
 
                             <UrlMetadaSpace>
+                                
                                 <UrlMetadaDetails>
                                     <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
                                     <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
                                     <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
                                 </UrlMetadaDetails>
+                                
                                 <ImageUrl>
-
-                                    <img
-                                        src={urlMetadataOBJ.image?.url}
-                                        alt='image not found 
-                                        &#x1F625;' />
+                                    <img src={urlMetadataOBJ.image.url}
+                                        alt="description of image" />
                                 </ImageUrl>
                             </UrlMetadaSpace>
                         </Main>
-                    </PostHTML >
+                    </PostHTML>
                 )
             }
         </>
@@ -166,7 +257,6 @@ const PostHTML = styled.div`
     border-radius:16px;
     margin-bottom: 16px;
     background-color:  black;
-
     position: relative;
 `
 const TitleUrl = styled.h1`
@@ -203,8 +293,7 @@ const UrlMetadaDetails = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 15px 27px 5px 15px;
-  border-radius: 16px;
+  padding: 24px 27px 5px 19px;
 `;
 const ImageUrl = styled.div`
     img {
@@ -222,7 +311,6 @@ const ImgWrapper = styled.div`
         color: ${props => props.like === true ? 'red' : 'white'};
         cursor: pointer;
     }
-
     img{
         margin: 18px 18px 30px 18px ;
         width:50px;
@@ -230,7 +318,6 @@ const ImgWrapper = styled.div`
         border-radius: 50%;
         object-fit: cover;
     }
-
     p{
         margin-top: 5px;
         color: white;
@@ -284,7 +371,6 @@ const Likes = styled.div`
     opacity:${props => props.isShown ? '1' : '0'};
     z-index: ${props => props.isShown ? '1' : '-1'};;
     transition: all 0.5s ease-out;
-
     p{
         color: #505050;
         font-size: 13px;
@@ -292,4 +378,28 @@ const Likes = styled.div`
     }
     position: absolute;
     top:50%;
+`;
+
+const EditContainer = styled.div`
+    background-color:  black;
+    width: 100%;
+    height: 30px;
+    border: unset;
+    border-radius:5px;
+`;
+const TextInput = styled.input`
+    position:absolute;
+    top:40px;
+    left:85px;
+    width:83%;
+    height: 16%;
+    border: unset;
+    border-radius:5px;
+    margin-top: 10px;
+    background-color: #EFEFEF;
+    ::placeholder{
+        font-size: 15px;
+        font-weight: 300;
+        color: #949494;
+    }
 `
