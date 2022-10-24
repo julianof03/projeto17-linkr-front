@@ -16,7 +16,7 @@ export default function TimeLine() {
     const { reRender, setReRender } = useContext(GlobalContext)
     const [posts, setPosts] = useState({
         array: [],
-        size:0
+        size: 0
     })
     const [n, setN] = useState(0)
     // const [arraySize, setArraySize] = useState(0)
@@ -25,7 +25,7 @@ export default function TimeLine() {
         getTimeLine(getConfig)
             .then((res) => {
                 setPosts({
-                    array:res.data.slice(n, n + 20),
+                    array: res.data.slice(n, n + 20),
                     size: res.data.length
                 })
 
@@ -65,9 +65,13 @@ export default function TimeLine() {
 
                 <Wrapper>
                     <MainContent>
-                        <Title> <h1>timeline</h1> </Title>
+                        <Title>
+                            {console.log(posts.array)}
+                            <h1>timeline</h1>
+                        </Title>
                         <FormBox />
                         {posts.array.map((value, index) =>
+
                             <Post
                                 key={index}
                                 username={value.username}
