@@ -11,6 +11,7 @@ import { useContext , useEffect, useState, useRef } from "react";
 import mql from '@microlink/mql'
 
 import { useNavigate } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 
 import GlobalContext from "../../contexts/globalContext";
 import { EditPost } from "../../Services/api";
@@ -307,7 +308,7 @@ const ImgWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     div{
-        color: ${props => props.props === 'true' ? 'red' : 'white'};
+        color: ${props => props.like === true ? 'red' : 'white'};
         cursor: pointer;
     }
     img{
