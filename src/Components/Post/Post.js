@@ -50,7 +50,7 @@ export default function Post(
         
 
         if (like) { setProps('true') }
-        const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
+        const { data } = await mql(link, {
             data: {
                 avatar: {
                     selector: '#avatar',
@@ -59,9 +59,7 @@ export default function Post(
                 }
             }
         })
-
         setUrlMetadataOBJ(data)
-
     }, [])
 
     
