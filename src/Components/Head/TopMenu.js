@@ -10,29 +10,36 @@ import getConfig from "../../Services/getConfig.js";
 
 export default function TopMenu(){
     const navigate = useNavigate();
-
-    const token = localStorage.getItem("token") 
+    
     const [logout, setLogout] = useState(false);
     const [profileImage, setProfileImage] = useState('');
-    const { header,setHeader } = useContext(GlobalContext);
-
+    const { header,setHeader, token, setToken } = useContext(GlobalContext);
 
 
     useEffect(async ()=>{
-        if (header){
-            return;
-        } else{
+            
+        const tokenLs = localStorage.getItem("token");
+        
+        if(token===''){
+                if(!tokenLs){
+                    navigate('/signin');
+                    return;
+                } 
+                setToken(`${tokenLs}`);
+            }
+
                 try {
-                
-                const userData = await userImage(getConfig(token));
-                setProfileImage(userData.data);
+                setProfileImage((await userImage(getConfig(tokenLs))).data);
                 
             } catch (error) {
-                console.log(error,'erro');
+
+                if(error.response.status === 401){
+                    navigate('/signin');
+                };
                 return;
 
             }
-         }
+         
     },[setHeader]);
 
     if (!header){
@@ -42,12 +49,17 @@ export default function TopMenu(){
     function cliked(){
         setLogout(!logout);
     };
-    function logoutUser(){
+    async function logoutUser(){
         const body = {};
         setHeader(false);
-        logOut(getConfig(token), body);
-        navigate('/signin');
-
+        console.log(token)
+        try {
+            const logout = await logOut(getConfig(token), body);
+            navigate('/signin');
+            
+        } catch (error) {
+            console.log(error)
+        }
         
     };
 

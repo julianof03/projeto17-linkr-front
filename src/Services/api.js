@@ -28,7 +28,7 @@ function searchUsers(getConfig, startsWith) {
 };
 
 function logOut(getConfig, body) {
-    return axios.put(`${URL}/signout`, getConfig, body);
+    return axios.put(`${URL}/signout`, body, getConfig);
 
 };
 
