@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:5000";
+const URL = "http://localhost:5002";
 
 // Sign-Up--------------------------------
 function signUp(body) {
@@ -34,7 +34,7 @@ function searchUsers(getConfig, startsWith) {
 };
 
 function logOut(getConfig, body) {
-    return axios.put(`${URL}/signout`, getConfig, body);
+    return axios.put(`${URL}/signout`, body, getConfig);
 
 };
 
