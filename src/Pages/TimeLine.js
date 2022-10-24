@@ -76,6 +76,7 @@ export default function TimeLine() {
                                 link={value.link}
                                 likesQtd={value.likesQtd}
                                 liked={value.liked}
+                                postId={value.postId}
                             />
                         )}
                         <NextPage

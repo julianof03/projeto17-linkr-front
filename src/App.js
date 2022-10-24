@@ -4,6 +4,7 @@ import { useState } from 'react';
 import GlobalContext from './contexts/globalContext';
 import React from 'react';
 import Header from './Components/Head/TopMenu.js';
+
 import SignIn from './Components/SignIn/SignIn';
 import SingUp from './Components/SignUp/SignUp';
 import TimeLine from './Pages/TimeLine.js';
@@ -18,14 +19,15 @@ export default function App() {
         name: '',
         likesQtd: '',
         liked: ''
-    })
+    });
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
-    const [config, setConfig] = useState({})
-    const [header, setHeader] = useState(false)
-    const [hashtagPosts, setHashtagPosts] = useState([]);
-
-
+    const [config, setConfig] = useState({});
+    const [header, setHeader] = useState(false);
+    const [userId, setUserId] = useState('')
+    const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:'' } )
+    const [editPost, SetEditPost] = useState( { status:false, postId:'' } )
+    const [postId_global, setPostId_global] = useState('')
     return (
         <div>
             <GlobalStyle />
@@ -37,7 +39,10 @@ export default function App() {
                     user, setUser,
                     config, setConfig,
                     header, setHeader,
-                    hashtagPosts, setHashtagPosts
+                    userId, setUserId,
+                    deleteScreen, setDeleteScreen,
+                    editPost, SetEditPost,
+                    postId_global, setPostId_global
                 }
             }>
                 <BrowserRouter>
