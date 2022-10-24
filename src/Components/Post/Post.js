@@ -96,10 +96,8 @@ export default function Post(
             text: message,
         }
         
-
         const promise = EditPost(body , id)
 
-        
         promise.then( (res) => { 
             console.log("mandei tudo: ", id, " ", body);
             document.location.reload()
@@ -122,7 +120,7 @@ export default function Post(
                     : 
                     (<PostHTML>
                         <ImgWrapper props={props}>
-                            <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+                            <img src={img} />
                             <div>
                                 {props === 'true' ? 
                                 (
