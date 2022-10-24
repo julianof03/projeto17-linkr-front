@@ -5,7 +5,7 @@ import React from "react";
 import getConfig from "../../Services/getConfig"
 import { createPost } from "../../Services/api";
 
-export default function FormBox() {
+export default function FormBox({img}) {
     const navigate = useNavigate()
 
     const token = localStorage.getItem("token")
