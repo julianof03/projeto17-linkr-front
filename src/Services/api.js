@@ -1,6 +1,6 @@
 import axios from "axios";
-// import dotenv from 'dotenv';
-// dotenv.config()
+import dotenv from 'dotenv';
+dotenv.config()
 
 
 const URL = "http://localhost:5000";
@@ -34,7 +34,7 @@ function searchUsers(getConfig, startsWith) {
 };
 
 function logOut(getConfig, body) {
-    return axios.put(`${URL}/signout`, getConfig, body);
+    return axios.put(`${URL}/signout`, body, getConfig);
 
 };
 

@@ -37,9 +37,9 @@ export default function SearchBar() {
         }
     }, [search]);
 
-    function goToUserpage(name,id) {
-        setFindUsers([])
-        navigate(`/user/${id}`)
+    function goToUserpage(id) {
+        setFindUsers([]);
+        navigate(`/user/${id}`);
     };
 
     return (
