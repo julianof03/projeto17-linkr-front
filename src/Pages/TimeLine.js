@@ -59,7 +59,8 @@ export default function TimeLine() {
                         <NoGoBack onClick={() => setDeleteScreen({postId: '', status: false})}>
                             <span>No, go back</span>
                         </NoGoBack>
-                        <YesDeleteIt onClick={() => deletePost(deleteScreen.postId, getConfig(token))}>
+                        <YesDeleteIt onClick={() => {   deletePost(deleteScreen.postId, getConfig(token))
+                                                        setDeleteScreen({postId: '', status: false})  }}>
                             <span>Yes, delete it</span>
                         </YesDeleteIt>
                     </DeleteOpcions>  
@@ -114,7 +115,7 @@ const DeleteOpcions = styled.div`
     margin-top: 40px;
     justify-content: space-around;
 `
-const NoGoBack = styled.div`
+const NoGoBack = styled.button`
     display: flex;
     width: 134px;
     height: 37px;
@@ -132,7 +133,7 @@ const NoGoBack = styled.div`
     }
     background-color: #FFFFFF;
 `
-const YesDeleteIt = styled.div`
+const YesDeleteIt = styled.button`
     display: flex;
     width: 134px;
     height: 37px;

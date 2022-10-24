@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:5000";
+const URL = "https://projeto17linkr.herokuapp.com";
 
 // Sign-Up--------------------------------
 function signUp(body) {
