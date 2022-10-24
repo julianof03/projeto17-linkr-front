@@ -14,9 +14,10 @@ export default function TimeLine() {
     const { setHeader } = useContext(GlobalContext);
     setHeader(true);
     const { reRender, setReRender } = useContext(GlobalContext)
+
     const [posts, setPosts] = useState({
         array: [],
-        size:0
+        size: 0
     })
     const [n, setN] = useState(0)
     // const [arraySize, setArraySize] = useState(0)
@@ -24,8 +25,9 @@ export default function TimeLine() {
     useEffect(() => {
         getTimeLine(getConfig)
             .then((res) => {
+                console.log(res.data)
                 setPosts({
-                    array:res.data.slice(n, n + 20),
+                    array: res.data.slice(n, n + 20),
                     size: res.data.length
                 })
 
@@ -57,16 +59,23 @@ export default function TimeLine() {
 
         <>
             {(posts.array.length === 0) ? (
-                <div /* onClick={console.log('console',posts.array.length)} */
+                
+                <div 
+                    style={{background: 'purple', width: '100vh', height: '100vh'}}
                 >
+                    {/* {console.log(posts.array)} */}
                     LOADING
                 </div> //CRIAR O LOADING
             ) : (
 
                 <Wrapper>
                     <MainContent>
-                        <Title> <h1>timeline</h1> </Title>
-                        <FormBox />
+                        <Title>
+                            {console.log(posts.array)}
+                            <h1>timeline</h1>
+                        </Title>
+                        <FormBox 
+                            />
                         {posts.array.map((value, index) =>
                             <Post
                                 key={index}

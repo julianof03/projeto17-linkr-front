@@ -1,6 +1,10 @@
 import axios from "axios";
+// import dotenv from 'dotenv';
+// dotenv.config()
 
-const URL = "http://localhost:5002";
+
+const URL = "https://projeto17linkr.herokuapp.com/";
+// const URL = process.env.REACT_APP_API_BASE_URL;
 
 // Sign-Up--------------------------------
 function signUp(body) {
@@ -12,12 +16,14 @@ function signIn(body) {
 }
 // createPost
 function createPost(getConfig, body) {
-    console.log('getConfig',getConfig, 'body', body)
-
     return axios.post(`${URL}/timeline`, body, getConfig );
 };
 
-// Headers ---------------------------------
+// doLike ---------------------------------
+
+function updateLike(body, getConfig){
+    return axios.post(`${URL}/likeUpdate`, body, getConfig );
+}
 
 function userImage(getConfig) {
     return axios.get(`${URL}/userImage`, getConfig);
@@ -33,7 +39,7 @@ function logOut(getConfig, body) {
 };
 
 function getTimeLine(getConfig) {
-    return axios.get(`${URL}/timeLine`, getConfig)
+    return axios.get(`${URL}/timeline`, getConfig)
 
 }
 

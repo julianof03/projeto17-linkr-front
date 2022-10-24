@@ -6,6 +6,7 @@ import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
 import mql from '@microlink/mql'
 import { useNavigate } from "react-router-dom";
+import ReactTooltip from 'react-tooltip';
 
 export default function Post(
     { username,
@@ -36,13 +37,16 @@ export default function Post(
                 }
             }
         })
-
         setUrlMetadataOBJ(data)
     }, [])
 
     function goTo(tag) {
         const newTag = tag.replace('#', '')
         navigate(`/hashtag/${newTag}`)
+    }
+
+    function doLike() {
+
     }
 
     return (
@@ -52,99 +56,104 @@ export default function Post(
                     <p>LOADING</p> // COLOCAR BOTÃO DE LOADING
                 )
                 : (
-                  
-                        <PostHTML>
-                            <ImgWrapper props={props}>
-                                <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
-                                <div>
-                                    {props === 'true' ?
-                                        (
-                                            <BsHeartFill
-                                                size='20px'
-                                                onClick={() => {
-                                                    setLike(!like)
-                                                    setProps('false')
-                                                }}
-                                                onMouseEnter={() => setIsShown(true)}
-                                                onMouseLeave={() => setIsShown(false)}
-                                            />
-                                        ) : (
-                                            <BsHeart
-                                                size='20px'
-                                                onClick={() => {
-                                                    setLike(!like)
-                                                    setProps('true')
-                                                }}
-                                                onMouseEnter={() => setIsShown(true)}
-                                                onMouseLeave={() => setIsShown(false)}
-                                            />
-                                        )}
 
-                                </div>
+                    <PostHTML>
+                        <ImgWrapper
+                            like={liked}
+                            props={props}
+                        >
+                            <img src={img} />
+                            <div data-tip data-for="registerTip">
+                                {like ?
+                                    (
+                                        <BsHeartFill
+                                            size='20px'
+                                            onClick={() => {
+                                                setLike(!like)
+                                                setProps('false')
+                                            }}
 
-                                <p>{likesQtd}</p>
+                                        />
+                                    ) : (
+                                        <BsHeart
+                                            size='20px'
+                                            onClick={() => {
+                                                setLike(!like)
+                                                setProps('true')
+                                            }}
+                                        />
 
-                                <Likes
-                                    onMouseEnter={() => setIsShown(true)}
-                                    onMouseLeave={() => setIsShown(false)}
-                                    isShown={isShown}
+                                    )}
+                                <ReactTooltip
+                                    id="registerTip"
+                                    place="bottom"
+                                    effect="solid"
                                 >
-                                    <p>vários likes pra tu ficá feliz</p>
+                                    COLOCAR OS LIKES AQUI
+                                </ReactTooltip>
 
-                                </Likes>
+                            </div>
 
-                            </ImgWrapper>
-                            <Main>
-                                <Title>
-                                    <h1>{username}</h1>
-                                    <IconsWrapper>
-                                        <MdModeEdit
-                                            color='white'
-                                            style={{
-                                                cursor: 'pointer'
-                                            }}
-                                        />
-                                        <BsFillTrashFill
-                                            color='white'
-                                            style={{
-                                                marginLeft: '10px',
-                                                cursor: 'pointer'
-                                            }}
-                                            size='15px'
-                                        />
-                                    </IconsWrapper>
-                                </Title>
-                                <Description>
-                                    <ReactTagify
-                                        colors={"white"}
-                                        tagClicked={(tag) => {
-                                            goTo(tag)
+                            <p>{likesQtd}</p>
+
+                            <Likes
+                                onMouseEnter={() => setIsShown(true)}
+                                onMouseLeave={() => setIsShown(false)}
+                                isShown={isShown}
+                            >
+                                <p>vários likes pra tu ficá feliz</p>
+
+                            </Likes>
+
+                        </ImgWrapper>
+
+                        <Main>
+                            <Title>
+                                <h1>{username}</h1>
+                                <IconsWrapper>
+                                    <MdModeEdit
+                                        color='white'
+                                        style={{
+                                            cursor: 'pointer'
                                         }}
-                                    >
-                                        {text}
-                                    </ReactTagify>
-                                </Description>
+                                    />
+                                    <BsFillTrashFill
+                                        color='white'
+                                        style={{
+                                            marginLeft: '10px',
+                                            cursor: 'pointer'
+                                        }}
+                                        size='15px'
+                                    />
+                                </IconsWrapper>
+                            </Title>
+                            <Description>
+                                <ReactTagify
+                                    colors={"white"}
+                                    tagClicked={(tag) => {
+                                        goTo(tag)
+                                    }}
+                                >
+                                    {text}
+                                </ReactTagify>
+                            </Description>
 
-                                <UrlMetadaSpace>
-                                    <UrlMetadaDetails>
-                                        <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                                        <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                                        <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                                    </UrlMetadaDetails>
-                                    <ImageUrl>
-                                        
-                                        <img
-                                            src={urlMetadataOBJ.image?.url}
-                                            alt='image not found 
+                            <UrlMetadaSpace>
+                                <UrlMetadaDetails>
+                                    <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                    <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                    <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                                </UrlMetadaDetails>
+                                <ImageUrl>
+
+                                    <img
+                                        src={urlMetadataOBJ.image?.url}
+                                        alt='image not found 
                                         &#x1F625;' />
-                                    </ImageUrl>
-                                </UrlMetadaSpace>
-                            </Main>
-                        </PostHTML>
-
-                  
-
-
+                                </ImageUrl>
+                            </UrlMetadaSpace>
+                        </Main>
+                    </PostHTML >
                 )
             }
         </>
@@ -210,7 +219,7 @@ const ImgWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     div{
-        color: ${props => props.props === 'true' ? 'red' : 'white'};
+        color: ${props => props.like === true ? 'red' : 'white'};
         cursor: pointer;
     }
 
