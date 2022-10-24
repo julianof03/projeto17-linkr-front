@@ -71,6 +71,7 @@ export default function TimeLine() {
                             <Post
                                 key={index}
                                 username={value.username}
+                                postUserId={value.postUserId}
                                 img={value.img}
                                 text={value.text}
                                 link={value.link}

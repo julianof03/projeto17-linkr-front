@@ -84,10 +84,10 @@ export default function Post(
     const handleClick = event => {
         event.preventDefault();
     
-        // 👇️ value of input field
+        // value of input field
         console.log('old value: ', message);
     
-        // 👇️ set value of input field
+        // set value of input field
         setMessage('New value');
     };
 
@@ -166,7 +166,7 @@ export default function Post(
                         </ImgWrapper>
                         <Main>
                             <Title>
-                                {(userId === 41) ? 
+                                {postUserId != userId ? 
                                     ( <h1>{username}</h1> ) 
                                         : 
                                     (<> DeleteScreen
@@ -174,7 +174,8 @@ export default function Post(
                                         <IconsWrapper>
                                             <MdModeEdit
                                                  onClick={() =>{
-                                                    console.log(postId)
+                                                    console.log(postUserId)
+                                                    console.log(userId)
                                                     if(editPost.status){
                                                         setMessage(text);
                                                         SetEditPost({postId: '', status: false})

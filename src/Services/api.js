@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:5002";
+const URL = "http://localhost:5000";
 
 // Sign-Up--------------------------------
 function signUp(body) {
