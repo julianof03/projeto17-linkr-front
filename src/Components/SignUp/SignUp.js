@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import  GlobalContext  from '../../contexts/globalContext';
 import { signUp } from '../../Services/api';
 
 export default function SignUp() {
 
     const navigate = useNavigate();
     const [user, setUser] = useState({});
+    const { setHeader } = useContext(GlobalContext);
+    setHeader(false);
 
     function handleForm(e) {
         setUser({

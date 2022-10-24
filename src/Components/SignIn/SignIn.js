@@ -9,23 +9,24 @@ export default function SignIn() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { token, setToken } = useContext(GlobalContext);
-    const { setUser } = useContext(GlobalContext);
+    const { token, setToken, setHeader, setUser} = useContext(GlobalContext);
+    setHeader(false);
 
     async function sendForm(e) {
 
         e.preventDefault();
-
         const body = { email, password };
 
         try {
             const login = await signIn(body);
-            setToken(login.data.token);
-            setUser(login.data.name);
 
-            localStorage.setItem("token",`${token}`);
+            setToken(`${login.data}`);
+            // setUser(login.data.name);
+
+            localStorage.setItem("token",`${login.data}`);
             navigate('/timeline')
         } catch (error) {
+            console.log('outro erro')
             console.log(error.response.data);
             if (error.response.status === 401) {
                 alert('Email ou Senha incorretos! Tente novamente.');

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import GlobalContext from './contexts/globalContext';
 import React from 'react';
 import Header from './Components/Head/TopMenu.js';
-
 import SignIn from './Components/SignIn/SignIn';
 import SingUp from './Components/SignUp/SignUp';
 import TimeLine from './Pages/TimeLine.js';
@@ -22,8 +21,12 @@ export default function App() {
     })
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
-    const [config, setConfig] = useState({})
     const [header, setHeader] = useState(false)
+    const [hashposts, setHashposts] = useState({
+        array: [],
+        size: 0,
+      });
+      const [clicked, setClicked] = useState(false);
 
     return (
         <div>
@@ -34,8 +37,9 @@ export default function App() {
                     post, setPost,
                     token, setToken,
                     user, setUser,
-                    config, setConfig,
-                    header, setHeader
+                    header, setHeader,
+                    hashposts, setHashposts,
+                    clicked, setClicked
                 }
             }>
                 <BrowserRouter>

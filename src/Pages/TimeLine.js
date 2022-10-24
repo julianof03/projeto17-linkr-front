@@ -11,10 +11,13 @@ import GlobalContext from "../contexts/globalContext.js"
 export default function TimeLine() {
     // 0 - 4;5 - 9; 10-14
 
+    const { setHeader } = useContext(GlobalContext);
+    setHeader(true);
     const { reRender, setReRender } = useContext(GlobalContext)
+
     const [posts, setPosts] = useState({
         array: [],
-        size:0
+        size: 0
     })
     const [n, setN] = useState(0)
     // const [arraySize, setArraySize] = useState(0)
@@ -22,31 +25,22 @@ export default function TimeLine() {
     useEffect(() => {
         getTimeLine(getConfig)
             .then((res) => {
+                console.log(res.data)
                 setPosts({
-                    array:res.data.slice(n, n + 50),
-                    Size: res.data.length
+                    array: res.data.slice(n, n + 20),
+                    size: res.data.length
                 })
 
-                // console.log('arraySize',arraySize)
-
-                console.log(posts)
-                console.log(posts.array)
-
-                // MUDAR 4 PARA 20
             })
 
     }, [reRender])
 
 
 
-
-
     function nextPage() {
-        // console.log(arraySize)
-        // console.log(posts.length, n)
-        if (n + 50 > 1000000) {
+        if (n + 20 > posts.size) {
 
-            let add = 1000000 - n
+            let add = posts.size - n
 
             if (add > 0) {
                 setN(n + add)
@@ -54,28 +48,34 @@ export default function TimeLine() {
             return
         }
 
-        setN(n + 50)
+        setN(n + 20)
         console.log('carregar página')
 
-        // window.scrollTo(0, 0)
+        window.scrollTo(0, 0)
         setReRender(!reRender)
-
     }
 
     return (
 
         <>
             {(posts.array.length === 0) ? (
-                <div onClick={console.log('console',posts.array.length)}
+                
+                <div 
+                    style={{background: 'purple', width: '100vh', height: '100vh'}}
                 >
+                    {/* {console.log(posts.array)} */}
                     LOADING
                 </div> //CRIAR O LOADING
             ) : (
 
                 <Wrapper>
                     <MainContent>
-                        <Title> <h1>timeline</h1> </Title>
-                        <FormBox />
+                        <Title>
+                            {console.log(posts.array)}
+                            <h1>timeline</h1>
+                        </Title>
+                        <FormBox 
+                            />
                         {posts.array.map((value, index) =>
                             <Post
                                 key={index}

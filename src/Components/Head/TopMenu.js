@@ -1,64 +1,81 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserBox, MenuBar, Title, LogoutBox,StyledIcon } from "../../Styles/TopMenuStyle.js";
+import { UserBox, MenuBar, Title, LogoutBox, StyledIcon, ProfileImg } from "../../Styles/TopMenuStyle.js";
 import GlobalContext from '../../contexts/globalContext.js';
 import SearchBar from './SearchBar.js';
 import { userImage, logOut } from '../../Services/api.js';
+import getConfig from "../../Services/getConfig.js";
 
 
-export default function TopMenu(){
+export default function TopMenu() {
     const navigate = useNavigate();
 
     const [logout, setLogout] = useState(false);
     const [profileImage, setProfileImage] = useState('');
-    const { config, header,setHeader } = useContext(GlobalContext);
+    const { header, setHeader, token, setToken } = useContext(GlobalContext);
 
 
+    useEffect(async () => {
 
-    useEffect(async ()=>{
-        if (!header){
-            return;
-        } else{
-            try {
-                const userData = await userImage(config);
-                setProfileImage(userData.data.pictureUrl);
-                } catch (error) {
-                console.log(error);
+        const tokenLs = localStorage.getItem("token");
+
+        if (token === '') {
+            if (!tokenLs) {
+                navigate('/signin');
                 return;
             }
-         }
-    },[setHeader]);
+            setToken(`${tokenLs}`);
+        }
 
-    if (!header){
+        try {
+            setProfileImage((await userImage(getConfig(tokenLs))).data);
+
+        } catch (error) {
+
+            if (error.response.status === 401) {
+                navigate('/signin');
+            };
+            return;
+
+        }
+
+    }, [setHeader]);
+
+    if (!header) {
         return (<></>);
     };
 
-    function cliked(){
+    function cliked() {
         setLogout(!logout);
     };
-    function logoutUser(){
+    async function logoutUser() {
         const body = {};
         setHeader(false);
-        logOut(config, body);
-        navigate('/signin');
-        
+        console.log(token)
+        try {
+            const logout = await logOut(getConfig(token), body);
+            navigate('/signin');
+
+        } catch (error) {
+            console.log(error)
+        }
+
     };
 
-    return(
+    return (
         <div>
-        <LogoutBox visible={logout} onClick={logoutUser}>
-            <h3> Logout</h3>
-        </LogoutBox>
-        <SearchBar />
-        <MenuBar>
-            <Title>linkr</Title>
-            <UserBox onClick={cliked} profileImage={profileImage}> 
-                <StyledIcon isUp={logout}/>
-                <div>
-                </div>
-            </UserBox>
-        </MenuBar>
+            <LogoutBox visible={logout} onClick={logoutUser}>
+                <h3> Logout</h3>
+            </LogoutBox>
+            <SearchBar />
+            <MenuBar>
+                <Title onClick={() => navigate('/timeline')}>linkr</Title>
+                <UserBox onClick={cliked}>
+                    <StyledIcon isup={logout} />
+                    <ProfileImg profileImage={profileImage} />
+                </UserBox>
+            </MenuBar>
         </div>
     )
 };
