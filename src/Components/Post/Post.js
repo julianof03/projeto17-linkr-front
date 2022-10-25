@@ -16,6 +16,8 @@ import ReactTooltip from 'react-tooltip';
 import GlobalContext from "../../contexts/globalContext";
 import { EditPost } from "../../Services/api";
 
+import PropagateLoader from "react-spinners/PropagateLoader";
+
 export default function Post(
     {
         username,
@@ -114,11 +116,10 @@ export default function Post(
         }
     }
 
-
     return (
         <>
             {(!urlMetadataOBJ.url) ?
-                (<p>LOADING</p>)
+                ( <PropagateLoader color="#b3b3b3" />)
                 :
                 (<PostHTML>
                     <ImgWrapper props={props}>
@@ -243,8 +244,9 @@ export default function Post(
                             </UrlMetadaDetails>
 
                             <ImageUrl>
-                                <img src={urlMetadataOBJ.image.url}
-                                    alt="description of image" />
+                            {(urlMetadataOBJ.image) ? 
+                            ( <img src={urlMetadataOBJ.image.url} alt="description of image" />) : (<img src={''} alt="image here" />)}
+                               
                             </ImageUrl>
                         </UrlMetadaSpace>
                     </Main>

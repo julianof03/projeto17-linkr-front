@@ -6,6 +6,7 @@ import getConfig from '../Services/getConfig.js'
 import { getTimeLine } from '../Services/api.js'
 import { useContext, useEffect, useState } from "react"
 import GlobalContext from "../contexts/globalContext.js"
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 
 export default function TimeLine() {
@@ -34,9 +35,12 @@ export default function TimeLine() {
                 })
 
             })
+            .catch( (err) =>  setTimeout(() => {alert("An error ocurred while trying to fetch the posts, please refresh the page")}, 3000) )
+            
 
     }, [reRender])
 
+    
 
 
     function nextPage() {
@@ -57,35 +61,28 @@ export default function TimeLine() {
         setReRender(!reRender)
     }
 
+
     return (
 
         <>
             {(posts.array.length === 0) ? (
-                
-                <div 
-                    style={{
-                        background: 'purple', 
-                        width: '100%', 
-                        minHeight: '100vh',
-                        height: '100%',
-                        position:'fixed'
-                    }}
-                >
+                               <Wrapper>
                     {/* CASO O ARRAY ESTEJA VAZIO */}
                     <MainContent>
                         <Title>
                             <h1>timeline</h1>
                         </Title>
                         <FormBox />
-                        
+                        <PropagateLoader color="#b3b3b3" />
+                        <p>there are no posts yet</p>
                         <NextPage
                             onClick={() => { nextPage() }}
                         >
                             Carregar mais
                         </NextPage>
                     </MainContent>
-                    LOADING
-                </div> //CRIAR O LOADING
+                    </Wrapper> 
+                   
             ) : (
 
                 <Wrapper>
@@ -152,6 +149,10 @@ const MainContent = styled.div`
     align-items: center;
     width: 610px;
     margin-top: 100px;
+    p{
+        margin-top:30px;
+        color:white;
+    }
     /* background-color: black; */
 `
 const Title = styled.div`
@@ -176,7 +177,7 @@ top:50px;
 const NextPage = styled.div`
 width: 200px;
 height: 70px;
-margin-top: 20px;
+margin-top: 35px;
 margin-bottom:20px;
 
 
