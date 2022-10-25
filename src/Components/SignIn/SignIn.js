@@ -19,7 +19,7 @@ export default function SignIn() {
 
         try {
             const login = await signIn(body);
-             console.log(login.data)
+            //  console.log(login.data)
              setToken(`${login.data.token}`);
              setUser(login.data.name);
              setUserId(login.data.userId)

@@ -15,17 +15,19 @@ export default function TimeLine() {
     setHeader(true);
     const { reRender, setReRender } = useContext(GlobalContext)
 
+    const token = localStorage.getItem("token")
+
+    // const {posts, setPosts} = useContext(GlobalContext)
     const [posts, setPosts] = useState({
         array: [],
         size: 0
     })
-    const [n, setN] = useState(0)
-    // const [arraySize, setArraySize] = useState(0)
 
+    const [n, setN] = useState(0)
     useEffect(() => {
-        getTimeLine(getConfig)
+        getTimeLine(getConfig(token))
             .then((res) => {
-                console.log(res.data)
+
                 setPosts({
                     array: res.data.slice(n, n + 20),
                     size: res.data.length
@@ -49,7 +51,7 @@ export default function TimeLine() {
         }
 
         setN(n + 20)
-        console.log('carregar página')
+        // console.log('carregar página')
 
         window.scrollTo(0, 0)
         setReRender(!reRender)
@@ -61,9 +63,27 @@ export default function TimeLine() {
             {(posts.array.length === 0) ? (
                 
                 <div 
-                    style={{background: 'purple', width: '100vh', height: '100vh'}}
+                    style={{
+                        background: 'purple', 
+                        width: '100%', 
+                        minHeight: '100vh',
+                        height: '100%',
+                        position:'fixed'
+                    }}
                 >
-                    {/* {console.log(posts.array)} */}
+                    {/* CASO O ARRAY ESTEJA VAZIO */}
+                    <MainContent>
+                        <Title>
+                            <h1>timeline</h1>
+                        </Title>
+                        <FormBox />
+                        
+                        <NextPage
+                            onClick={() => { nextPage() }}
+                        >
+                            Carregar mais
+                        </NextPage>
+                    </MainContent>
                     LOADING
                 </div> //CRIAR O LOADING
             ) : (
@@ -74,14 +94,13 @@ export default function TimeLine() {
                             {console.log(posts.array)}
                             <h1>timeline</h1>
                         </Title>
-                        <FormBox 
-                            />
+                        <FormBox />
                         {posts.array.map((value, index) =>
                             <Post
                                 key={index}
                                 username={value.username}
-                                postUserId={value.postUserId}
-                                img={value.img}
+                                postUserId={value.userId}
+                                userImg={value.userImg}
                                 text={value.text}
                                 link={value.link}
                                 likesQtd={value.likesQtd}
@@ -132,6 +151,7 @@ const MainContent = styled.div`
     flex-direction: column;
     align-items: center;
     width: 610px;
+    margin-top: 100px;
     /* background-color: black; */
 `
 const Title = styled.div`

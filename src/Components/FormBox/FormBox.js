@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
 import React from "react";
 import getConfig from "../../Services/getConfig"
 import { createPost } from "../../Services/api";
+import GlobalContext from "../../contexts/globalContext";
+import { userImage, logOut } from '../../Services/api.js';
 
 export default function FormBox({img}) {
     const navigate = useNavigate()
 
-    const token = localStorage.getItem("token")
+    const { token, setToken } = useContext(GlobalContext);
 
+
+    const { reRender, setReRender } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
     const [buttonText, SetButtonText] = useState('Publish');
@@ -27,18 +31,18 @@ export default function FormBox({img}) {
             link: form.link,
             text: form.text,
         }
-        console.log('pre promise')
-        console.log('token',token)
+        // console.log('pre promise')
+        // console.log('token',token)
         const promise = createPost(getConfig(token), body )
 
         promise.then( (res) => { 
-            console.log('then')
+            // console.log('then')
             navigate('/timeline') } )
         promise.catch( (err) => alert(err.message) )
 
         setTimeout(() => {
             SetButtonText("Publish");
-            console.log('enviou o post', form)
+            // console.log('enviou o post', form)
             clearForm()
         })
     }
@@ -46,14 +50,42 @@ export default function FormBox({img}) {
         setForm({
             link: '',
             text: '',
-
         })
         setDisable(false)
+        setReRender(!reRender)
     }
+
+
+    const [profileImage, setProfileImage] = useState('');
+    useEffect(async () => {
+
+        const tokenLs = localStorage.getItem("token");
+
+        if (token === '') {
+            if (!tokenLs) {
+                navigate('/signin');
+                return;
+            }
+            setToken(`${tokenLs}`);
+        }
+
+        try {
+            setProfileImage((await userImage(getConfig(tokenLs))).data);
+
+        } catch (error) {
+
+            if (error.response.status === 401) {
+                navigate('/signin');
+            };
+            return;
+
+        }
+
+    }, [setReRender]);
 
     return (
         <FormBoxWrapper >
-            <ImgWrapper src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+            <ImgWrapper src={profileImage}/>
             <Main onSubmit={sendForm}>
                 <Answer> What are you going to share today? </Answer>
                 <LinkInput  type='link' name='link'
