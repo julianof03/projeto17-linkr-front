@@ -15,16 +15,19 @@ export default function TimeLine() {
     setHeader(true);
     const { reRender, setReRender } = useContext(GlobalContext)
 
+    const token = localStorage.getItem("token")
+
+    // const {posts, setPosts} = useContext(GlobalContext)
     const [posts, setPosts] = useState({
         array: [],
         size: 0
     })
-    const [n, setN] = useState(0)
 
+    const [n, setN] = useState(0)
     useEffect(() => {
-        getTimeLine(getConfig)
+        getTimeLine(getConfig(token))
             .then((res) => {
-                console.log(res.data)
+
                 setPosts({
                     array: res.data.slice(n, n + 20),
                     size: res.data.length
@@ -68,26 +71,13 @@ export default function TimeLine() {
                         position:'fixed'
                     }}
                 >
-                    {/* {console.log(posts.array)} */}
+                    {/* CASO O ARRAY ESTEJA VAZIO */}
                     <MainContent>
                         <Title>
-                            {/* {console.log(posts.array)} */}
                             <h1>timeline</h1>
                         </Title>
                         <FormBox />
-                        {/* {posts.array.map((value, index) =>
-                            <Post
-                                key={index}
-                                username={value.username}
-                                postUserId={value.postUserId}
-                                img={value.img}
-                                text={value.text}
-                                link={value.link}
-                                likesQtd={value.likesQtd}
-                                liked={value.liked}
-                                postId={value.postId}
-                            />
-                        )} */}
+                        
                         <NextPage
                             onClick={() => { nextPage() }}
                         >
@@ -101,7 +91,7 @@ export default function TimeLine() {
                 <Wrapper>
                     <MainContent>
                         <Title>
-                            {/* {console.log(posts.array)} */}
+                            {console.log(posts.array)}
                             <h1>timeline</h1>
                         </Title>
                         <FormBox />
@@ -109,8 +99,8 @@ export default function TimeLine() {
                             <Post
                                 key={index}
                                 username={value.username}
-                                postUserId={value.postUserId}
-                                img={value.img}
+                                postUserId={value.userId}
+                                userImg={value.userImg}
                                 text={value.text}
                                 link={value.link}
                                 likesQtd={value.likesQtd}

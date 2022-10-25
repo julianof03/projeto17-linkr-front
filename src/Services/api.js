@@ -3,8 +3,8 @@ import axios from "axios";
 // dotenv.config()
 
 
-// const URL = "https://localhost:5000";
-const URL = "https://projeto17linkr.herokuapp.com";
+const URL = "http://localhost:5000";
+// const URL = "https://projeto17linkr.herokuapp.com";
 // const URL = process.env.REACT_APP_API_BASE_URL;
 
 // Sign-Up--------------------------------
@@ -21,8 +21,6 @@ function createPost(getConfig, body) {
 };
 
 function EditPost(body, id) {
-    console.log('body', body)
-
     return axios.post(`${URL}/timeline/${id}`, body);
 };
 
@@ -46,7 +44,6 @@ function logOut(getConfig, body) {
 };
 
 function getTimeLine(getConfig) {
-    console.log('gettimeline')
     return axios.get(`${URL}/timeline`, getConfig)
 }
 

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './Styles/globalStyle';
-import { useState } from 'react';
+import {  useState } from 'react';
 import GlobalContext from './contexts/globalContext';
 import React from 'react';
 import Header from './Components/Head/TopMenu.js';
@@ -25,21 +25,26 @@ export default function App() {
     const [config, setConfig] = useState({});
     const [header, setHeader] = useState(false);
     const [userId, setUserId] = useState('')
-    const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:'' } )
-    const [editPost, SetEditPost] = useState( { status:false, postId:'' } )
+    const [deleteScreen, setDeleteScreen] = useState({ status: false, postId: '' })
+    const [editPost, SetEditPost] = useState({ status: false, postId: '' })
     const [postId_global, setPostId_global] = useState('')
     const [hashposts, setHashposts] = useState({
         array: [],
         size: 0,
-      });
-      const [clicked, setClicked] = useState(false);
+    });
+    const [posts, setPosts] = useState({
+        array: [],
+        size: 0
+    })
+    const [clicked, setClicked] = useState(false);
+
+
     return (
         <div>
             <GlobalStyle />
             <GlobalContext.Provider value={
                 {
                     reRender, setReRender,
-                    post, setPost,
                     token, setToken,
                     user, setUser,
                     header, setHeader,
@@ -47,6 +52,7 @@ export default function App() {
                     deleteScreen, setDeleteScreen,
                     editPost, SetEditPost,
                     postId_global, setPostId_global,
+                    // posts, setPosts,
                     hashposts, setHashposts,
                     clicked, setClicked
                 }
