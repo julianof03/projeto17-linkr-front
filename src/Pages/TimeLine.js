@@ -200,11 +200,7 @@ const MainContent = styled.div`
     flex-direction: column;
     align-items: center;
     width: 610px;
-<<<<<<< HEAD
-=======
     margin-top: 100px;
-    /* background-color: black; */
->>>>>>> main
 `
 const Title = styled.div`
     width:100%;
