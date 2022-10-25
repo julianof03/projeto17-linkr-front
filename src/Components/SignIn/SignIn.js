@@ -25,6 +25,7 @@ export default function SignIn() {
              setUserId(login.data.userId)
 
              localStorage.setItem("token",`${login.data.token}`);
+             localStorage.setItem("userId",`${login.data.userId}`);
              navigate('/timeline')
         } catch (error) {
             console.log(error.message);

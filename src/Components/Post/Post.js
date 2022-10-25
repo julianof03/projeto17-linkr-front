@@ -28,7 +28,6 @@ export default function Post(
 ) {
     
     const [message, setMessage] = useState('');
-    const {userId} = useContext(GlobalContext)
 
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
@@ -41,12 +40,12 @@ export default function Post(
     const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
     const {editPost, SetEditPost} = useContext(GlobalContext);
     const {postId_global, setPostId_global} = useContext(GlobalContext)
-
+    const userId = localStorage.getItem("userId");
 
     const navigate = useNavigate()
-
-    useEffect(async () => {
-
+    console.log(userId)
+    useEffect(async () => {                                        
+        SetEditPost({postId: '', status: false})
         if(!message){setMessage(text)}
         
 
@@ -101,8 +100,7 @@ export default function Post(
 
         promise.then( (res) => { 
             console.log("mandei tudo: ", id, " ", body);
-            
-            document.location.reload(true);
+            document.location.reload()
             SetEditPost({postId: '', status: false})
             } )
         promise.catch( (err) => alert(err.message) )
@@ -164,9 +162,10 @@ export default function Post(
                         <Main>
                             <Title>
                                 {postUserId != userId ? 
-                                    ( <h1>{username}</h1> ) 
+                                    ( <h1>{username}</h1>) 
                                         : 
                                     (<> DeleteScreen
+                                   
                                         <h1>{username}</h1>
                                         <IconsWrapper>
                                             <MdModeEdit
