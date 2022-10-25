@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
 import React from "react";
 import getConfig from "../../Services/getConfig"
 import { createPost } from "../../Services/api";
+import GlobalContext from "../../contexts/globalContext";
 
 export default function FormBox({img}) {
     const navigate = useNavigate()
 
     const token = localStorage.getItem("token")
 
+    const { reRender, setReRender } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
     const [buttonText, SetButtonText] = useState('Publish');
@@ -27,18 +29,18 @@ export default function FormBox({img}) {
             link: form.link,
             text: form.text,
         }
-        console.log('pre promise')
-        console.log('token',token)
+        // console.log('pre promise')
+        // console.log('token',token)
         const promise = createPost(getConfig(token), body )
 
         promise.then( (res) => { 
-            console.log('then')
+            // console.log('then')
             navigate('/timeline') } )
         promise.catch( (err) => alert(err.message) )
 
         setTimeout(() => {
             SetButtonText("Publish");
-            console.log('enviou o post', form)
+            // console.log('enviou o post', form)
             clearForm()
         })
     }
@@ -49,6 +51,7 @@ export default function FormBox({img}) {
 
         })
         setDisable(false)
+        setReRender(!reRender)
     }
 
     return (

@@ -3,6 +3,7 @@ import axios from "axios";
 // dotenv.config()
 
 
+// const URL = "https://localhost:5000";
 const URL = "https://projeto17linkr.herokuapp.com";
 // const URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -26,7 +27,7 @@ function EditPost(body, id) {
 };
 
 // Headers ---------------------------------
-// doLike ---------------------------------
+// updateLike ---------------------------------
 
 function updateLike(body, getConfig){
     return axios.post(`${URL}/likeUpdate`, body, getConfig );
@@ -42,12 +43,11 @@ function searchUsers(getConfig, startsWith) {
 
 function logOut(getConfig, body) {
     return axios.put(`${URL}/signout`, body, getConfig);
-
 };
 
 function getTimeLine(getConfig) {
+    console.log('gettimeline')
     return axios.get(`${URL}/timeline`, getConfig)
-
 }
 
 function getHashtagTrending() {
@@ -57,6 +57,7 @@ function getHashtagTrending() {
 function getHashtagPosts(hashtag) {
     return axios.get(`${URL}/hashtag/${hashtag}`);
 }
+
 export {
     signUp,
     signIn,
