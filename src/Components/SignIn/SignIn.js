@@ -9,7 +9,7 @@ export default function SignIn() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { token, setToken, setHeader, setUser, userId, setUserId} = useContext(GlobalContext);
+    const { setToken, setHeader, setUser, } = useContext(GlobalContext);
     setHeader(false);
 
     async function sendForm(e) {
@@ -17,15 +17,13 @@ export default function SignIn() {
         const body = { email, password };
         try {
             const login = await signIn(body);
-            setToken(login.data.token);
-            console.log(' AQUIIIIIIII ')
-            setUserId(login.data.userId)
+            setToken(`${login.data.token}`);
+            setUser(login.data.name)
+            localStorage.setItem("token",`${login.data.token}`);
             localStorage.setItem("userId",`${login.data.userId}`);
-            localStorage.setItem("token",`${token}`);
             navigate('/timeline')
         } catch (error) {
-            console.log('outro erro')
-            console.log(error.response.data);
+            console.log(error.message);
             if (error.response.status === 401) {
                 alert('Email ou Senha incorretos! Tente novamente.');
                 return

@@ -1,6 +1,4 @@
 import axios from "axios";
-// import dotenv from 'dotenv';
-// dotenv.config()
 
 // const URL = "https://projeto17linkr.herokuapp.com";
 const URL = "http://localhost:5000";
@@ -20,8 +18,11 @@ function createPost(getConfig, body) {
 function deletePost(id, getConfig) {
     return axios.delete(`${URL}/timeline/${id}`, getConfig)
 };
+function EditPost(body, id) {
+    return axios.post(`${URL}/timeline/${id}`, body);
+};
 
-// doLike ---------------------------------
+// updateLike ---------------------------------
 function updateLike(body, getConfig){
     return axios.post(`${URL}/likeUpdate`, body, getConfig );
 }
@@ -60,5 +61,6 @@ export {
     searchUsers,
     userImage,
     deletePost,
-    createPost
+    createPost,
+    EditPost
 }

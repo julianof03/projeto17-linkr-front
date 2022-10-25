@@ -10,23 +10,16 @@ import { MdYoutubeSearchedFor } from "react-icons/md";
 
 
 export default function TimeLine() {
-    // 0 - 4;5 - 9; 10-14
-
     const { setHeader } = useContext(GlobalContext);
     setHeader(true);
     const { reRender, setReRender } = useContext(GlobalContext)
-
-    const [posts, setPosts] = useState({
-        array: [],
-        size: 0
-    })
-
-    const [n, setN] = useState(0)
-    const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
     const token = localStorage.getItem("token")
-
+    const [posts, setPosts] = useState({ array: [], size: 0 })
+    const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
+    const [n, setN] = useState(0)
+    
     useEffect(() => {
-        getTimeLine(getConfig)
+        getTimeLine(getConfig(token))
             .then((res) => {
                 setPosts({
                     array: res.data.slice(n, n + 20),
@@ -68,8 +61,23 @@ export default function TimeLine() {
     }
     
     if(posts.array.length === 0){
-        return ( <div> LOADING </div> )
+        return ( 
+            <div  style={{
+                        background: 'purple', 
+                        width: '100%', 
+                        minHeight: '100vh',
+                        height: '100%',
+                        position:'fixed'}}> 
+                <MainContent>
+                    <Title> <h1>timeline</h1> </Title>
+                    <FormBox />
+                    <NextPage onClick={() => { nextPage() }} >
+                            Carregar mais
+                    </NextPage>
+                </MainContent>
+            </div> ) //CRIAR LOADING
     }
+
     return ( 
         <Wrapper>
             {(deleteScreen.status) ? ( <DeleteBox/> ) : ( <></> )}
@@ -101,7 +109,7 @@ export default function TimeLine() {
                 </TrendingWrapper>
             </AsideContent>
         </Wrapper>
-    )
+        )
 }
 
 const DeleteOpcions = styled.div`
@@ -192,6 +200,11 @@ const MainContent = styled.div`
     flex-direction: column;
     align-items: center;
     width: 610px;
+<<<<<<< HEAD
+=======
+    margin-top: 100px;
+    /* background-color: black; */
+>>>>>>> main
 `
 const Title = styled.div`
     width:100%;

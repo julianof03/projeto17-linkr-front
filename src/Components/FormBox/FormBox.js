@@ -3,40 +3,48 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
 import React from "react";
 import getConfig from "../../Services/getConfig"
-import { createPost, userImage } from "../../Services/api";
+import { createPost, userImage, logOut } from "../../Services/api";
 import GlobalContext from "../../contexts/globalContext";
+
 
 export default function FormBox({img}) {
     const navigate = useNavigate()
-    const { token, setToken, setReRender } = useContext(GlobalContext)
+
+    const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
     const [profileImage, setProfileImage] = useState('')
+    const [buttonText, SetButtonText] = useState('Publish');
 
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
     function sendForm(e) {
         e.preventDefault()
-        if (disable === true) return setDisable(true)
-
+        if (disable === true) return
+        setDisable(true)
+        SetButtonText("Publishing...");
+        
         const body = {
             link: form.link,
             text: form.text,
         }
         const promise = createPost(getConfig(token), body )
-
+        
         promise.then( (res) => { navigate('/timeline') } )
         promise.catch( (err) => console.log('Deu Erro logout',err) )
-        setTimeout(() => { clearForm() })
+        setTimeout(() => {
+            SetButtonText("Publish")
+            clearForm()
+        })
     }
     function clearForm() {
         setForm({
             link: '',
             text: '',
-
         })
         setDisable(false)
+        setReRender(!reRender)
     }
     
     useEffect(async () => {
@@ -57,9 +65,29 @@ export default function FormBox({img}) {
         }
     }, [setReRender]);
 
+    useEffect(async () => {
+        const tokenLs = localStorage.getItem("token");
+        if (token === '') {
+            if (!tokenLs) {
+                navigate('/signin');
+                return;
+            }
+            setToken(`${tokenLs}`);
+        }
+
+        try {
+            setProfileImage((await userImage(getConfig(tokenLs))).data);
+
+        } catch (error) {
+            if (error.response.status === 401) {
+                navigate('/signin');
+            };
+            return;
+        }
+    }, [setReRender]);
+
     return (
         <FormBoxWrapper >
-            {console.log('profile image :', profileImage)}
             <ImgWrapper src={profileImage} />
             <Main onSubmit={sendForm}>
                 <Answer> What are you going to share today? </Answer>
@@ -73,7 +101,7 @@ export default function FormBox({img}) {
                 </TextInput>
                 <ButtonWrapper type='submit'>
                     <button >
-                        Publish
+                    {buttonText}
                     </button>
                 </ButtonWrapper>
             </Main>

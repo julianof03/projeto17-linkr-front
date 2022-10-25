@@ -2,65 +2,69 @@ import styled from "styled-components";
 import Post from "../Components/Post/Post.js";
 import Trending from "../Components/Trending/Trending.js";
 import GlobalContext from "../contexts/globalContext.js";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { userImage, logOut } from '../Services/api.js';
+import getConfig from "../Services/getConfig.js";
 
 export default function UserPage() {
+    const navigate = useNavigate();
 
     const { setHeader } = useContext(GlobalContext);
     setHeader(true);
 
-    const array = [
-        {
-            username: 'gojo satoru',
-            img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
-            text: 'textinho bacanozo #HashTag #Jujutsu',
-            link: 'https://github.com/VictorHugoCid/projeto17-linkr-front',
-            likesQtd: 15,
-            liked: true
-        }, {
-            username: 'gojo satoru',
-            img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
-            text: 'outro texto',
-            link: 'https://react-icons.github.io/react-icons/search?q=heart',
-            likesQtd: 15,
-            liked: false
-        },{
-            username: 'gojo satoru',
-            img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
-            text: 'textinho bacanozo #HashTag #Jujutsu',
-            link: 'https://www.youtube.com/watch?v=2ZbvzROhRks',
-            likesQtd: 15,
-            liked: true
-        },{
-            username: 'gojo satoru',
-            img: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg',
-            text: 'textinho bacanozo #HashTag #Jujutsu',
-            link: 'https://br.tradingview.com/chart/cnTdaK9o/?symbol=BINANCE%3ASNXUSDTPERP',
-            likesQtd: 15,
-            liked: false
-        }
+    const { posts, userId } = useContext(GlobalContext)
+    
 
-    ]
+    const userPosts = []/* posts.filter((value) => value.postUserId === userId) */
+    console.log(userPosts)
+
     let name = 'Gojo Satoru';
 
+    const { token, setToken } = useContext(GlobalContext);
+    const [profileImage, setProfileImage] = useState('');
+    useEffect(async () => {
+
+        const tokenLs = localStorage.getItem("token");
+
+        if (token === '') {
+            if (!tokenLs) {
+                navigate('/signin');
+                return;
+            }
+            setToken(`${tokenLs}`);
+        }
+
+        try {
+            setProfileImage((await userImage(getConfig(tokenLs))).data);
+
+        } catch (error) {
+
+            if (error.response.status === 401) {
+                navigate('/signin');
+            };
+            return;
+
+        }
+
+    }, [setHeader]);
 
     return (
         <Wrapper>
-
             <LeftWrapper>
                 <Title>
                     <ImgWrapper>
-                     <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg'
-                     />
+                        <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg'
+                        />
                     </ImgWrapper>
                     <h1>{name}'s posts'</h1>
 
                 </Title>
 
                 <PostWrapper>
-                    {array.map((value, index) =>
+                    {userPosts.map((value, index) =>
                         <Post
-                            key = {index}
+                            key={index}
                             username={value.username}
                             img={value.img}
                             text={value.text}
