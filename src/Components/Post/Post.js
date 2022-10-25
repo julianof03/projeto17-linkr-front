@@ -93,7 +93,7 @@ export default function Post(
                         </ImgWrapper>
                         <Main>
                             <Title>
-                                {(userId === 41) ? 
+                                {(userId !== postUserId) ? 
                                     ( <h1>{username}</h1> ) 
                                         : 
                                     (<> 
