@@ -7,10 +7,11 @@ import { useContext ,useEffect, useState } from "react";
 import mql from '@microlink/mql'
 import { useNavigate } from "react-router-dom";
 import GlobalContext from "../../contexts/globalContext";
+import ReactTooltip from 'react-tooltip';
 
 export default function Post(
     { username,
-        img,
+        userImg,
         text,
         link,
         likesQtd,
@@ -25,11 +26,11 @@ export default function Post(
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
     const navigate = useNavigate()
     const {deleteScreen, setDeleteScreen} = useContext(GlobalContext)
-    const {postId_global, setPostId_global} = useContext(GlobalContext)
 
     useEffect(async () => {
         if (like) { setProps('true') }
-        const { data } = await mql('https://www.youtube.com/watch?v=rSL3LX8YYOw', {
+
+        const { data } = await mql(link, {
             data: {
                 avatar: {
                     selector: '#avatar',
@@ -45,37 +46,46 @@ export default function Post(
         const newTag = tag.replace('#', '')
         navigate(`/hashtag/${newTag}`)
     }
-    return (
-        <>
+
+    return (<>
             {(!urlMetadataOBJ.url) ?
-                ( <p>LOADING</p> ) 
-                    : 
-                    (<PostHTML>
-                        <ImgWrapper props={props}>
-                            <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
-                            <div>
-                                {props === 'true' ? 
-                                (
-                                    <BsHeartFill
-                                        size='20px'
-                                        onClick={() => {
-                                            setLike(!like)
-                                            setProps('false')
-                                        }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
-                                    />
-                                ) : (
-                                    <BsHeart
-                                        size='20px'
-                                        onClick={() => {
-                                            setLike(!like)
-                                            setProps('true')
-                                        }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
-                                    />
-                                )}
+                ( <p> LOADING </p> ) // COLOCAR BOTÃO DE LOADING )
+                : (
+                    <PostHTML>
+                        {console.log('LIKES e LIKESQTD:', liked, likesQtd)}
+                        <ImgWrapper
+                            like={liked}
+                            props={props}
+                        >
+                            <img src={userImg} />
+                            <div data-tip data-for="registerTip">
+                                {like ?
+                                    (
+                                        <BsHeartFill
+                                            size='20px'
+                                            onClick={() => {
+                                                setLike(!like)
+                                                setProps('false')
+                                            }}
+
+                                        />
+                                    ) : (
+                                        <BsHeart
+                                            size='20px'
+                                            onClick={() => {
+                                                setLike(!like)
+                                                setProps('true')
+                                            }}
+                                        />
+
+                                    )}
+                                <ReactTooltip
+                                    id="registerTip"
+                                    place="bottom"
+                                    effect="solid"
+                                >
+                                    COLOCAR OS LIKES AQUI
+                                </ReactTooltip>
 
                             </div>
 
@@ -91,7 +101,9 @@ export default function Post(
                             </Likes>
 
                         </ImgWrapper>
+
                         <Main>
+                            {console.log('userId from localStore, UserId, postUserId :', userId, postUserId)}
                             <Title>
                                 {(userId !== postUserId) ? 
                                     ( <h1>{username}</h1> ) 
@@ -135,16 +147,17 @@ export default function Post(
                                     <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
                                 </UrlMetadaDetails>
                                 <ImageUrl>
-                                    <img src={urlMetadataOBJ.image.url}
-                                        alt="description of image" />
+
+                                    <img
+                                        src={urlMetadataOBJ.image?.url}
+                                        alt='image not found 
+                                        &#x1F625;' />
                                 </ImageUrl>
                             </UrlMetadaSpace>
                         </Main>
-                    </PostHTML>
-                )
-            }
-        </>
-    )
+                    </PostHTML >
+                )}
+        </>)
 }
 
 const PostHTML = styled.div`
@@ -190,7 +203,8 @@ const UrlMetadaDetails = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 24px 27px 5px 19px;
+  padding: 15px 27px 5px 15px;
+  border-radius: 16px;
 `;
 const ImageUrl = styled.div`
     img {
@@ -205,7 +219,7 @@ const ImgWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     div{
-        color: ${props => props.props === 'true' ? 'red' : 'white'};
+        color: ${props => props.like === true ? 'red' : 'white'};
         cursor: pointer;
     }
 

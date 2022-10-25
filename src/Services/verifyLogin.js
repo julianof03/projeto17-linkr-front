@@ -1,20 +1,23 @@
 import React, { useContext } from "react";
 import {useNavigate} from 'react-router-dom';
-import { GlobalContext } from "../contexts/globalContext.js";
+import GlobalContext from "../contexts/globalContext.js";
 
 export default function VerifyLogin(){
 
-    const {config,setConfig} = useContext(GlobalContext);
+    const {token, setToken} = useContext(GlobalContext);
 
     const navigate = useNavigate();
+    console.log('to aqui')
 
-    const token = localStorage.getItem("token");
-    if(Object.keys(config).length===0){
-        if(!token){
-            navigate('/login');
+    const tokenLs = localStorage.getItem("token");
+    if(token===''){
+        console.log('entrei')
+        if(!tokenLs){
+            console.log('oi')
+            navigate('/signin');
             return;
         } else{
-            setConfig({headers:{Authorization:`Bearer ${token}`}});
+            setToken(tokenLs);
         };
     };
     return;

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import GlobalContext from './contexts/globalContext';
 import React from 'react';
 import Header from './Components/Head/TopMenu.js';
-
 import SignIn from './Components/SignIn/SignIn';
 import SingUp from './Components/SignUp/SignUp';
 import TimeLine from './Pages/TimeLine.js';
@@ -23,10 +22,16 @@ export default function App() {
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
     const [config, setConfig] = useState({});
-    const [header, setHeader] = useState(false);
     const [userId, setUserId] = useState('')
     const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:'' } )
     const [postId_global, setPostId_global] = useState('')
+    const [header, setHeader] = useState(false)
+    const [hashposts, setHashposts] = useState({
+        array: [],
+        size: 0,
+      });
+      const [clicked, setClicked] = useState(false);
+
     return (
         <div>
             <GlobalStyle />
@@ -40,7 +45,9 @@ export default function App() {
                     header, setHeader,
                     userId, setUserId,
                     deleteScreen, setDeleteScreen,
-                    postId_global, setPostId_global
+                    postId_global, setPostId_global,
+                    hashposts, setHashposts,
+                    clicked, setClicked
                 }
             }>
                 <BrowserRouter>

@@ -45,6 +45,8 @@ const SearchIcon = styled(BiSearchAlt)`
     top: 30px;
     z-index: 4;
 
+    cursor: pointer;
+
     @media only screen and (max-width:600px) {
         position: fixed;
         left: calc(85vw);
@@ -64,6 +66,8 @@ const FoundUsers = styled.div`
     flex-direction: column;
     z-index: 2;
     border-radius: 0 0 20px 20px;
+
+    cursor: pointer;
     @media only screen and (max-width:600px) {
         width: calc(90vw);
         position: fixed;

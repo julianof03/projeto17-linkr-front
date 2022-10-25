@@ -1,38 +1,34 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useNavigate } from "react-router-dom"
 import React from "react";
+import getConfig from "../../Services/getConfig"
+import { createPost, userImage } from "../../Services/api";
+import GlobalContext from "../../contexts/globalContext";
 
-export default function FormBox() {
+export default function FormBox({img}) {
     const navigate = useNavigate()
-
+    const { token, setToken, setReRender } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
+    const [profileImage, setProfileImage] = useState('')
+
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
     function sendForm(e) {
         e.preventDefault()
-        if (disable === true) return
-        setDisable(true)
-        
+        if (disable === true) return setDisable(true)
+
         const body = {
-            userId : 21,
             link: form.link,
             text: form.text,
         }
-        console.log('pre promise')
-        const promise = axios.post('http://localhost:5000/timeline', body)
-        promise.then( (res) => { 
-            console.log('then')
-            navigate('/timeline') } )
-        promise.catch( (err) => console.log('Deu Erro logout',err) )
+        const promise = createPost(getConfig(token), body )
 
-        setTimeout(() => {
-            console.log('enviou o post', form)
-            clearForm()
-        })
+        promise.then( (res) => { navigate('/timeline') } )
+        promise.catch( (err) => console.log('Deu Erro logout',err) )
+        setTimeout(() => { clearForm() })
     }
     function clearForm() {
         setForm({
@@ -42,10 +38,29 @@ export default function FormBox() {
         })
         setDisable(false)
     }
+    
+    useEffect(async () => {
+        const tokenLs = localStorage.getItem("token");
+        if (token === '') {
+            if (!tokenLs){ return navigate('/signin') }
+            setToken(`${tokenLs}`);
+        }
+
+        try {
+            setProfileImage((await userImage(getConfig(tokenLs))).data);
+
+        } catch (error) {
+            if (error.response.status === 401) 
+                navigate('/signin')
+            
+            return
+        }
+    }, [setReRender]);
 
     return (
         <FormBoxWrapper >
-            <ImgWrapper src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg' />
+            {console.log('profile image :', profileImage)}
+            <ImgWrapper src={profileImage} />
             <Main onSubmit={sendForm}>
                 <Answer> What are you going to share today? </Answer>
                 <LinkInput  type='link' name='link'

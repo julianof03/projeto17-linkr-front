@@ -12,10 +12,13 @@ import { MdYoutubeSearchedFor } from "react-icons/md";
 export default function TimeLine() {
     // 0 - 4;5 - 9; 10-14
 
+    const { setHeader } = useContext(GlobalContext);
+    setHeader(true);
     const { reRender, setReRender } = useContext(GlobalContext)
+
     const [posts, setPosts] = useState({
         array: [],
-        size:0
+        size: 0
     })
 
     const [n, setN] = useState(0)
@@ -26,27 +29,22 @@ export default function TimeLine() {
         getTimeLine(getConfig)
             .then((res) => {
                 setPosts({
-                    array:res.data.slice(n, n + 50),
-                    Size: res.data.length
+                    array: res.data.slice(n, n + 20),
+                    size: res.data.length
                 })
 
-                // console.log('arraySize',arraySize)
-
-                console.log(posts)
-                console.log(posts.array)
-
-                // MUDAR 4 PARA 20
             })
 
     }, [reRender])
 
     function nextPage() {
-        if (n + 50 > 1000000) {
-            let add = 1000000 - n
+        if (n + 20 > posts.size) {
+            let add = posts.size - n
             if (add > 0) setN(n + add)
             return
         }
-        setN(n + 50)
+        setN(n + 20)
+        window.scrollTo(0, 0)
         setReRender(!reRender)
     }
 
@@ -70,12 +68,8 @@ export default function TimeLine() {
     }
     
     if(posts.array.length === 0){
-        return (
-            <div> LOADING </div>
-        )
+        return ( <div> LOADING </div> )
     }
-
-    console.log('screenDelete :', deleteScreen)
     return ( 
         <Wrapper>
             {(deleteScreen.status) ? ( <DeleteBox/> ) : ( <></> )}
@@ -88,7 +82,7 @@ export default function TimeLine() {
                         postId={value.postId}
                         key={index}
                         username={value.username}
-                        img={value.img}
+                        userImg={value.userImg}
                         text={value.text}
                         link={value.link}
                         likesQtd={value.likesQtd}
