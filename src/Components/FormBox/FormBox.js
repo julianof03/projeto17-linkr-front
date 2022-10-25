@@ -46,25 +46,6 @@ export default function FormBox({img}) {
         setDisable(false)
         setReRender(!reRender)
     }
-    
-    useEffect(async () => {
-        const tokenLs = localStorage.getItem("token");
-        if (token === '') {
-            if (!tokenLs){ return navigate('/signin') }
-            setToken(`${tokenLs}`);
-        }
-
-        try {
-            setProfileImage((await userImage(getConfig(tokenLs))).data);
-
-        } catch (error) {
-            if (error.response.status === 401) 
-                navigate('/signin')
-            
-            return
-        }
-    }, [setReRender]);
-
     useEffect(async () => {
         const tokenLs = localStorage.getItem("token");
         if (token === '') {
