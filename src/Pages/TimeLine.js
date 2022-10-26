@@ -10,7 +10,6 @@ import GlobalContext from "../contexts/globalContext.js"
 
 export default function TimeLine() {
     // 0 - 4;5 - 9; 10-14
-
     const { setHeader } = useContext(GlobalContext);
     setHeader(true);
     const { reRender, setReRender } = useContext(GlobalContext)
