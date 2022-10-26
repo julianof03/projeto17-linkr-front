@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { getHashtagTrending } from "../../Services/api.js";
 import GlobalContext from "../../contexts/globalContext.js"
+import getConfig from '../../Services/getConfig.js'
 
 
 export default function Trending() {
+  const token = localStorage.getItem("token")
   const [trendingHashtags, setTrendingHashtags] = useState([]);
   const { setHashposts, setClicked} = useContext(GlobalContext)
   useEffect(() => {
-    getHashtagTrending().then((res) => {
+    getHashtagTrending(getConfig(token)).then((res) => {
       setTrendingHashtags(res.data);
     });
 
@@ -21,6 +23,7 @@ export default function Trending() {
   const navigate = useNavigate();
 
   function goHashtagPage(tag) {
+    console.log(`/hashtag/${tag.name}`)
     setHashposts({
       array: [],
       size: 0,
