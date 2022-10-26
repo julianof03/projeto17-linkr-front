@@ -55,6 +55,7 @@ export default function TopMenu() {
         console.log(token)
         try {
             const logout = await logOut(getConfig(token), body);
+            setLogout(!logout);
             navigate('/signin');
 
         } catch (error) {
