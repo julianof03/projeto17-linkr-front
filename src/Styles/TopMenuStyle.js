@@ -55,6 +55,7 @@ const LogoutBox = styled.div`
     right: 0;
     top: 80px;
     color: #fff;
+    cursor: pointer;
 
     h3{
         font-family: Lato;
@@ -67,7 +68,6 @@ const StyledIcon = styled(VscChevronUp)`
 color: #fff;
 transform: scale(2);
 rotate:${(props)=> props.isup? '0':'180deg'};
-
 cursor: pointer;
 `
 

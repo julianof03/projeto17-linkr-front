@@ -1,18 +1,12 @@
 import styled from "styled-components";
-
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
-
 import { ReactTagify } from "react-tagify";
-
 import React from "react";
-import { useContext, useEffect, useState, useRef } from "react";
-
+import { useContext, useEffect, useState } from "react";
 import mql from '@microlink/mql'
-
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
-
 import GlobalContext from "../../contexts/globalContext";
 import { EditPost } from "../../Services/api";
 
@@ -27,34 +21,25 @@ export default function Post(
         link,
         likesQtd,
         liked,
-        postId }
-) {
-
-    const [message, setMessage] = useState('');
-
+        postId
+    }) {
+    const navigate = useNavigate() 
+    const userId = localStorage.getItem("userId");
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
-
+    const [message, setMessage] = useState('');
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
-
     const [form, setForm] = useState({ link: '', text: '' })
-
-    // const {posts, setPosts} = useContext(GlobalContext)
     const {
         deleteScreen, setDeleteScreen,
         editPost, SetEditPost,
         postId_global, setPostId_global
     } = useContext(GlobalContext);
 
-    const userId = localStorage.getItem("userId");
-
-    const navigate = useNavigate()
     useEffect(async () => {
         SetEditPost({ postId: '', status: false })
         if (!message) { setMessage(text) }
-
-
         if (like) { setProps('true') }
         const { data } = await mql(link, {
             data: {
@@ -67,7 +52,6 @@ export default function Post(
         })
         setUrlMetadataOBJ(data)
     }, [])
-
 
 
     function goTo(tag) {
@@ -98,6 +82,7 @@ export default function Post(
         promise.catch((err) => alert(err.message))
     }
 
+
     document.onkeydown = function (e) {
         if (e.key === 'Escape') {
             setMessage(text);
@@ -106,152 +91,130 @@ export default function Post(
     }
 
 
-    const inputRef = useRef();
- 
-    if(editPost.status){
-        inputRef.current.focus();
+    function openLink(ulr){
+        
     }
 
 
     return (
-        <>
-            {(!urlMetadataOBJ.url) ?
-                ( <PropagateLoader color="#b3b3b3" />)
-                :
-                (<PostHTML>
-                    <ImgWrapper props={props}>
-                        <img src={userImg} />
-                        <div>
-                            {props === 'true' ?
-                                (
-                                    <BsHeartFill
-                                        size='20px'
-                                        onClick={() => {
-                                            setLike(!like)
-                                            setProps('false')
-                                        }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
-                                    />
-                                ) : (
-                                    <BsHeart
-                                        size='20px'
-                                        onClick={() => {
-                                            setLike(!like)
-                                            setProps('true')
-                                        }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
-                                    />
-                                )}
-
-                        </div>
-
-                        <p>{likesQtd}</p>
-
-                        <Likes
-                            onMouseEnter={() => setIsShown(true)}
-                            onMouseLeave={() => setIsShown(false)}
-                            isShown={isShown}
-                        >
-                            <p>vários likes pra tu ficá feliz</p>
-
-                        </Likes>
-
-                    </ImgWrapper>
-                    <Main>
-                        <Title>
-                            {postUserId != userId ?
-                                (<h1
-                                    onClick={()=>navigate(`/user/${userId}`)}
-                                >
-                                    {username}
-                                </h1>)
-                                :
-                                (<>
-                                    <h1
-                                        onClick={()=>navigate(`/user/${userId}`)}
-                                    >
-                                        {username}
-                                    </h1>
-                                    <IconsWrapper>
-                                        <MdModeEdit
-                                            onClick={() => {
-                                                if (editPost.status) {
-                                                    setMessage(text);
-                                                    SetEditPost({ postId: '', status: false })
-                                                }
-                                                else {
-                                                    SetEditPost({ postId: postId, status: true })
-                                                }
-                                            }}
-                                            color='white' DeleteScreen
-                                            style={{
-                                                marginLeft: '10px',
-                                                cursor: 'pointer'
-                                            }}
-                                        />
-                                        <BsFillTrashFill
-                                            onClick={() => { setDeleteScreen({ postId: postId, status: true }) }}
-                                            color='white'
-                                            style={{
-                                                marginLeft: '10px',
-                                                cursor: 'pointer'
-                                            }}
-                                            size='15px'
-                                        />
-                                    </IconsWrapper>
-                                </>)}
-                        </Title>
-                        <Description>
-                            <ReactTagify
-                                colors={"white"}
-                                tagClicked={(tag) => {
-                                    goTo(tag)
-                                }
-                                }
-                            >
-                                {text}
-                            </ReactTagify>
-                            {
-                                (editPost.status && postId === editPost.postId) ?
+        <>{
+                (!urlMetadataOBJ.url) ?
+                    (<p>LOADING</p>)
+                        :
+                    (<PostHTML>
+                        <ImgWrapper props={props}>
+                            <img src={userImg} />
+                            <div>
+                                {props === 'true' ?
                                     (
-                                        <>
-                                            <EditContainer></EditContainer>
-                                            <form onSubmit={sendForm}>
-                                                <TextInput
-                                                    type="text" id="message"
-                                                    name="message" onChange={handleChange}
-                                                    required={true} value={message}
-                                                    ref={inputRef}
-                                                ></TextInput>
-                                            </form>
-                                        </>
-                                    ) :
-                                    ('')
-                            }
-                        </Description>
+                                        <BsHeartFill
+                                            size='20px'
+                                            onClick={() => {
+                                                setLike(!like)
+                                                setProps('false')
+                                            }}
+                                            onMouseEnter={() => setIsShown(true)}
+                                            onMouseLeave={() => setIsShown(false)}
+                                        />
+                                    ) : (
+                                        <BsHeart
+                                            size='20px'
+                                            onClick={() => {
+                                                setLike(!like)
+                                                setProps('true')
+                                            }}
+                                            onMouseEnter={() => setIsShown(true)}
+                                            onMouseLeave={() => setIsShown(false)}
+                                        />
+                                    )}
 
-                        <UrlMetadaSpace>
+                            </div>
 
-                            <UrlMetadaDetails>
-                                <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                                <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                                <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                            </UrlMetadaDetails>
+                            <p>{likesQtd}</p>
 
-                            <ImageUrl>
-                            {(urlMetadataOBJ.image) ? 
-                            ( <img src={urlMetadataOBJ.image.url} alt="description of image" />) : (<img src={''} alt="image here" />)}
-                               
-                            </ImageUrl>
-                        </UrlMetadaSpace>
-                    </Main>
-                </PostHTML>
-                )
-            }
-        </>
-    )
+                            <Likes
+                                onMouseEnter={() => setIsShown(true)}
+                                onMouseLeave={() => setIsShown(false)}
+                                isShown={isShown}
+                            >
+                                <p>vários likes pra tu ficá feliz</p>
+
+                            </Likes>
+
+                        </ImgWrapper>
+                        <Main>
+                            <Title>
+                                {(userId !== postUserId) ?
+                                    (<h1 onClick={()=>navigate(`/user/${userId}`)} >
+                                        {username}
+                                    </h1>)
+                                    :
+                                    (<>
+                                        <h1 onClick={()=>navigate(`/user/${userId}`)} >
+                                            {username}
+                                        </h1>
+                                        <IconsWrapper>
+                                            <MdModeEdit
+                                                onClick={() => {
+                                                    if (editPost.status) {
+                                                        setMessage(text);
+                                                        SetEditPost({ postId: '', status: false })
+                                                    }
+                                                    else {
+                                                        SetEditPost({ postId: postId, status: true })
+                                                    }
+                                                }}
+                                                color='white' DeleteScreen
+                                                style={{
+                                                    marginLeft: '10px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            />
+                                            <BsFillTrashFill    onClick={() =>{setDeleteScreen({postId: postId, status: true})}}
+                                                                color='white'
+                                                                style={{marginLeft: '10px',
+                                                                        cursor: 'pointer'}}
+                                                                size='15px'/>
+                                        </IconsWrapper>
+                                    </>)}
+                            </Title>
+                            <Description>
+                                <ReactTagify    colors={"white"}
+                                                tagClicked={(tag) => { goTo(tag) }} >
+                                    {text}
+                                </ReactTagify>
+                                {(editPost.status && postId === editPost.postId) ?
+                                    (<>
+                                        <EditContainer></EditContainer>
+                                        <form onSubmit={sendForm}>
+                                            <TextInput
+                                                type="text" id="message"
+                                                name="message" onChange={handleChange}
+                                                required={true} value={message}
+                                            ></TextInput>
+                                        </form>
+                                    </>) 
+                                    :
+                                    ('')}
+                            </Description>
+                            <a  href={`${urlMetadataOBJ.url}`}
+                                target="_blank" 
+                                rel="noopener noreferrer">
+                                <UrlMetadaSpace>
+                                    <UrlMetadaDetails>
+                                        <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                        <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                        <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                                    </UrlMetadaDetails>
+                                    <ImageUrl>
+                                    <img    src={urlMetadataOBJ.image?.url}
+                                            alt='image not found &#x1F625;' />
+                                    </ImageUrl>
+                                </UrlMetadaSpace>
+                            </a>
+                        </Main>
+                    </PostHTML>)
+        }</>)
 }
 
 const PostHTML = styled.div`
@@ -336,7 +299,7 @@ const Title = styled.div`
   width: 100%;
   padding: 5px 0 7px 0;
   margin-top: 16px;
-  /* background-color: blue; */
+  /* background-color: red; */
   h1 {
     font-size: 19px;
     font-weight: 400;
@@ -356,15 +319,21 @@ const Description = styled.div`
     /* background-color: yellow; */
 `
 const UrlMetadaSpace = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 503px;
-  height: 155px;
-  margin-bottom: 10px;
-  border: solid 1px gray;
-  border-radius: 16px;
-  color: white;
-  /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+    width: 503px;
+    height: 155px;
+    margin-bottom: 10px;
+    border: solid 1px gray;
+    border-radius: 16px;
+    color: white;
+    cursor: pointer;
+    /* background-color: red; */
+    :hover { 
+        transition: 0.5s;
+        background-color: white ;
+        background: rgba(255, 255, 255, 0.2);
+    }
 `;
 const Likes = styled.div`
     width: auto;
