@@ -4,33 +4,34 @@ import Trending from "../Components/Trending/Trending.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { getHashtagPosts } from "../Services/api.js";
+import getConfig from "../Services/getConfig.js";
 import GlobalContext from "../contexts/globalContext.js";
 
 export default function Hashtag() {
   const { setHeader } = useContext(GlobalContext);
   setHeader(true);
-
+  const token = localStorage.getItem("token");
   const { hashtag } = useParams();
-  const { reRender, setReRender, hashposts, setHashposts, setClicked, clicked } = useContext(GlobalContext);
+  const { reRender, setReRender, hashposts, setHashposts, setClicked, clicked } =
+    useContext(GlobalContext);
   const [n, setN] = useState(0);
 
   useEffect(() => {
-   setClicked(false)
-    getHashtagPosts(hashtag).then((res) => {
-      setHashposts({
-        array: res.data.slice(n, n + 50),
-        size: res.data.length,
-      });
-    });
-    
+    setClicked(false);
 
-    getHashtagPosts(hashtag).catch((res) => {
-      console.log("algo deu errado");
-    });
+    getHashtagPosts(getConfig(token), hashtag)
+      .then((res) => {
+        setHashposts({
+          array: res.data.slice(n, n + 50),
+          size: res.data.length,
+        });
+      })
+      .catch((res) => {
+        console.log("algo deu errado");
+      });
   }, [clicked, reRender]);
 
   function nextPage() {
-   
     if (n + 50 > hashposts.size) {
       let add = hashposts.size - n;
 
@@ -41,7 +42,6 @@ export default function Hashtag() {
     }
 
     setN(n + 50);
-    
 
     // window.scrollTo(0, 0)
     setReRender(!reRender);
@@ -62,12 +62,14 @@ export default function Hashtag() {
                 <>
                   <Post
                     key={index}
+                    postId={value.postId}
                     username={value.username}
-                    img={value.img}
+                    userImg={value.userImg}
                     text={value.text}
                     link={value.link}
                     likesQtd={value.likesQtd}
                     liked={value.liked}
+                    postUserId={value.userId}
                   />
                 </>
               ))}

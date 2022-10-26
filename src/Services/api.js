@@ -43,12 +43,12 @@ function getTimeLine(getConfig) {
     return axios.get(`${URL}/timeline`, getConfig)
 }
 
-function getHashtagTrending() {
-    return axios.get(`${URL}/trending`);
+function getHashtagTrending(getConfig) {
+    return axios.get(`${URL}/trending`, getConfig);
 }
 
-function getHashtagPosts(hashtag) {
-    return axios.get(`${URL}/hashtag/${hashtag}`);
+function getHashtagPosts(getConfig, hashtag) {
+    return axios.get(`${URL}/hashtag/${hashtag}`, getConfig);
 }
 
 export {
