@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import Post from "../Components/Post/Post.js";
+
+import { useContext, useEffect, useState } from "react"
+import GlobalContext from "../contexts/globalContext.js"
+import PropagateLoader from "react-spinners/PropagateLoader";
+
 import FormBox from "../Components/FormBox/FormBox.js";
 import Trending from "../Components/Trending/Trending.js";
 import getConfig from "../Services/getConfig.js";
 import { deletePost, getTimeLine } from "../Services/api.js";
-import { useContext, useEffect, useState } from "react";
-import GlobalContext from "../contexts/globalContext.js";
 import { MdYoutubeSearchedFor } from "react-icons/md";
 
 export default function TimeLine() {
@@ -37,120 +40,111 @@ export default function TimeLine() {
     setReRender(!reRender);
   }
 
-    function axiosDeletePost(postId, token) {
-        deletePost(postId, getConfig(token))
-            .then(() => window.location.reload(false))
-            .catch((error) => console.log('error axiosDeletePost', error))
-        setDeleteScreen({postId: '', status: false})
+  function nextPage() {
+    if (n + 20 > posts.size) {
+
+      let add = posts.size - n
+
+      if (add > 0) {
+        setN(n + add)
+      }
+      return
     }
 
-    function DeleteBox(){
-        return(
-            <FullScreen>
-                <Box> 
-                    <h1> Are you sure you want to delete this post? </h1>
-                    <DeleteOpcions>
-                        <NoGoBack onClick={() => setDeleteScreen({postId: '', status: false})}>
-                            <span>No, go back</span>
-                        </NoGoBack>
-                        <YesDeleteIt onClick={() => {axiosDeletePost(deleteScreen.postId, token)}}>
-                            <span>Yes, delete it</span>
-                        </YesDeleteIt>
-                    </DeleteOpcions>  
-                </Box>
-            </FullScreen>
-        )
-    }
-    
-    if(posts.array.length === 0){
-        return ( 
-            <div  style={{
-                        background: 'purple', 
-                        width: '100%', 
-                        minHeight: '100vh',
-                        height: '100%',
-                        position:'fixed'}}> 
-                <MainContent>
-                    <Title> <h1>timeline</h1> </Title>
-                    <FormBox />
-                    <NextPage onClick={() => { nextPage() }} >
-                            Carregar mais
-                    </NextPage>
-                </MainContent>
-            </div> ) //CRIAR LOADING
-    }
+    setN(n + 20)
+    // console.log('carregar página')
 
-  if (posts.array.length === 0) {
+    window.scrollTo(0, 0)
+    setReRender(!reRender)
+  }
+  function axiosDeletePost(postId, token) {
+    deletePost(postId, getConfig(token))
+      .then(() => window.location.reload(false))
+      .catch((error) => console.log('error axiosDeletePost', error))
+    setDeleteScreen({ postId: '', status: false })
+  }
+
+  function DeleteBox() {
     return (
-      <div
-        style={{
-          background: "purple",
-          width: "100%",
-          minHeight: "100vh",
-          height: "100%",
-          position: "fixed",
-        }}
-      >
+      <FullScreen>
+        <Box>
+          <h1> Are you sure you want to delete this post? </h1>
+          <DeleteOpcions>
+            <NoGoBack onClick={() => setDeleteScreen({ postId: '', status: false })}>
+              <span>No, go back</span>
+            </NoGoBack>
+            <YesDeleteIt onClick={() => { axiosDeletePost(deleteScreen.postId, token) }}>
+              <span>Yes, delete it</span>
+            </YesDeleteIt>
+          </DeleteOpcions>
+        </Box>
+      </FullScreen>
+    )
+  }
+
+
+  return (
+    (posts.array.length === 0) ?
+    (
+      <Wrapper>
+        {/* CASO O ARRAY ESTEJA VAZIO */}
+        <MainContent>
+          <Title>
+            <h1>timeline</h1>
+          </Title>
+          <FormBox />
+          <PropagateLoader color="#b3b3b3" />
+          <p>there are no posts yet</p>
+          <NextPage
+            onClick={() => { nextPage() }}
+          >
+            Carregar mais
+          </NextPage>
+        </MainContent>
+      </Wrapper>
+    ) :
+    (
+      <Wrapper>
+        {deleteScreen.status ? <DeleteBox /> : <></>}
         <MainContent>
           <Title>
             {" "}
             <h1>timeline</h1>{" "}
           </Title>
           <FormBox />
+            {posts.array.map((value, index) => {
+              return (
+                <Post
+                  postId={value.postId}
+                  key={index}
+                  username={value.username}
+                  userImg={value.userImg}
+                  text={value.text}
+                  link={value.link}
+                  likesQtd={value.likesQtd}
+                  liked={value.liked}
+                  postUserId={value.userId}
+                />
+              );
+            })}
           <NextPage
             onClick={() => {
               nextPage();
-            }}
-          >
+          }}>
             Carregar mais
           </NextPage>
         </MainContent>
-      </div>
-    ); //CRIAR LOADING
-  }
 
-  return (
-    <Wrapper>
-      {deleteScreen.status ? <DeleteBox /> : <></>}
-      <MainContent>
-        <Title>
-          {" "}
-          <h1>timeline</h1>{" "}
-        </Title>
-        <FormBox />
-        {posts.array.map((value, index) => {
-          return (
-            <Post
-              postId={value.postId}
-              key={index}
-              username={value.username}
-              userImg={value.userImg}
-              text={value.text}
-              link={value.link}
-              likesQtd={value.likesQtd}
-              liked={value.liked}
-              postUserId={value.userId}
-            />
-          );
-        })}
-        <NextPage
-          onClick={() => {
-            nextPage();
-          }}
-        >
-          Carregar mais
-        </NextPage>
-      </MainContent>
+        <AsideContent>
+          <TrendingWrapper>
+            <Trending />
+          </TrendingWrapper>
+        </AsideContent>
+      </Wrapper>
+        )
+  )
 
-      <AsideContent>
-        <TrendingWrapper>
-          <Trending />
-        </TrendingWrapper>
-      </AsideContent>
-    </Wrapper>
-  );
 }
-
 const DeleteOpcions = styled.div`
   display: flex;
   margin-top: 40px;
@@ -235,12 +229,17 @@ const AsideContent = styled.div`
   width: 21vw;
 `;
 const MainContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 610px;
-  margin-top: 100px;
-`;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 610px;
+    margin-top: 100px;
+    p{
+        margin-top:30px;
+        color:white;
+    }
+    /* background-color: black; */
+`
 const Title = styled.div`
   width: 100%;
   display: flex;
@@ -259,15 +258,19 @@ const TrendingWrapper = styled.div`
   top: 50px;
 `;
 const NextPage = styled.div`
-  width: 200px;
-  height: 70px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  background-color: black;
-  border-radius: 10px;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
+width: 200px;
+height: 70px;
+margin-top: 35px;
+margin-bottom:20px;
+
+
+background-color: black;
+border-radius: 10px;
+color: white;
+
+display: flex;
+justify-content: center;
+align-items: center;
+
+cursor: pointer;
+`
