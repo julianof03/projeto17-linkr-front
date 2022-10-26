@@ -8,9 +8,12 @@ import mql from '@microlink/mql'
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
 import GlobalContext from "../../contexts/globalContext";
-import { EditPost } from "../../Services/api";
 
 import PropagateLoader from "react-spinners/PropagateLoader";
+
+
+import { OnClickEditPost } from "./postInteractions/editPost";
+import EditInput from "./postInteractions/editInput";
 
 export default function Post(
     {
@@ -23,7 +26,7 @@ export default function Post(
         liked,
         postId
     }) {
-    const navigate = useNavigate() 
+    const navigate = useNavigate()
     const userId = localStorage.getItem("userId");
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
@@ -66,154 +69,123 @@ export default function Post(
     };
 
 
-    function sendForm(e) {
-        e.preventDefault()
-        const id = postId;
-        const body = {
-            text: message,
-        }
+    function openLink(ulr) {
 
-        const promise = EditPost(body, id)
-
-        promise.then((res) => {
-            document.location.reload()
-            SetEditPost({ postId: '', status: false })
-        })
-        promise.catch((err) => alert(err.message))
-    }
-
-
-    document.onkeydown = function (e) {
-        if (e.key === 'Escape') {
-            setMessage(text);
-            SetEditPost({ postId: '', status: false })
-        }
-    }
-
-
-    function openLink(ulr){
-        
     }
 
 
     return (
         <>{
-                (!urlMetadataOBJ.url) ?
-                    (<p>LOADING</p>)
-                        :
-                    (<PostHTML>
-                        <ImgWrapper props={props}>
-                            <img src={userImg} />
-                            <div>
-                                {props === 'true' ?
-                                    (
-                                        <BsHeartFill
-                                            size='20px'
-                                            onClick={() => {
-                                                setLike(!like)
-                                                setProps('false')
-                                            }}
-                                            onMouseEnter={() => setIsShown(true)}
-                                            onMouseLeave={() => setIsShown(false)}
-                                        />
-                                    ) : (
-                                        <BsHeart
-                                            size='20px'
-                                            onClick={() => {
-                                                setLike(!like)
-                                                setProps('true')
-                                            }}
-                                            onMouseEnter={() => setIsShown(true)}
-                                            onMouseLeave={() => setIsShown(false)}
-                                        />
-                                    )}
+            (!urlMetadataOBJ.url) ?
+                ( <PropagateLoader color="#b3b3b3" />)
+                :
+                (<PostHTML>
+                    <ImgWrapper props={props}>
+                        <img src={userImg} />
+                        <div>
+                            {props === 'true' ?
+                                (
+                                    <BsHeartFill
+                                        size='20px'
+                                        onClick={() => {
+                                            setLike(!like)
+                                            setProps('false')
+                                        }}
+                                        onMouseEnter={() => setIsShown(true)}
+                                        onMouseLeave={() => setIsShown(false)}
+                                    />
+                                ) : (
+                                    <BsHeart
+                                        size='20px'
+                                        onClick={() => {
+                                            setLike(!like)
+                                            setProps('true')
+                                        }}
+                                        onMouseEnter={() => setIsShown(true)}
+                                        onMouseLeave={() => setIsShown(false)}
+                                    />
+                                )}
 
-                            </div>
+                        </div>
 
-                            <p>{likesQtd}</p>
+                        <p>{likesQtd}</p>
 
-                            <Likes
-                                onMouseEnter={() => setIsShown(true)}
-                                onMouseLeave={() => setIsShown(false)}
-                                isShown={isShown}
-                            >
-                                <p>vários likes pra tu ficá feliz</p>
+                        <Likes
+                            onMouseEnter={() => setIsShown(true)}
+                            onMouseLeave={() => setIsShown(false)}
+                            isShown={isShown}
+                        >
+                            <p>vários likes pra tu ficá feliz</p>
 
-                            </Likes>
+                        </Likes>
 
-                        </ImgWrapper>
-                        <Main>
-                            <Title>
-                                {(userId !== postUserId) ?
-                                    (<h1 onClick={()=>navigate(`/user/${userId}`)} >
+                    </ImgWrapper>
+                    <Main>
+                        <Title>
+                            {userId != postUserId ?
+                                (<h1 onClick={() => navigate(`/user/${userId}`)} >
+                                    {username}
+                                </h1>)
+                                :
+                                (<>
+                                    <h1 onClick={() => navigate(`/user/${userId}`)} >
                                         {username}
-                                    </h1>)
-                                    :
-                                    (<>
-                                        <h1 onClick={()=>navigate(`/user/${userId}`)} >
-                                            {username}
-                                        </h1>
-                                        <IconsWrapper>
-                                            <MdModeEdit
-                                                onClick={() => {
-                                                    if (editPost.status) {
-                                                        setMessage(text);
-                                                        SetEditPost({ postId: '', status: false })
-                                                    }
-                                                    else {
-                                                        SetEditPost({ postId: postId, status: true })
-                                                    }
-                                                }}
-                                                color='white' DeleteScreen
-                                                style={{
-                                                    marginLeft: '10px',
-                                                    cursor: 'pointer'
-                                                }}
-                                            />
-                                            <BsFillTrashFill    onClick={() =>{setDeleteScreen({postId: postId, status: true})}}
-                                                                color='white'
-                                                                style={{marginLeft: '10px',
-                                                                        cursor: 'pointer'}}
-                                                                size='15px'/>
-                                        </IconsWrapper>
-                                    </>)}
-                            </Title>
-                            <Description>
-                                <ReactTagify    colors={"white"}
-                                                tagClicked={(tag) => { goTo(tag) }} >
-                                    {text}
-                                </ReactTagify>
-                                {(editPost.status && postId === editPost.postId) ?
-                                    (<>
-                                        <EditContainer></EditContainer>
-                                        <form onSubmit={sendForm}>
-                                            <TextInput
-                                                type="text" id="message"
-                                                name="message" onChange={handleChange}
-                                                required={true} value={message}
-                                            ></TextInput>
-                                        </form>
-                                    </>) 
-                                    :
-                                    ('')}
-                            </Description>
-                            <a  href={`${urlMetadataOBJ.url}`}
-                                target="_blank" 
-                                rel="noopener noreferrer">
-                                <UrlMetadaSpace>
-                                    <UrlMetadaDetails>
-                                        <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                                        <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                                        <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                                    </UrlMetadaDetails>
-                                    <ImageUrl>
-                                    <img    src={urlMetadataOBJ.image?.url}
-                                            alt='image not found &#x1F625;' />
-                                    </ImageUrl>
-                                </UrlMetadaSpace>
-                            </a>
-                        </Main>
-                    </PostHTML>)
+                                    </h1>
+                                    <IconsWrapper>
+                                        <MdModeEdit
+                                            onClick={() => {
+                                                OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId })
+                                            }}
+                                            color='white' DeleteScreen
+                                            style={{
+                                                marginLeft: '10px',
+                                                cursor: 'pointer'
+                                            }}
+                                        />
+                                        <BsFillTrashFill onClick={() => { setDeleteScreen({ postId: postId, status: true }) }}
+                                            color='white'
+                                            style={{
+                                                marginLeft: '10px',
+                                                cursor: 'pointer'
+                                            }}
+                                            size='15px' />
+                                    </IconsWrapper>
+                                </>)}
+                        </Title>
+                        <Description>
+                            <ReactTagify colors={"white"}
+                                tagClicked={(tag) => { goTo(tag) }} >
+                                {text}
+                            </ReactTagify>
+                            {(editPost.status && postId === editPost.postId) ?
+                                (<EditInput
+                                    postId={postId}
+                                    SetEditPost={SetEditPost}
+                                    handleChange={handleChange}
+                                    message={message}
+                                    setMessage={setMessage}
+                                    text={text}
+                                />)
+                                :
+                                ('')}
+                        </Description>
+                        <a href={`${urlMetadataOBJ.url}`}
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            <UrlMetadaSpace>
+                                <UrlMetadaDetails>
+                                    <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                    <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                    <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                                </UrlMetadaDetails>
+                                <ImageUrl>
+                                    <img src={urlMetadataOBJ.image?.url}
+                                        alt='image not found &#x1F625;' />
+                                </ImageUrl>
+                            </UrlMetadaSpace>
+                        </a>
+                    </Main>
+                </PostHTML>)
         }</>)
 }
 
@@ -351,26 +323,3 @@ const Likes = styled.div`
     position: absolute;
     top:50%;
 `;
-const EditContainer = styled.div`
-    background-color:  black;
-    width: 100%;
-    height: 30px;
-    border: unset;
-    border-radius:5px;
-`;
-const TextInput = styled.input`
-    position:absolute;
-    top:40px;
-    left:85px;
-    width:83%;
-    height: 16%;
-    border: unset;
-    border-radius:5px;
-    margin-top: 10px;
-    background-color: #EFEFEF;
-    ::placeholder{
-        font-size: 15px;
-        font-weight: 300;
-        color: #949494;
-    }
-`
