@@ -41,6 +41,13 @@ export default function TimeLine() {
         setReRender(!reRender)
     }
 
+    function axiosDeletePost(postId, token) {
+        deletePost(postId, getConfig(token))
+            .then(() => window.location.reload(false))
+            .catch((error) => console.log('error axiosDeletePost', error))
+        setDeleteScreen({postId: '', status: false})
+    }
+
     function DeleteBox(){
         return(
             <FullScreen>
@@ -50,8 +57,7 @@ export default function TimeLine() {
                         <NoGoBack onClick={() => setDeleteScreen({postId: '', status: false})}>
                             <span>No, go back</span>
                         </NoGoBack>
-                        <YesDeleteIt onClick={() => {   deletePost(deleteScreen.postId, getConfig(token))
-                                                        setDeleteScreen({postId: '', status: false})  }}>
+                        <YesDeleteIt onClick={() => {axiosDeletePost(deleteScreen.postId, token)}}>
                             <span>Yes, delete it</span>
                         </YesDeleteIt>
                     </DeleteOpcions>  

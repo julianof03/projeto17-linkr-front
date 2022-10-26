@@ -31,7 +31,7 @@ export default function FormBox({img}) {
         }
         const promise = createPost(getConfig(token), body )
         
-        promise.then( (res) => { navigate('/timeline') } )
+        promise.then( () => { window.location.reload(false) } )
         promise.catch( (err) => console.log('Deu Erro logout',err) )
         setTimeout(() => {
             SetButtonText("Publish")
