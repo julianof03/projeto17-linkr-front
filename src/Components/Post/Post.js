@@ -23,7 +23,7 @@ export default function Post(
     }
     ) {
     const navigate = useNavigate() 
-    const userId = localStorage.getItem("userId");
+    const userId = +localStorage.getItem("userId");
     const [like, setLike] = useState(liked)
     const [props, setProps] = useState('false')
     const [message, setMessage] = useState('');
@@ -97,6 +97,10 @@ export default function Post(
             setMessage(text);
             SetEditPost({ postId: '', status: false })
         }
+    }
+
+    function openLink(ulr){
+        
     }
 
     return (
@@ -186,35 +190,36 @@ export default function Post(
                                                 tagClicked={(tag) => { goTo(tag) }} >
                                     {text}
                                 </ReactTagify>
-                                {
-                                    (editPost.status && postId === editPost.postId) ?
-                                        (
-                                            <>
-                                                <EditContainer></EditContainer>
-                                                <form onSubmit={sendForm}>
-                                                    <TextInput
-                                                        type="text" id="message"
-                                                        name="message" onChange={handleChange}
-                                                        required={true} value={message}
-                                                        ref={inputRef}
-                                                    ></TextInput>
-                                                </form>
-                                            </>
-                                        ) :
-                                        ('')
-                                }
+                                {(editPost.status && postId === editPost.postId) ?
+                                    (<>
+                                        <EditContainer></EditContainer>
+                                        <form onSubmit={sendForm}>
+                                            <TextInput
+                                                type="text" id="message"
+                                                name="message" onChange={handleChange}
+                                                required={true} value={message}
+                                                ref={inputRef}
+                                            ></TextInput>
+                                        </form>
+                                    </>) 
+                                    :
+                                    ('')}
                             </Description>
-                            <UrlMetadaSpace>
-                                <UrlMetadaDetails>
-                                    <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                                    <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                                    <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                                </UrlMetadaDetails>
-                                <ImageUrl>
+                            <a  href={`${urlMetadataOBJ.url}`}
+                                target="_blank" 
+                                rel="noopener noreferrer">
+                                <UrlMetadaSpace>
+                                    <UrlMetadaDetails>
+                                        <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                        <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                        <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                                    </UrlMetadaDetails>
+                                    <ImageUrl>
                                     <img    src={urlMetadataOBJ.image?.url}
                                             alt='image not found &#x1F625;' />
-                                </ImageUrl>
-                            </UrlMetadaSpace>
+                                    </ImageUrl>
+                                </UrlMetadaSpace>
+                            </a>
                         </Main>
                     </PostHTML>)
         }</>)
@@ -302,7 +307,7 @@ const Title = styled.div`
   width: 100%;
   padding: 5px 0 7px 0;
   margin-top: 16px;
-  /* background-color: blue; */
+  /* background-color: red; */
   h1 {
     font-size: 19px;
     font-weight: 400;
@@ -322,15 +327,21 @@ const Description = styled.div`
     /* background-color: yellow; */
 `
 const UrlMetadaSpace = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 503px;
-  height: 155px;
-  margin-bottom: 10px;
-  border: solid 1px gray;
-  border-radius: 16px;
-  color: white;
-  /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+    width: 503px;
+    height: 155px;
+    margin-bottom: 10px;
+    border: solid 1px gray;
+    border-radius: 16px;
+    color: white;
+    cursor: pointer;
+    /* background-color: red; */
+    :hover { 
+        transition: 0.5s;
+        background-color: white ;
+        background: rgba(255, 255, 255, 0.2);
+    }
 `;
 const Likes = styled.div`
     width: auto;

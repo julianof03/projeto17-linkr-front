@@ -37,28 +37,48 @@ export default function TimeLine() {
     setReRender(!reRender);
   }
 
-  function DeleteBox() {
-    return (
-      <FullScreen>
-        <Box>
-          <h1> Are you sure you want to delete this post? </h1>
-          <DeleteOpcions>
-            <NoGoBack onClick={() => setDeleteScreen({ postId: "", status: false })}>
-              <span>No, go back</span>
-            </NoGoBack>
-            <YesDeleteIt
-              onClick={() => {
-                deletePost(deleteScreen.postId, getConfig(token));
-                setDeleteScreen({ postId: "", status: false });
-              }}
-            >
-              <span>Yes, delete it</span>
-            </YesDeleteIt>
-          </DeleteOpcions>
-        </Box>
-      </FullScreen>
-    );
-  }
+    function axiosDeletePost(postId, token) {
+        deletePost(postId, getConfig(token))
+            .then(() => window.location.reload(false))
+            .catch((error) => console.log('error axiosDeletePost', error))
+        setDeleteScreen({postId: '', status: false})
+    }
+
+    function DeleteBox(){
+        return(
+            <FullScreen>
+                <Box> 
+                    <h1> Are you sure you want to delete this post? </h1>
+                    <DeleteOpcions>
+                        <NoGoBack onClick={() => setDeleteScreen({postId: '', status: false})}>
+                            <span>No, go back</span>
+                        </NoGoBack>
+                        <YesDeleteIt onClick={() => {axiosDeletePost(deleteScreen.postId, token)}}>
+                            <span>Yes, delete it</span>
+                        </YesDeleteIt>
+                    </DeleteOpcions>  
+                </Box>
+            </FullScreen>
+        )
+    }
+    
+    if(posts.array.length === 0){
+        return ( 
+            <div  style={{
+                        background: 'purple', 
+                        width: '100%', 
+                        minHeight: '100vh',
+                        height: '100%',
+                        position:'fixed'}}> 
+                <MainContent>
+                    <Title> <h1>timeline</h1> </Title>
+                    <FormBox />
+                    <NextPage onClick={() => { nextPage() }} >
+                            Carregar mais
+                    </NextPage>
+                </MainContent>
+            </div> ) //CRIAR LOADING
+    }
 
   if (posts.array.length === 0) {
     return (
