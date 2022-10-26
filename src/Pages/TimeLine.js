@@ -61,14 +61,14 @@ export default function TimeLine() {
 
         <>
             {(posts.array.length === 0) ? (
-                
-                <div 
+
+                <div
                     style={{
-                        background: 'purple', 
-                        width: '100%', 
+                        background: 'purple',
+                        width: '100%',
                         minHeight: '100vh',
                         height: '100%',
-                        position:'fixed'
+                        position: 'fixed'
                     }}
                 >
                     {/* CASO O ARRAY ESTEJA VAZIO */}
@@ -76,25 +76,28 @@ export default function TimeLine() {
                         <Title>
                             <h1>timeline</h1>
                         </Title>
-                        <FormBox />
-                        
+                        <FormBox
+                            setReRender={setReRender}
+                        />
+
                         <NextPage
                             onClick={() => { nextPage() }}
                         >
                             Carregar mais
                         </NextPage>
                     </MainContent>
-                    LOADING
+                    <p
+                        style={{ color: 'white' }}>LOADING</p>
                 </div> //CRIAR O LOADING
             ) : (
 
                 <Wrapper>
                     <MainContent>
                         <Title>
-                            {console.log(posts.array)}
                             <h1>timeline</h1>
                         </Title>
                         <FormBox />
+                        {console.log(posts.array)}
                         {posts.array.map((value, index) =>
                             <Post
                                 key={index}

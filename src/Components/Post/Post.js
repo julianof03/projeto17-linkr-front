@@ -16,6 +16,9 @@ import ReactTooltip from 'react-tooltip';
 import GlobalContext from "../../contexts/globalContext";
 import { EditPost } from "../../Services/api";
 
+import {updateLike} from '../../Services/api.js'
+import getConfig from "../../Services/getConfig";
+
 export default function Post(
     {
         username,
@@ -30,15 +33,12 @@ export default function Post(
 
     const [message, setMessage] = useState('');
 
+    // AJUSTAR ESSE LIKE AQUI
     const [like, setLike] = useState(liked)
-    const [props, setProps] = useState('false')
+    const [color, setColor] = useState('false')
 
-    const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
-
-    const [form, setForm] = useState({ link: '', text: '' })
-
-    // const {posts, setPosts} = useContext(GlobalContext)
+    const token = localStorage.getItem("token")
     const {
         deleteScreen, setDeleteScreen,
         editPost, SetEditPost,
@@ -53,7 +53,7 @@ export default function Post(
         if (!message) { setMessage(text) }
 
 
-        if (like) { setProps('true') }
+        if (like) { setColor('true') }
         const { data } = await mql(link, {
             data: {
                 avatar: {
@@ -115,64 +115,100 @@ export default function Post(
     }
 
 
+    
+
+    function HandleLike(color){
+        if(color === 'true'){
+            setColor('false')
+        }else{
+            setColor('true')
+        }
+        
+        const body = {
+            postId
+        }
+
+
+        try {
+            if(color === 'true'){
+                console.log('like')
+                updateLike(getConfig(token), body)
+            }
+            if(color === 'false'){
+                console.log('disLike')
+                // updateDislike(getConfig(token), body)
+            }
+            
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+        
+
+    }
+
     return (
         <>
             {(!urlMetadataOBJ.url) ?
                 (<p>LOADING</p>)
                 :
                 (<PostHTML>
-                    <ImgWrapper props={props}>
+                    <ImgWrapper color={color}>
                         <img src={userImg} />
-                        <div>
-                            {props === 'true' ?
+                        <div
+                            data-tip data-for="registerTip"
+                        >
+                            {color === 'true' ?
                                 (
                                     <BsHeartFill
                                         size='20px'
                                         onClick={() => {
                                             setLike(!like)
-                                            setProps('false')
+                                            setColor('false')
+                                            HandleLike(color)
                                         }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
                                     />
                                 ) : (
                                     <BsHeart
                                         size='20px'
                                         onClick={() => {
                                             setLike(!like)
-                                            setProps('true')
+                                            setColor('true')
+                                            HandleLike(color)
                                         }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
                                     />
                                 )}
+                            <ReactTooltip
+                                id="registerTip"
+                                place="bottom"
+                                backgroundColor='#FFFFFF'
+                            >
+                                <p
+                                    style={{ color: 'black' }}
+                                >
+                                    Tooltip for the register button
+                                </p>
+
+                            </ReactTooltip>
 
                         </div>
 
                         <p>{likesQtd}</p>
-
-                        <Likes
-                            onMouseEnter={() => setIsShown(true)}
-                            onMouseLeave={() => setIsShown(false)}
-                            isShown={isShown}
-                        >
-                            <p>vários likes pra tu ficá feliz</p>
-
-                        </Likes>
 
                     </ImgWrapper>
                     <Main>
                         <Title>
                             {postUserId != userId ?
                                 (<h1
-                                    onClick={()=>navigate(`/user/${userId}`)}
+                                    onClick={() => navigate(`/user/${userId}`)}
                                 >
                                     {username}
                                 </h1>)
                                 :
                                 (<>
                                     <h1
-                                        onClick={()=>navigate(`/user/${userId}`)}
+                                        onClick={() => navigate(`/user/${userId}`)}
                                     >
                                         {username}
                                     </h1>
@@ -187,7 +223,7 @@ export default function Post(
                                                     SetEditPost({ postId: postId, status: true })
                                                 }
                                             }}
-                                            color='white' DeleteScreen
+                                            color='white' 
                                             style={{
                                                 marginLeft: '10px',
                                                 cursor: 'pointer'
@@ -210,8 +246,7 @@ export default function Post(
                                 colors={"white"}
                                 tagClicked={(tag) => {
                                     goTo(tag)
-                                }
-                                }
+                                }}
                             >
                                 {text}
                             </ReactTagify>
@@ -235,16 +270,14 @@ export default function Post(
                         </Description>
 
                         <UrlMetadaSpace>
-
                             <UrlMetadaDetails>
                                 <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
                                 <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
                                 <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
                             </UrlMetadaDetails>
-
                             <ImageUrl>
-                                <img src={urlMetadataOBJ.image.url}
-                                    alt="description of image" />
+                                <img src={urlMetadataOBJ.image?.url}
+                                    alt="image not found" />
                             </ImageUrl>
                         </UrlMetadaSpace>
                     </Main>
@@ -255,6 +288,7 @@ export default function Post(
     )
 }
 
+const Text = styled.div``
 const PostHTML = styled.div`
     display: flex;
     width: 610px;
@@ -312,7 +346,7 @@ const ImgWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     div{
-        color: ${props => props.like === true ? 'red' : 'white'};
+        color: ${props => props.color === 'true' ? 'red' : 'white'};
         cursor: pointer;
     }
     img{
@@ -366,22 +400,6 @@ const UrlMetadaSpace = styled.div`
   border-radius: 16px;
   color: white;
   /* background-color: red; */
-`;
-const Likes = styled.div`
-    width: auto;
-    height: auto;
-    padding: 5px;
-    background-color: #FFF;
-    opacity:${props => props.isShown ? '1' : '0'};
-    z-index: ${props => props.isShown ? '1' : '-1'};;
-    transition: all 0.5s ease-out;
-    p{
-        color: #505050;
-        font-size: 13px;
-        font-weight: 700;
-    }
-    position: absolute;
-    top:50%;
 `;
 const EditContainer = styled.div`
     background-color:  black;

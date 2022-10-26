@@ -17,7 +17,7 @@ function signIn(body) {
 }
 // createPost
 function createPost(getConfig, body) {
-    return axios.post(`${URL}/timeline`, body, getConfig );
+    return axios.post(`${URL}/timeline`, body, getConfig);
 };
 
 function EditPost(body, id) {
@@ -27,8 +27,12 @@ function EditPost(body, id) {
 // Headers ---------------------------------
 // updateLike ---------------------------------
 
-function updateLike(body, getConfig){
-    return axios.post(`${URL}/likeUpdate`, body, getConfig );
+function updateLike(body, getConfig) {
+    return axios.put(`${URL}/timeline/likeUpdate`, getConfig, body);
+}
+
+function updateDislike(body, getConfig) {
+    return axios.put(`${URL}/timeline/likeUpdate`, getConfig, body);
 }
 
 function userImage(getConfig) {
@@ -45,6 +49,10 @@ function logOut(getConfig, body) {
 
 function getTimeLine(getConfig) {
     return axios.get(`${URL}/timeline`, getConfig)
+}
+
+function getUserPosts(getConfig, id) {
+    return axios.get(`${URL}/users/${id}`, getConfig)
 }
 
 function getHashtagTrending() {
@@ -66,4 +74,8 @@ export {
     userImage,
     createPost,
     EditPost,
+    getUserPosts,
+    updateLike,
+    updateDislike,
+
 }

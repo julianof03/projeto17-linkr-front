@@ -7,20 +7,22 @@ import { createPost } from "../../Services/api";
 import GlobalContext from "../../contexts/globalContext";
 import { userImage, logOut } from '../../Services/api.js';
 
-export default function FormBox({img}) {
+export default function FormBox({setReRender}) {
     const navigate = useNavigate()
 
-    const { token, setToken } = useContext(GlobalContext);
-
-
-    const { reRender, setReRender } = useContext(GlobalContext)
+    const { 
+        reRender, 
+        token, setToken 
+    } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
     const [buttonText, SetButtonText] = useState('Publish');
 
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
+        setReRender(false)
     }
+
     function sendForm(e) {
         e.preventDefault()
         if (disable === true) return
@@ -31,28 +33,28 @@ export default function FormBox({img}) {
             link: form.link,
             text: form.text,
         }
-        // console.log('pre promise')
-        // console.log('token',token)
         const promise = createPost(getConfig(token), body )
 
         promise.then( (res) => { 
-            // console.log('then')
             navigate('/timeline') } )
         promise.catch( (err) => alert(err.message) )
 
         setTimeout(() => {
             SetButtonText("Publish");
-            // console.log('enviou o post', form)
             clearForm()
-        })
+        },500)
+        setReRender(false)
     }
+
     function clearForm() {
+        
         setForm({
             link: '',
             text: '',
         })
         setDisable(false)
-        setReRender(!reRender)
+        setReRender(false)
+        
     }
 
 
@@ -81,7 +83,7 @@ export default function FormBox({img}) {
 
         }
 
-    }, [setReRender]);
+    }, [reRender]);
 
     return (
         <FormBoxWrapper >
