@@ -69,10 +69,6 @@ export default function Post(
     }, [])
 
 
-    const inputRef = useRef();
-    useEffect(async () => {
-        inputRef.current.focus();
-    }, [])
 
     function goTo(tag) {
         const newTag = tag.replace('#', '')
@@ -84,14 +80,7 @@ export default function Post(
         if (!message) { setMessage(text) }
         setMessage(event.target.value);
     };
-    const handleClick = event => {
-        event.preventDefault();
 
-        // value of input field
-
-        // set value of input field
-        setMessage('New value');
-    };
 
     function sendForm(e) {
         e.preventDefault()
@@ -115,6 +104,14 @@ export default function Post(
             SetEditPost({ postId: '', status: false })
         }
     }
+
+
+    const inputRef = useRef();
+ 
+    if(editPost.status){
+        inputRef.current.focus();
+    }
+
 
     return (
         <>
