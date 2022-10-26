@@ -4,13 +4,13 @@ import Trending from "../Components/Trending/Trending.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { getHashtagPosts } from "../Services/api.js";
-import getConfig from '../Services/getConfig.js'
+import getConfig from "../Services/getConfig.js";
 import GlobalContext from "../contexts/globalContext.js";
 
 export default function Hashtag() {
   const { setHeader } = useContext(GlobalContext);
   setHeader(true);
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   const { hashtag } = useParams();
   const { reRender, setReRender, hashposts, setHashposts, setClicked, clicked } =
     useContext(GlobalContext);
@@ -18,15 +18,17 @@ export default function Hashtag() {
 
   useEffect(() => {
     setClicked(false);
-    
-    getHashtagPosts(getConfig(token), hashtag).then((res) => {
-      setHashposts({
-        array: res.data.slice(n, n + 50),
-        size: res.data.length,
+
+    getHashtagPosts(getConfig(token), hashtag)
+      .then((res) => {
+        setHashposts({
+          array: res.data.slice(n, n + 50),
+          size: res.data.length,
+        });
+      })
+      .catch((res) => {
+        console.log("algo deu errado");
       });
-    }).catch((res) => {
-      console.log("algo deu errado");
-    });
   }, [clicked, reRender]);
 
   function nextPage() {
@@ -60,12 +62,14 @@ export default function Hashtag() {
                 <>
                   <Post
                     key={index}
+                    postId={value.postId}
                     username={value.username}
-                    img={value.img}
+                    userImg={value.userImg}
                     text={value.text}
                     link={value.link}
                     likesQtd={value.likesQtd}
                     liked={value.liked}
+                    postUserId={value.userId}
                   />
                 </>
               ))}
