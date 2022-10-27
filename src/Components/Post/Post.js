@@ -16,7 +16,7 @@ import ReactTooltip from 'react-tooltip';
 import GlobalContext from "../../contexts/globalContext";
 import { EditPost } from "../../Services/api";
 
-import {updateLike} from '../../Services/api.js'
+import { updateLike, updateDislike } from '../../Services/api.js'
 import getConfig from "../../Services/getConfig";
 
 export default function Post(
@@ -27,33 +27,38 @@ export default function Post(
         text,
         link,
         likesQtd,
-        liked,
-        postId }
+        postId,
+        userLiked
+    }
 ) {
 
     const [message, setMessage] = useState('');
 
-    // AJUSTAR ESSE LIKE AQUI
-    const [like, setLike] = useState(liked)
-    const [color, setColor] = useState('false')
+    const [like, setLike] = useState(false)
 
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
     const token = localStorage.getItem("token")
     const {
         deleteScreen, setDeleteScreen,
         editPost, SetEditPost,
-        postId_global, setPostId_global
+        postId_global, setPostId_global,
+        reRender, setReRender
     } = useContext(GlobalContext);
 
-    const userId = localStorage.getItem("userId");
+    const userId = Number(localStorage.getItem("userId"));
 
     const navigate = useNavigate()
+
+
+
     useEffect(async () => {
         SetEditPost({ postId: '', status: false })
         if (!message) { setMessage(text) }
 
+        if (userLiked) {
+            setLike(true)
+        }
 
-        if (like) { setColor('true') }
         const { data } = await mql(link, {
             data: {
                 avatar: {
@@ -64,7 +69,7 @@ export default function Post(
             }
         })
         setUrlMetadataOBJ(data)
-    }, [])
+    }, [reRender, setReRender])
 
 
     const inputRef = useRef();
@@ -114,38 +119,23 @@ export default function Post(
         }
     }
 
-
-    
-
-    function HandleLike(color){
-        if(color === 'true'){
-            setColor('false')
-        }else{
-            setColor('true')
-        }
-        
-        const body = {
-            postId
-        }
-
+    function HandleLike(like) {
+        const body = { postId }
 
         try {
-            if(color === 'true'){
+            if (!like) {
                 console.log('like')
                 updateLike(getConfig(token), body)
+                setReRender(!reRender)
+            } else {
+                console.log('dislike')
+                updateDislike(getConfig(token), body)
+                setReRender(!reRender)
             }
-            if(color === 'false'){
-                console.log('disLike')
-                // updateDislike(getConfig(token), body)
-            }
-            
-            
+
         } catch (error) {
             console.log(error)
         }
-
-        
-
     }
 
     return (
@@ -154,28 +144,28 @@ export default function Post(
                 (<p>LOADING</p>)
                 :
                 (<PostHTML>
-                    <ImgWrapper color={color}>
+                    <ImgWrapper
+                        like={like}
+                    >
                         <img src={userImg} />
                         <div
                             data-tip data-for="registerTip"
                         >
-                            {color === 'true' ?
+                            {like ?
                                 (
                                     <BsHeartFill
                                         size='20px'
                                         onClick={() => {
-                                            setLike(!like)
-                                            setColor('false')
-                                            HandleLike(color)
+                                            setLike(false)
+                                            HandleLike(like)
                                         }}
                                     />
                                 ) : (
                                     <BsHeart
                                         size='20px'
                                         onClick={() => {
-                                            setLike(!like)
-                                            setColor('true')
-                                            HandleLike(color)
+                                            setLike(true)
+                                            HandleLike(like)
                                         }}
                                     />
                                 )}
@@ -194,21 +184,36 @@ export default function Post(
 
                         </div>
 
-                        <p>{likesQtd}</p>
+
+                        <p>
+                            {!likesQtd ? (
+                                '0 likes'
+                            ) : (
+                                <>
+                                    {(likesQtd > 1) ? (
+                                        <p>
+                                            {likesQtd} likes
+                                        </p>
+                                    ) : (
+                                        '1 like'
+                                    )}
+                                </>
+                            )}
+                        </p>
 
                     </ImgWrapper>
                     <Main>
                         <Title>
                             {postUserId != userId ?
                                 (<h1
-                                    onClick={() => navigate(`/user/${userId}`)}
+                                    onClick={() => navigate(`/user/${postUserId}`)}
                                 >
                                     {username}
                                 </h1>)
                                 :
                                 (<>
                                     <h1
-                                        onClick={() => navigate(`/user/${userId}`)}
+                                        onClick={() => navigate(`/user/${postUserId}`)}
                                     >
                                         {username}
                                     </h1>
@@ -223,7 +228,7 @@ export default function Post(
                                                     SetEditPost({ postId: postId, status: true })
                                                 }
                                             }}
-                                            color='white' 
+                                            color='white'
                                             style={{
                                                 marginLeft: '10px',
                                                 cursor: 'pointer'
@@ -346,7 +351,7 @@ const ImgWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     div{
-        color: ${props => props.color === 'true' ? 'red' : 'white'};
+        color: ${props => props.like ? 'red' : 'white'};
         cursor: pointer;
     }
     img{

@@ -27,7 +27,7 @@ export default function TimeLine() {
     useEffect(() => {
         getTimeLine(getConfig(token))
             .then((res) => {
-
+                console.log(res.data)
                 setPosts({
                     array: res.data.slice(n, n + 20),
                     size: res.data.length
@@ -35,7 +35,7 @@ export default function TimeLine() {
 
             })
 
-    }, [reRender])
+    }, [setReRender])
 
 
 
@@ -51,7 +51,6 @@ export default function TimeLine() {
         }
 
         setN(n + 20)
-        // console.log('carregar página')
 
         window.scrollTo(0, 0)
         setReRender(!reRender)
@@ -97,7 +96,6 @@ export default function TimeLine() {
                             <h1>timeline</h1>
                         </Title>
                         <FormBox />
-                        {console.log(posts.array)}
                         {posts.array.map((value, index) =>
                             <Post
                                 key={index}
@@ -109,6 +107,8 @@ export default function TimeLine() {
                                 likesQtd={value.likesQtd}
                                 liked={value.liked}
                                 postId={value.postId}
+                                postOwner={value.userId}
+                                userLiked={value.userLiked}
                             />
                         )}
                         <NextPage

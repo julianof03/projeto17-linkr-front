@@ -7,11 +7,11 @@ import { createPost } from "../../Services/api";
 import GlobalContext from "../../contexts/globalContext";
 import { userImage, logOut } from '../../Services/api.js';
 
-export default function FormBox({setReRender}) {
+export default function FormBox() {
     const navigate = useNavigate()
 
     const { 
-        reRender, 
+        reRender, setReRender,
         token, setToken 
     } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)

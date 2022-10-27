@@ -32,7 +32,7 @@ function updateLike(body, getConfig) {
 }
 
 function updateDislike(body, getConfig) {
-    return axios.put(`${URL}/timeline/likeUpdate`, getConfig, body);
+    return axios.put(`${URL}/timeline/dislikeUpdate`, getConfig, body);
 }
 
 function userImage(getConfig) {
