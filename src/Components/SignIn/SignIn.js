@@ -9,24 +9,19 @@ export default function SignIn() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { token, setToken, setHeader, setUser, setUserId} = useContext(GlobalContext);
+    const { setToken, setHeader, setUser, } = useContext(GlobalContext);
     setHeader(false);
 
     async function sendForm(e) {
-
         e.preventDefault();
         const body = { email, password };
-
         try {
             const login = await signIn(body);
-            //  console.log(login.data)
-             setToken(`${login.data.token}`);
-             setUser(login.data.name);
-             setUserId(login.data.userId)
-
-             localStorage.setItem("token",`${login.data.token}`);
-             localStorage.setItem("userId",`${login.data.userId}`);
-             navigate('/timeline')
+            setToken(`${login.data.token}`);
+            setUser(login.data.name)
+            localStorage.setItem("token",`${login.data.token}`);
+            localStorage.setItem("userId",`${login.data.userId}`);
+            navigate('/timeline')
         } catch (error) {
             console.log(error.message);
             if (error.response.status === 401) {

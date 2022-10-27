@@ -1,11 +1,7 @@
 import axios from "axios";
-// import dotenv from 'dotenv';
-// dotenv.config()
 
-
-const URL = "http://localhost:5000";
 // const URL = "https://projeto17linkr.herokuapp.com";
-// const URL = process.env.REACT_APP_API_BASE_URL;
+const URL = "http://localhost:5000";
 
 // Sign-Up--------------------------------
 function signUp(body) {
@@ -19,12 +15,15 @@ function signIn(body) {
 function createPost(getConfig, body) {
     return axios.post(`${URL}/timeline`, body, getConfig);
 };
-
+function deletePost(id, getConfig) {
+    return axios.delete(`${URL}/timeline/${id}`, getConfig)
+};
 function EditPost(body, id) {
     return axios.post(`${URL}/timeline/${id}`, body);
 };
-
-// Headers ---------------------------------
+function getAlertNewPosts(body) {
+    return axios.get(`${URL}/timeline/getalertnewposts`, body);
+};
 // updateLike ---------------------------------
 
 function updateLike(body, getConfig) {
@@ -34,7 +33,6 @@ function updateLike(body, getConfig) {
 function updateDislike(body, getConfig) {
     return axios.put(`${URL}/timeline/dislikeUpdate`, getConfig, body);
 }
-
 function userImage(getConfig) {
     return axios.get(`${URL}/userImage`, getConfig);
 };
@@ -55,12 +53,12 @@ function getUserPosts(getConfig, id) {
     return axios.get(`${URL}/users/${id}`, getConfig)
 }
 
-function getHashtagTrending() {
-    return axios.get(`${URL}/trending`);
+function getHashtagTrending(getConfig) {
+    return axios.get(`${URL}/trending`,getConfig);
 }
 
-function getHashtagPosts(hashtag) {
-    return axios.get(`${URL}/hashtag/${hashtag}`);
+function getHashtagPosts(getConfig, hashtag) {
+    return axios.get(`${URL}/hashtag/${hashtag}`, getConfig);
 }
 
 export {
@@ -72,10 +70,11 @@ export {
     getHashtagPosts,
     searchUsers,
     userImage,
+    deletePost,
     createPost,
     EditPost,
     getUserPosts,
     updateLike,
     updateDislike,
-
+    getAlertNewPosts
 }

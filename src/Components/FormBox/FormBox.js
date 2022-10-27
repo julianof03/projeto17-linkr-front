@@ -3,19 +3,17 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
 import React from "react";
 import getConfig from "../../Services/getConfig"
-import { createPost } from "../../Services/api";
+import { createPost, userImage, logOut } from "../../Services/api";
 import GlobalContext from "../../contexts/globalContext";
-import { userImage, logOut } from '../../Services/api.js';
+
 
 export default function FormBox() {
     const navigate = useNavigate()
 
-    const { 
-        reRender, setReRender,
-        token, setToken 
-    } = useContext(GlobalContext)
+    const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
+    const [profileImage, setProfileImage] = useState('')
     const [buttonText, SetButtonText] = useState('Publish');
 
     function handleForm(e) {
@@ -34,13 +32,11 @@ export default function FormBox() {
             text: form.text,
         }
         const promise = createPost(getConfig(token), body )
-
-        promise.then( (res) => { 
-            navigate('/timeline') } )
-        promise.catch( (err) => alert(err.message) )
-
+        
+        promise.then( () => { window.location.reload(false) } )
+        promise.catch( (err) => console.log('Deu Erro logout',err) )
         setTimeout(() => {
-            SetButtonText("Publish");
+            SetButtonText("Publish")
             clearForm()
         },500)
         setReRender(false)
@@ -56,13 +52,8 @@ export default function FormBox() {
         setReRender(false)
         
     }
-
-
-    const [profileImage, setProfileImage] = useState('');
     useEffect(async () => {
-
         const tokenLs = localStorage.getItem("token");
-
         if (token === '') {
             if (!tokenLs) {
                 navigate('/signin');
@@ -75,19 +66,17 @@ export default function FormBox() {
             setProfileImage((await userImage(getConfig(tokenLs))).data);
 
         } catch (error) {
-
             if (error.response.status === 401) {
                 navigate('/signin');
             };
             return;
-
         }
 
-    }, [reRender]);
+    }, [reRender, setReRender]);
 
     return (
         <FormBoxWrapper >
-            <ImgWrapper src={profileImage}/>
+            <ImgWrapper src={profileImage} />
             <Main onSubmit={sendForm}>
                 <Answer> What are you going to share today? </Answer>
                 <LinkInput  type='link' name='link'

@@ -4,10 +4,9 @@ import {  useState } from 'react';
 import GlobalContext from './contexts/globalContext';
 import React from 'react';
 import Header from './Components/Head/TopMenu.js';
-
 import SignIn from './Components/SignIn/SignIn';
 import SingUp from './Components/SignUp/SignUp';
-import TimeLine from './Pages/TimeLine.js';
+import TimeLine from './Pages/TimeLine/TimeLine';
 import Hashtag from './Pages/hashtagPage';
 import UserPage from './Pages/UserPage';
 
@@ -23,22 +22,15 @@ export default function App() {
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
     const [config, setConfig] = useState({});
-    const [header, setHeader] = useState(false);
     const [userId, setUserId] = useState('')
-    const [deleteScreen, setDeleteScreen] = useState({ status: false, postId: '' })
+    const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:'' } )
+    const [header, setHeader] = useState(false)
     const [editPost, SetEditPost] = useState({ status: false, postId: '' })
-    const [postId_global, setPostId_global] = useState('')
-    const [hashposts, setHashposts] = useState({
-        array: [],
-        size: 0,
-    });
-    const [posts, setPosts] = useState({
-        array: [],
-        size: 0
-    })
+    const [hashposts, setHashposts] = useState({ array: [], size: 0 });
+    const [posts, setPosts] = useState({ array: [], size: 0 })
     const [clicked, setClicked] = useState(false);
-
-
+    const [youngestPost, setYoungestPost] = useState({})
+    
     return (
         <div>
             <GlobalStyle />
@@ -47,14 +39,14 @@ export default function App() {
                     reRender, setReRender,
                     token, setToken,
                     user, setUser,
+                    config, setConfig,
                     header, setHeader,
                     userId, setUserId,
                     deleteScreen, setDeleteScreen,
                     editPost, SetEditPost,
-                    postId_global, setPostId_global,
-                    // posts, setPosts,
                     hashposts, setHashposts,
-                    clicked, setClicked
+                    clicked, setClicked,
+                    youngestPost, setYoungestPost
                 }
             }>
                 <BrowserRouter>

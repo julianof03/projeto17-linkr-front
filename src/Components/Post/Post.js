@@ -1,20 +1,17 @@
 import styled from "styled-components";
-
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdModeEdit } from "react-icons/md";
-
 import { ReactTagify } from "react-tagify";
-
 import React from "react";
-import { useContext, useEffect, useState, useRef } from "react";
-
+import { useContext, useEffect, useState } from "react";
 import mql from '@microlink/mql'
-
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
-
 import GlobalContext from "../../contexts/globalContext";
-import { EditPost } from "../../Services/api";
+import PropagateLoader from "react-spinners/PropagateLoader";
+import { OnClickEditPost } from "./Functions/editPost";
+import EditInput from "./Functions/editInput";
+import { GoToTag } from "./Functions/goToTag";
 
 import { updateLike, updateDislike } from '../../Services/api.js'
 import getConfig from "../../Services/getConfig";
@@ -31,25 +28,20 @@ export default function Post(
         userLiked
     }
 ) {
-
-    const [message, setMessage] = useState('');
-
+    //useState
     const [like, setLike] = useState(false)
-
+    const [message, setMessage] = useState('');
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
-    const token = localStorage.getItem("token")
+    const [form, setForm] = useState({ link: '', text: '' })
+    //GlobalContext
     const {
-        deleteScreen, setDeleteScreen,
-        editPost, SetEditPost,
+        setDeleteScreen, editPost, SetEditPost,
         postId_global, setPostId_global,
-        reRender, setReRender
-    } = useContext(GlobalContext);
-
-    const userId = Number(localStorage.getItem("userId"));
-
+        reRender, setReRender } = useContext(GlobalContext);
+    // generic const declaration
     const navigate = useNavigate()
-
-
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
 
     useEffect(async () => {
         SetEditPost({ postId: '', status: false })
@@ -103,7 +95,7 @@ export default function Post(
             text: message,
         }
 
-        const promise = EditPost(body, id)
+        const promise = editPost(body, id)
 
         promise.then((res) => {
             document.location.reload()
@@ -139,9 +131,9 @@ export default function Post(
     }
 
     return (
-        <>
-            {(!urlMetadataOBJ.url) ?
-                (<p>LOADING</p>)
+        <>{
+            (!urlMetadataOBJ.url) ?
+                (<PropagateLoader color="#b3b3b3" />)
                 :
                 (<PostHTML>
                     <ImgWrapper
@@ -204,29 +196,19 @@ export default function Post(
                     </ImgWrapper>
                     <Main>
                         <Title>
-                            {postUserId != userId ?
-                                (<h1
-                                    onClick={() => navigate(`/user/${postUserId}`)}
-                                >
+                            {userId != postUserId ?
+                                (<h1 onClick={() => navigate(`/user/${postUserId}`)} >
                                     {username}
                                 </h1>)
                                 :
                                 (<>
-                                    <h1
-                                        onClick={() => navigate(`/user/${postUserId}`)}
-                                    >
+                                    <h1 onClick={() => navigate(`/user/${postUserId}`)} >
                                         {username}
                                     </h1>
                                     <IconsWrapper>
                                         <MdModeEdit
                                             onClick={() => {
-                                                if (editPost.status) {
-                                                    setMessage(text);
-                                                    SetEditPost({ postId: '', status: false })
-                                                }
-                                                else {
-                                                    SetEditPost({ postId: postId, status: true })
-                                                }
+                                                OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId })
                                             }}
                                             color='white'
                                             style={{
@@ -234,63 +216,52 @@ export default function Post(
                                                 cursor: 'pointer'
                                             }}
                                         />
-                                        <BsFillTrashFill
-                                            onClick={() => { setDeleteScreen({ postId: postId, status: true }) }}
+                                        <BsFillTrashFill onClick={() => { setDeleteScreen({ postId: postId, status: true }) }}
                                             color='white'
                                             style={{
                                                 marginLeft: '10px',
                                                 cursor: 'pointer'
                                             }}
-                                            size='15px'
-                                        />
+                                            size='15px' />
                                     </IconsWrapper>
                                 </>)}
                         </Title>
                         <Description>
-                            <ReactTagify
-                                colors={"white"}
-                                tagClicked={(tag) => {
-                                    goTo(tag)
-                                }}
-                            >
+
+                            <ReactTagify colors={"white"}
+                                tagClicked={(tag) => { GoToTag(tag) }} >
                                 {text}
                             </ReactTagify>
-                            {
-                                (editPost.status && postId === editPost.postId) ?
-                                    (
-                                        <>
-                                            <EditContainer></EditContainer>
-                                            <form onSubmit={sendForm}>
-                                                <TextInput
-                                                    type="text" id="message"
-                                                    name="message" onChange={handleChange}
-                                                    required={true} value={message}
-                                                    ref={inputRef}
-                                                ></TextInput>
-                                            </form>
-                                        </>
-                                    ) :
-                                    ('')
-                            }
+                            {(editPost.status && postId === editPost.postId) ?
+                                (<EditInput
+                                    postId={postId}
+                                    SetEditPost={SetEditPost}
+                                    handleChange={handleChange}
+                                    message={message}
+                                    setMessage={setMessage}
+                                    text={text}
+                                />)
+                                :
+                                ('')}
                         </Description>
-
-                        <UrlMetadaSpace>
-                            <UrlMetadaDetails>
-                                <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                                <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                                <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                            </UrlMetadaDetails>
-                            <ImageUrl>
-                                <img src={urlMetadataOBJ.image?.url}
-                                    alt="image not found" />
-                            </ImageUrl>
-                        </UrlMetadaSpace>
+                        <a href={`${urlMetadataOBJ.url}`}
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            <UrlMetadaSpace>
+                                <UrlMetadaDetails>
+                                    <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                    <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                    <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                                </UrlMetadaDetails>
+                                <ImageUrl>
+                                    <img src={urlMetadataOBJ.image?.url}
+                                        alt='image not found &#x1F625;' />
+                                </ImageUrl>
+                            </UrlMetadaSpace>
+                        </a>
                     </Main>
-                </PostHTML>
-                )
-            }
-        </>
-    )
+                </PostHTML>)
+        }</>)
 }
 
 const Text = styled.div``
@@ -376,7 +347,7 @@ const Title = styled.div`
   width: 100%;
   padding: 5px 0 7px 0;
   margin-top: 16px;
-  /* background-color: blue; */
+  /* background-color: red; */
   h1 {
     font-size: 19px;
     font-weight: 400;
@@ -396,15 +367,21 @@ const Description = styled.div`
     /* background-color: yellow; */
 `
 const UrlMetadaSpace = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 503px;
-  height: 155px;
-  margin-bottom: 10px;
-  border: solid 1px gray;
-  border-radius: 16px;
-  color: white;
-  /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+    width: 503px;
+    height: 155px;
+    margin-bottom: 10px;
+    border: solid 1px gray;
+    border-radius: 16px;
+    color: white;
+    cursor: pointer;
+    /* background-color: red; */
+    :hover { 
+        transition: 0.5s;
+        background-color: white ;
+        background: rgba(255, 255, 255, 0.2);
+    }
 `;
 const EditContainer = styled.div`
     background-color:  black;
