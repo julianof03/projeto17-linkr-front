@@ -9,12 +9,12 @@ import GlobalContext from "../../contexts/globalContext";
 
 export default function FormBox() {
     const navigate = useNavigate()
-
-    const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
-    const [form, setForm] = useState({ link: '', text: '' })
-    const [profileImage, setProfileImage] = useState('')
-    const [buttonText, SetButtonText] = useState('Publish');
+    const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
+    //useState
+    const [profileImage, setProfileImage]   = useState('')
+    const [buttonText, SetButtonText]       = useState('Publish');
+    const [form, setForm]                   = useState({ link: '', text: '' })
 
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -26,13 +26,11 @@ export default function FormBox() {
         if (disable === true) return
         setDisable(true)
         SetButtonText("Publishing...");
-
         const body = {
             link: form.link,
             text: form.text,
         }
         const promise = createPost(getConfig(token), body)
-
         promise.then(() => { setReRender(!reRender) })
         promise.catch((err) => console.log('Deu Erro logout', err))
         setTimeout(() => {
@@ -42,13 +40,11 @@ export default function FormBox() {
     }
 
     function clearForm() {
-
         setForm({
             link: '',
             text: '',
         })
         setDisable(false)
-
     }
     useEffect(async () => {
         const tokenLs = localStorage.getItem("token");
@@ -62,14 +58,12 @@ export default function FormBox() {
 
         try {
             setProfileImage((await userImage(getConfig(tokenLs))).data);
-
         } catch (error) {
             if (error.response.status === 401) {
                 navigate('/signin');
             };
             return;
         }
-
     }, []);
 
     return (

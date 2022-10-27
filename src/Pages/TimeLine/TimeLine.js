@@ -11,76 +11,45 @@ import RenderPosts from "./Functions/renderPosts.js";
 import AlertNewPosts from "../../Components/AlertNewPosts/AlertNewPosts.js";
 
 export default function TimeLine() {
-  const { reRender, setReRender, setHeader, deleteScreen, setYoungestPost, youngestPost } = useContext(GlobalContext);
+  const { reRender, setReRender, setHeader, deleteScreen} = useContext(GlobalContext);
   const token = localStorage.getItem("token");
-  const [posts, setPosts] = useState({ array: [], size: 0 });
   const [n, setN] = useState(0);
+  //useState
+  const [posts, setPosts]   = useState({ array: [], size: 0, status: false });
+  const [loader, setLoader] = useState(true)
+  // const [numbNewPosts, setNumbNewPosts] = useState(0)
+  // const [youngestPost, setYoungestPost] = useState({})
   setHeader(true);
 
   useEffect(() => {
-
-    // console.log('reRender', reRender)
     getTimeLine(getConfig(token)).then((res) => {
       setPosts({
         array: res.data.slice(0, n + 5),
         size: res.data.length,
+        status: true
       });
+      setLoader(false)
+      // setYoungestPost(posts.array[0])
+      // interval()
     });
   }, [reRender, n]);
 
-  //   function nextPage() {
-  //     if (n + 10 > posts.size) {
-
-  //         let add = posts.size - n
-
-  //         if (add > 0) {
-  //             setN(n + add)
-  //         }
-  //         return
-  //     }
-
-  //     setN(n + 10)
-
-  //     window.scrollTo(0, 0)
-  //     setReRender(!reRender)
-  // }
-
   return (
-    (posts.array.length === 0) ?
-      (<Wrapper>
-        <MainContent>
-          <Title> <h1>timeline</h1> </Title>
-
-          {/* <AlertNewPosts /> */}
-
-          <FormBox />
-          <PropagateLoader color="#b3b3b3" />
-        </MainContent>
-      </Wrapper>)
-      :
-      (<Wrapper>
-        {deleteScreen.status ? <DeleteBox /> : <></>}
-        <MainContent>
-          <Title> <h1>timeline</h1> </Title>
-
-          {/* <AlertNewPosts /> */}
-
-          <FormBox />
-
-          <RenderPosts
-            postsList={posts.array}
-            n={n}
-            setN={setN}
-          />
-
-        </MainContent>
-        <AsideContent>
-          <TrendingWrapper>
-            <Trending />
-          </TrendingWrapper>
-        </AsideContent>
-      </Wrapper>))
-}
+        (<Wrapper>
+          {deleteScreen.status ? <DeleteBox /> : <></>}
+          <MainContent>
+              <Title> <h1>timeline</h1> </Title>
+              {/* {!youngestPost ? <></> : <AlertNewPosts youngestPost={youngestPost} /> } */}
+              <FormBox />
+              {loader ? <PropagateLoader color="#b3b3b3" /> : <></>}
+              {posts.status ? <RenderPosts postsList={posts.array} /> : <></>}
+          </MainContent>
+          <AsideContent>
+              <TrendingWrapper> 
+                <Trending /> 
+              </TrendingWrapper>
+          </AsideContent>
+        </Wrapper>))}
 
 const Wrapper = styled.div`
   display: flex;
