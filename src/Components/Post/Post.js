@@ -51,9 +51,7 @@ export default function Post(
         SetEditPost({ postId: '', status: false })
         if (!message) { setMessage(text) }
 
-        console.log('antes userLiked',like)
         if (userLiked) {
-            console.log('depois userLiked',like)
             setLike(true)
         }
 
@@ -120,6 +118,7 @@ export default function Post(
                                         
                                     />
                                 )}
+
                             <ReactTooltip
                                 id="registerTip"
                                 place="bottom"

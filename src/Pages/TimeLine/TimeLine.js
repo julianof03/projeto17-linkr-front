@@ -43,7 +43,6 @@ export default function TimeLine() {
 //     setReRender(!reRender)
 // }
 
-
   return (
     (posts.array.length === 0) ?
         (<Wrapper>
