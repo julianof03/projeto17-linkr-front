@@ -5,13 +5,14 @@ import GlobalContext from "../../contexts/globalContext.js"
 import FormBox from "../../Components/FormBox/FormBox.js";
 import Trending from "../../Components/Trending/Trending.js";
 import DeleteBox from "../../Components/DeleteScreen/deleteScreen.js";
+import RepostBox from "../../Components/RepostScreen/repostScreen.js";
 import getConfig from "../../Services/getConfig.js";
 import { getTimeLine } from "../../Services/api.js";
 import RenderPosts from "./Functions/renderPosts.js";
 import AlertNewPosts from "../../Components/AlertNewPosts/AlertNewPosts.js";
 
 export default function TimeLine() {
-  const { reRender, setReRender, setHeader, deleteScreen} = useContext(GlobalContext);
+  const { reRender, setReRender, setHeader, deleteScreen, repost} = useContext(GlobalContext);
   const token = localStorage.getItem("token");
   const [n, setN] = useState(0);
   //useState
@@ -37,6 +38,7 @@ export default function TimeLine() {
   return (
         (<Wrapper>
           {deleteScreen.status ? <DeleteBox /> : <></>}
+          {repost.status ? <RepostBox /> : <></>}
           <MainContent>
               <Title> <h1>timeline</h1> </Title>
               {/* {!youngestPost ? <></> : <AlertNewPosts youngestPost={youngestPost} /> } */}

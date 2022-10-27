@@ -13,9 +13,10 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import { OnClickEditPost } from "./Functions/editPost";
 import EditInput from "./Functions/editInput";
 import { GoToTag } from "./Functions/goToTag";
-import { sharePost } from "./Functions/sharePost";
 import { updateLike, updateDislike } from "../../Services/api.js";
 import getConfig from "../../Services/getConfig.js";
+import repostScreen from "../RepostScreen/repostScreen.js"
+
 
 export default function Post({
   username,
@@ -134,7 +135,7 @@ export default function Post({
             <div>
               <BiRepost
                 size="30px"
-                onClick={() => sharePost(postUserId, postId, repost, setRepost)}
+                onClick={() => setRepost({ status: true, postId: postId, userId: postUserId })}
               />
             </div>
             <p>0 re-posts</p>
