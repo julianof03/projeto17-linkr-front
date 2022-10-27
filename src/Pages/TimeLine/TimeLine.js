@@ -11,20 +11,20 @@ import RenderPosts from "./Functions/renderPosts.js";
 import AlertNewPosts from "../../Components/AlertNewPosts/AlertNewPosts.js";
 
 export default function TimeLine() {
-  const { setHeader, deleteScreen} = useContext(GlobalContext);
+  const { reRender, setReRender, setHeader, deleteScreen} = useContext(GlobalContext);
   const token = localStorage.getItem("token");
   const [n, setN] = useState(0);
   //useState
   const [posts, setPosts]   = useState({ array: [], size: 0, status: false });
-  const [youngestPost, setYoungestPost] = useState({})
   const [loader, setLoader] = useState(true)
-  const [numbNewPosts, setNumbNewPosts] = useState(0)
-  
+  // const [numbNewPosts, setNumbNewPosts] = useState(0)
+  // const [youngestPost, setYoungestPost] = useState({})
   setHeader(true);
+
   useEffect(() => {
     getTimeLine(getConfig(token)).then((res) => {
       setPosts({
-        array: res.data.slice(n, n + 20),
+        array: res.data.slice(0, n + 5),
         size: res.data.length,
         status: true
       });
@@ -32,7 +32,7 @@ export default function TimeLine() {
       // setYoungestPost(posts.array[0])
       // interval()
     });
-  }, []);
+  }, [reRender, n]);
 
   return (
         (<Wrapper>
