@@ -25,8 +25,13 @@ function getAlertNewPosts(body) {
   return axios.get(`${URL}/timeline/getalertnewposts`, body);
 }
 // updateLike ---------------------------------
+
 function updateLike(body, getConfig) {
-  return axios.post(`${URL}/likeUpdate`, body, getConfig);
+  return axios.put(`${URL}/timeline/likeUpdate`, getConfig, body);
+}
+
+function updateDislike(body, getConfig) {
+  return axios.put(`${URL}/timeline/dislikeUpdate`, getConfig, body);
 }
 function userImage(getConfig) {
   return axios.get(`${URL}/userImage`, getConfig);
@@ -42,6 +47,10 @@ function logOut(getConfig, body) {
 
 function getTimeLine(getConfig) {
   return axios.get(`${URL}/timeline`, getConfig);
+}
+
+function getUserPosts(getConfig, id) {
+  return axios.get(`${URL}/users/${id}`, getConfig);
 }
 
 function getHashtagTrending(getConfig) {
@@ -70,4 +79,7 @@ export {
   EditPost,
   createRepost,
   getAlertNewPosts,
+  getUserPosts,
+  updateLike,
+  updateDislike,
 };
