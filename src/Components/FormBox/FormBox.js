@@ -12,7 +12,7 @@ export default function FormBox() {
 
     const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
-    const [form, setForm] = useState({ link: '', text: ''})
+    const [form, setForm] = useState({ link: '', text: '' })
     const [profileImage, setProfileImage] = useState('')
     const [buttonText, SetButtonText] = useState('Publish');
 
@@ -26,31 +26,29 @@ export default function FormBox() {
         if (disable === true) return
         setDisable(true)
         SetButtonText("Publishing...");
-        
+
         const body = {
             link: form.link,
             text: form.text,
         }
-        const promise = createPost(getConfig(token), body )
-        
-        promise.then( () => { window.location.reload(false) } )
-        promise.catch( (err) => console.log('Deu Erro logout',err) )
+        const promise = createPost(getConfig(token), body)
+
+        promise.then(() => { setReRender(!reRender) })
+        promise.catch((err) => console.log('Deu Erro logout', err))
         setTimeout(() => {
             SetButtonText("Publish")
             clearForm()
-        },500)
-        setReRender(false)
+        }, 500)
     }
 
     function clearForm() {
-        
+
         setForm({
             link: '',
             text: '',
         })
         setDisable(false)
-        setReRender(false)
-        
+
     }
     useEffect(async () => {
         const tokenLs = localStorage.getItem("token");
@@ -72,24 +70,24 @@ export default function FormBox() {
             return;
         }
 
-    }, [reRender, setReRender]);
+    }, []);
 
     return (
         <FormBoxWrapper >
             <ImgWrapper src={profileImage} />
             <Main onSubmit={sendForm}>
                 <Answer> What are you going to share today? </Answer>
-                <LinkInput  type='link' name='link'
-                            placeholder="http..." onChange={handleForm}
-                            value={form.link} disabled={disable} required>
+                <LinkInput type='link' name='link'
+                    placeholder="http..." onChange={handleForm}
+                    value={form.link} disabled={disable} required>
                 </LinkInput >
-                <TextInput  type='text' name='text'
-                            placeholder="manda seu textão" onChange={handleForm}
-                            value={form.text} disabled={disable} required> 
+                <TextInput type='text' name='text'
+                    placeholder="manda seu textão" onChange={handleForm}
+                    value={form.text} disabled={disable} required>
                 </TextInput>
                 <ButtonWrapper type='submit'>
                     <button >
-                    {buttonText}
+                        {buttonText}
                     </button>
                 </ButtonWrapper>
             </Main>
