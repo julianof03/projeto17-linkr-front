@@ -11,12 +11,14 @@ import RenderPosts from "./Functions/renderPosts.js";
 import AlertNewPosts from "../../Components/AlertNewPosts/AlertNewPosts.js";
 
 export default function TimeLine() {
-  const { setHeader, deleteScreen, youngestPost, setYoungestPost} = useContext(GlobalContext);
+  const { setHeader, deleteScreen} = useContext(GlobalContext);
   const token = localStorage.getItem("token");
   const [n, setN] = useState(0);
   //useState
   const [posts, setPosts]   = useState({ array: [], size: 0, status: false });
+  const [youngestPost, setYoungestPost] = useState({})
   const [loader, setLoader] = useState(true)
+  const [numbNewPosts, setNumbNewPosts] = useState(0)
   
   setHeader(true);
   useEffect(() => {
@@ -27,18 +29,17 @@ export default function TimeLine() {
         status: true
       });
       setLoader(false)
+      // setYoungestPost(posts.array[0])
+      // interval()
     });
   }, []);
-  
-  // setYoungestPost(posts.array[0])
 
   return (
         (<Wrapper>
           {deleteScreen.status ? <DeleteBox /> : <></>}
           <MainContent>
               <Title> <h1>timeline</h1> </Title>
-              {}
-              {/* <AlertNewPosts /> */}
+              {/* {!youngestPost ? <></> : <AlertNewPosts youngestPost={youngestPost} /> } */}
               <FormBox />
               {loader ? <PropagateLoader color="#b3b3b3" /> : <></>}
               {posts.status ? <RenderPosts postsList={posts.array} /> : <></>}

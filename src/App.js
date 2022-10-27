@@ -29,7 +29,6 @@ export default function App() {
     const [hashposts, setHashposts] = useState({ array: [], size: 0 });
     const [posts, setPosts] = useState({ array: [], size: 0 })
     const [clicked, setClicked] = useState(false);
-    const [youngestPost, setYoungestPost] = useState([])
 
     return (
         <div>
@@ -45,8 +44,7 @@ export default function App() {
                     deleteScreen, setDeleteScreen,
                     editPost, SetEditPost,
                     hashposts, setHashposts,
-                    clicked, setClicked,
-                    youngestPost, setYoungestPost
+                    clicked, setClicked
                 }
             }>
                 <BrowserRouter>

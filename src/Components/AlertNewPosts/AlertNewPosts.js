@@ -3,20 +3,7 @@ import { useState, useContext, useEffect } from "react"
 import { getAlertNewPosts } from "../../Services/api"
 import GlobalContext from "../../contexts/globalContext";
 
-export default function AlertNewPosts(){
-    const { youngestPost } = useContext(GlobalContext);
-    const [numbNewPosts, setNumbNewPosts] = useState(0)
-    // let body = { createdAt: youngestPost.createdAt }
-    
-    useEffect(() => {
-      interval()
-    }, [])
-
-    function interval(){
-      setInterval(() => {
-        console.log('youngest POST:', youngestPost)
-    }, 5000)
-    }
+export default function AlertNewPosts({numbNewPosts}){
 
     return (
         <AlertBox>
