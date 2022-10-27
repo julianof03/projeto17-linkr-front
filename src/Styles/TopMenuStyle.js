@@ -55,6 +55,7 @@ const LogoutBox = styled.div`
     right: 0;
     top: 80px;
     color: #fff;
+    z-index: 5;
     cursor: pointer;
 
     h3{

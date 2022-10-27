@@ -66,6 +66,9 @@ const TrendingWrapper = styled.div`
     color: #fff;
     cursor: pointer;
   }
+  @media only screen and (max-width:600px) {
+        display: none;
+    }
 `;
 
 const Line = styled.div`

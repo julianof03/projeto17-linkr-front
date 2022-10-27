@@ -33,7 +33,7 @@ function userImage(getConfig) {
 };
 
 function searchUsers(getConfig, startsWith) {
-    return axios.get(`${URL}/users${startsWith}`, getConfig);
+    return axios.get(`${URL}/users/${startsWith}`, getConfig);
 };
 
 function logOut(getConfig, body) {
@@ -57,14 +57,6 @@ function getUser(id, getConfig) {
     return axios.get(`${URL}/users/${id}`, getConfig);
 };
 
-// Follow --------------------------------
-function follow(id, getConfig){
-    return axios.post(`${URL}/follow`, id, getConfig );
-}
-function unfollow(id, getConfig){
-    return axios.delete(`${URL}/follow/${id}`, getConfig );
-}
-
 export {
     signUp,
     signIn,
@@ -77,8 +69,9 @@ export {
     deletePost,
     createPost,
     EditPost,
-    getAlertNewPosts,
+<<<<<<< HEAD
     getUser,
-    follow,
-    unfollow
+=======
+    getAlertNewPosts
+>>>>>>> main
 }

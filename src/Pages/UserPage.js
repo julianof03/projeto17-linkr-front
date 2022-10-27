@@ -5,7 +5,7 @@ import GlobalContext from "../contexts/globalContext.js";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import getConfig from "../Services/getConfig.js";
-import { getUser } from '../Services/api.js'
+import { getUser, follow, unfollow } from '../Services/api.js'
 import {FollowBox} from "../Styles/FollowStyle.js"
 
 export default function UserPage() {
@@ -28,20 +28,40 @@ export default function UserPage() {
     const [follows, setFollows] = useState(false);
 
     const [n, setN] = useState(0)
-    useEffect(() => {
-        getUser( userId,getConfig(token))
-            .then((res) => {
-                const allUserPosts = res.data.Posts;
-                if(res.data.isFollowing){
+    useEffect(async () => {
+
+        try{
+            let allUserPosts;
+            console.log(userId)
+            const tokenLs = localStorage.getItem("token");
+
+            if (token === '') {
+                if (!tokenLs) {
+                    navigate('/signin');
+                    return;
+                }
+                setToken(`${tokenLs}`);
+                allUserPosts = (await getUser(userId,getConfig(tokenLs))).data
+            } else{
+
+                allUserPosts = (await getUser(userId,getConfig(token))).data
+            }
+            console.log(allUserPosts)
+
+                if(allUserPosts[0].isFollowing){
                     setFollows(true);
-                };
+                }else{
+                    setFollows(false);
+                }
 
                 setUserPosts({
                     array: allUserPosts.slice(n, n + 20),
                     size: allUserPosts.length
                 });
 
-            })
+            } catch(error){
+                console.log(error)
+            }
 
     }, [reRender])
 
@@ -61,6 +81,25 @@ export default function UserPage() {
         setReRender(!reRender)
     }
 
+    async function changeFollow(){
+        const id = {id:userId};
+            try{
+            if (!follows){
+                console.log(id)
+             await follow(id, getConfig(token));
+            setFollows(true);
+            }else{
+            await unfollow(userId, getConfig(token));
+            setFollows(false);
+            }
+
+            console.log('follow',follows);
+            
+            }catch(error){
+             console.log(error);
+            }
+
+    }
 
     return (
         <>
@@ -75,8 +114,7 @@ export default function UserPage() {
                                 <img src={userPosts.array[0].userImg}
                                 />
                             </ImgWrapper>
-                            <h1>{userPosts.array[0].username}'s posts'</h1>
-
+                            <h1>{userPosts.array[0].username}'s posts</h1>
                         </Title>
 
                         <PostWrapper>
@@ -97,8 +135,8 @@ export default function UserPage() {
                     </LeftWrapper>
 
                     <RightWrapper>
-                        <FollowBox follow={false}>
-                            Follow
+                        <FollowBox follow={!follows} onClick={changeFollow}>
+                            {follows?'Unfollow':'Follow'}
                         </FollowBox>
                         <TrendingWrapper>
                             <Trending />
@@ -121,21 +159,36 @@ background-color: #333333 ;
 
 display: flex;
 justify-content: center;
+@media only screen and (max-width:600px) {
+        margin-top:80px;
+    }
 
 `;
 const RightWrapper = styled.div`
 height: 500px;
 width: 21vw;
-position:relative;
+display: flex;
+flex-direction: column;
+justify-content: left;
+@media only screen and (max-width:600px) {
+    width: 0vw;
+    }
 `;
 const LeftWrapper = styled.div`
 width: 42vw;
 
 display: flex;
 flex-direction: column;
+justify-content: right;
+align-items: baseline;
+
+@media only screen and (max-width:600px) {
+    width: 100vw;
+    align-items: center;
+    }
 `;
 const Title = styled.div`
-width:100%;
+width:100vw;
 display: flex;
 justify-content: flex-start;
 align-items: center;
@@ -163,14 +216,11 @@ const PostWrapper = styled.div`
 width: 100%;
 display: flex;
 flex-direction: column;
-background-color: red; 
 
 border-radius: 10px;
 
 `;
 const TrendingWrapper = styled.div`
 height: 100vh;
-/* background-color: aqua; */
-/* position:absolute; */
-top:112px;
+
 `;

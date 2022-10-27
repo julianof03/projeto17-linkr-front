@@ -13,5 +13,11 @@ const FollowBox = styled.div`
     justify-content: center;
     margin-top: 40px;
     margin-left: 200px;
+    cursor: pointer;
+    @media only screen and (max-width:600px) {
+    position: fixed;
+    top:170px;
+    right: 15px;
+    }
 `
 export {FollowBox};

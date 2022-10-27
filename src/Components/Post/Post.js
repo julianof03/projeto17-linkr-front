@@ -8,37 +8,33 @@ import mql from '@microlink/mql'
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from 'react-tooltip';
 import GlobalContext from "../../contexts/globalContext";
-
 import PropagateLoader from "react-spinners/PropagateLoader";
-
-
-import { OnClickEditPost } from "./postInteractions/editPost";
-import EditInput from "./postInteractions/editInput";
+import { OnClickEditPost } from "./Functions/editPost";
+import EditInput from "./Functions/editInput";
+import { GoToTag } from "./Functions/goToTag";
 
 export default function Post(
-    {
-        username,
-        postUserId,
-        userImg,
-        text,
-        link,
-        likesQtd,
-        liked,
+    {   
+        username, postUserId, userImg,
+        text, link, likesQtd, liked,
         postId
     }) {
+    //useState
+    const [like, setLike]                     = useState(liked)
+    const [props, setProps]                   = useState('false')
+    const [message, setMessage]               = useState('');
+    const [isShown, setIsShown]               = useState(false)
+    const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
+    const [form, setForm]                     = useState({ link: '', text: '' })
+    //GlobalContext
+    const { setDeleteScreen, editPost, SetEditPost } = useContext(GlobalContext);
+    // generic const declaration
     const navigate = useNavigate()
     const userId = localStorage.getItem("userId");
-    const [like, setLike] = useState(liked)
-    const [props, setProps] = useState('false')
-    const [message, setMessage] = useState('');
-    const [isShown, setIsShown] = useState(false)
-    const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
-    const [form, setForm] = useState({ link: '', text: '' })
-    const {
-        deleteScreen, setDeleteScreen,
-        editPost, SetEditPost,
-        postId_global, setPostId_global
-    } = useContext(GlobalContext);
+    const handleChange = event => {
+        if (!message) { setMessage(text) }
+        setMessage(event.target.value);
+    };
 
     useEffect(async () => {
         SetEditPost({ postId: '', status: false })
@@ -55,24 +51,6 @@ export default function Post(
         })
         setUrlMetadataOBJ(data)
     }, [])
-
-
-    function goTo(tag) {
-        const newTag = tag.replace('#', '')
-        navigate(`/hashtag/${newTag}`)
-    }
-
-
-    const handleChange = event => {
-        if (!message) { setMessage(text) }
-        setMessage(event.target.value);
-    };
-
-
-    function openLink(ulr) {
-
-    }
-
 
     return (
         <>{
@@ -154,7 +132,7 @@ export default function Post(
                         </Title>
                         <Description>
                             <ReactTagify colors={"white"}
-                                tagClicked={(tag) => { goTo(tag) }} >
+                                tagClicked={(tag) => { GoToTag(tag) }} >
                                 {text}
                             </ReactTagify>
                             {(editPost.status && postId === editPost.postId) ?
@@ -195,7 +173,6 @@ const PostHTML = styled.div`
     border-radius:16px;
     margin-bottom: 16px;
     background-color:  black;
-    position: relative;
 `
 const TitleUrl = styled.h1`
   font-family: Lato;

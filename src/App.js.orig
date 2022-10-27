@@ -22,13 +22,21 @@ export default function App() {
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
     const [header, setHeader] = useState(false)
+<<<<<<< HEAD
+    const [hashposts, setHashposts] = useState({
+        array: [],
+        size: 0,
+      });
+      const [clicked, setClicked] = useState(false);
+
+=======
     const [editPost, SetEditPost] = useState({ status: false, postId: '' })
     const [hashposts, setHashposts] = useState({ array: [], size: 0 });
     const [posts, setPosts] = useState({ array: [], size: 0 })
     const [clicked, setClicked] = useState(false);
     const [youngestPost, setYoungestPost] = useState({})
-    const [deleteScreen, setDeleteScreen] = useState({ postId: '', status: false })
     
+>>>>>>> main
     return (
         <div>
             <GlobalStyle />
@@ -41,9 +49,7 @@ export default function App() {
                     header, setHeader,
                     hashposts, setHashposts,
                     clicked, setClicked,
-                    youngestPost, setYoungestPost,
-                    deleteScreen, setDeleteScreen,
-                    editPost,SetEditPost
+                    youngestPost, setYoungestPost
                 }
             }>
                 <BrowserRouter>
