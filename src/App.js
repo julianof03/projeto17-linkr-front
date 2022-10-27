@@ -4,10 +4,9 @@ import {  useState } from 'react';
 import GlobalContext from './contexts/globalContext';
 import React from 'react';
 import Header from './Components/Head/TopMenu.js';
-
 import SignIn from './Components/SignIn/SignIn';
 import SingUp from './Components/SignUp/SignUp';
-import TimeLine from './Pages/TimeLine.js';
+import TimeLine from './Pages/TimeLine/TimeLine';
 import Hashtag from './Pages/hashtagPage';
 import UserPage from './Pages/UserPage';
 
@@ -31,6 +30,7 @@ export default function App() {
     const [hashposts, setHashposts] = useState({ array: [], size: 0 });
     const [posts, setPosts] = useState({ array: [], size: 0 })
     const [clicked, setClicked] = useState(false);
+    const [youngestPost, setYoungestPost] = useState({})
     
     return (
         <div>
@@ -47,7 +47,8 @@ export default function App() {
                     editPost, SetEditPost,
                     hashposts, setHashposts,
                     clicked, setClicked,
-                    repost, setRepost
+                    repost, setRepost,
+                    youngestPost, setYoungestPost
                 }
             }>
                 <BrowserRouter>

@@ -9,195 +9,168 @@ import mql from "@microlink/mql";
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import GlobalContext from "../../contexts/globalContext";
-
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { OnClickEditPost } from "./Functions/editPost";
+import EditInput from "./Functions/editInput";
+import { GoToTag } from "./Functions/goToTag";
+import { sharePost } from "./Functions/sharePost";
 
-import { OnClickEditPost } from "./postInteractions/editPost";
-import EditInput from "./postInteractions/editInput";
-import sharePost from "./postInteractions/sharePost.js";
+export default function Post(
+    {   
+        username, postUserId, userImg,
+        text, link, likesQtd, liked,
+        postId
+    }) {
+    //useState
+    const [like, setLike]                     = useState(liked)
+    const [props, setProps]                   = useState('false')
+    const [message, setMessage]               = useState('');
+    const [isShown, setIsShown]               = useState(false)
+    const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
+    const [form, setForm]                     = useState({ link: '', text: '' })
+    //GlobalContext
+    const { setDeleteScreen, editPost, SetEditPost, repost,
+      setRepost } = useContext(GlobalContext);
+    // generic const declaration
+    const navigate = useNavigate()
+    const userId = localStorage.getItem("userId");
+    const handleChange = event => {
+        if (!message) { setMessage(text) }
+        setMessage(event.target.value);
+    };
 
-export default function Post({
-  username,
-  postUserId,
-  userImg,
-  text,
-  link,
-  likesQtd,
-  liked,
-  postId,
-}) {
-  const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
-  const [like, setLike] = useState(liked);
-  const [props, setProps] = useState("false");
-  const [message, setMessage] = useState("");
-  const [isShown, setIsShown] = useState(false);
-  const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({});
+    useEffect(async () => {
+      SetEditPost({ postId: '', status: false })
+      if (!message) { setMessage(text) }
+      if (like) { setProps('true') }
+      const { data } = await mql(link, {
+          data: {
+              avatar: {
+                  selector: '#avatar',
+                  type: 'image',
+                  attr: 'src'
+              }
+          }
+      })
+      setUrlMetadataOBJ(data)
+  }, [])
 
-  const [form, setForm] = useState({ link: "", text: "" });
-  const {
-    repost,
-    setRepost,
-    deleteScreen,
-    setDeleteScreen,
-    editPost,
-    SetEditPost,
-    postId_global,
-    setPostId_global,
-  } = useContext(GlobalContext);
+    return (
+        <>{
+            (!urlMetadataOBJ.url) ?
+                ( <PropagateLoader color="#b3b3b3" />)
+                :
+                (<PostHTML>
+                    <ImgWrapper props={props}>
+                        <img src={userImg} />
+                        <div>
+                            {props === 'true' ?
+                                (
+                                    <BsHeartFill
+                                        size='20px'
+                                        onClick={() => {
+                                            setLike(!like)
+                                            setProps('false')
+                                        }}
+                                        onMouseEnter={() => setIsShown(true)}
+                                        onMouseLeave={() => setIsShown(false)}
+                                    />
+                                ) : (
+                                    <BsHeart
+                                        size='20px'
+                                        onClick={() => {
+                                            setLike(!like)
+                                            setProps('true')
+                                        }}
+                                        onMouseEnter={() => setIsShown(true)}
+                                        onMouseLeave={() => setIsShown(false)}
+                                    />
+                                )}
+                                </div>
 
-  useEffect(async () => {
-    SetEditPost({ postId: "", status: false });
-    if (!message) {
-      setMessage(text);
-    }
-    if (like) {
-      setProps("true");
-    }
-    const { data } = await mql(link, {
-      data: {
-        avatar: {
-          selector: "#avatar",
-          type: "image",
-          attr: "src",
-        },
-      },
-    });
-    setUrlMetadataOBJ(data);
-  }, []);
-
-  function goTo(tag) {
-    const newTag = tag.replace("#", "");
-    navigate(`/hashtag/${newTag}`);
-  }
-
-  const handleChange = (event) => {
-    if (!message) {
-      setMessage(text);
-    }
-    setMessage(event.target.value);
-  };
-
-  function openLink(ulr) {}
-
-  return (
-    <>
-      {!urlMetadataOBJ.url ? (
-        <PropagateLoader color="#b3b3b3" />
-      ) : (
-        <PostHTML>
-          <ImgWrapper props={props}>
-            <img src={userImg} />
-            <div>
-              {props === "true" ? (
-                <BsHeartFill
-                  size="20px"
-                  onClick={() => {
-                    setLike(!like);
-                    setProps("false");
-                  }}
-                  onMouseEnter={() => setIsShown(true)}
-                  onMouseLeave={() => setIsShown(false)}
-                />
-              ) : (
-                <BsHeart
-                  size="20px"
-                  onClick={() => {
-                    setLike(!like);
-                    setProps("true");
-                  }}
-                  onMouseEnter={() => setIsShown(true)}
-                  onMouseLeave={() => setIsShown(false)}
-                />
-              )}
-            </div>
             <p>{likesQtd}</p>
             <div>
               <BiRepost size="30px" onClick={() => sharePost(postUserId, postId, repost, setRepost)} />
             </div>
             <p>0 re-posts</p>
 
-            <Likes
-              onMouseEnter={() => setIsShown(true)}
-              onMouseLeave={() => setIsShown(false)}
-              isShown={isShown}
-            >
-              <p>vários likes pra tu ficá feliz</p>
-            </Likes>
-          </ImgWrapper>
-          <Main>
-            <Title>
-              {userId != postUserId ? (
-                <h1 onClick={() => navigate(`/user/${userId}`)}>{username}</h1>
-              ) : (
-                <>
-                  <h1 onClick={() => navigate(`/user/${userId}`)}>{username}</h1>
-                  <IconsWrapper>
-                    <MdModeEdit
-                      onClick={() => {
-                        OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId });
-                      }}
-                      color="white"
-                      DeleteScreen
-                      style={{
-                        marginLeft: "10px",
-                        cursor: "pointer",
-                      }}
-                    />
-                    <BsFillTrashFill
-                      onClick={() => {
-                        setDeleteScreen({ postId: postId, status: true });
-                      }}
-                      color="white"
-                      style={{
-                        marginLeft: "10px",
-                        cursor: "pointer",
-                      }}
-                      size="15px"
-                    />
-                  </IconsWrapper>
-                </>
-              )}
-            </Title>
-            <Description>
-              <ReactTagify
-                colors={"white"}
-                tagClicked={(tag) => {
-                  goTo(tag);
-                }}
-              >
-                {text}
-              </ReactTagify>
-              {editPost.status && postId === editPost.postId ? (
-                <EditInput
-                  postId={postId}
-                  SetEditPost={SetEditPost}
-                  handleChange={handleChange}
-                  message={message}
-                  setMessage={setMessage}
-                  text={text}
-                />
-              ) : (
-                ""
-              )}
-            </Description>
-            <a href={`${urlMetadataOBJ.url}`} target="_blank" rel="noopener noreferrer">
-              <UrlMetadaSpace>
-                <UrlMetadaDetails>
-                  <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                  <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                  <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                </UrlMetadaDetails>
-                <ImageUrl>
-                  <img src={urlMetadataOBJ.image?.url} alt="image not found &#x1F625;" />
-                </ImageUrl>
-              </UrlMetadaSpace>
-            </a>
-          </Main>
-        </PostHTML>
-      )}
-    </>
-  );
+                        <Likes
+                            onMouseEnter={() => setIsShown(true)}
+                            onMouseLeave={() => setIsShown(false)}
+                            isShown={isShown}
+                        >
+                            <p>vários likes pra tu ficá feliz</p>
+
+                        </Likes>
+
+                    </ImgWrapper>
+                    <Main>
+                        <Title>
+                            {userId != postUserId ?
+                                (<h1 onClick={() => navigate(`/user/${userId}`)} >
+                                    {username}
+                                </h1>)
+                                :
+                                (<>
+                                    <h1 onClick={() => navigate(`/user/${userId}`)} >
+                                        {username}
+                                    </h1>
+                                    <IconsWrapper>
+                                        <MdModeEdit
+                                            onClick={() => {
+                                                OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId })
+                                            }}
+                                            color='white' DeleteScreen
+                                            style={{
+                                                marginLeft: '10px',
+                                                cursor: 'pointer'
+                                            }}
+                                        />
+                                        <BsFillTrashFill onClick={() => { setDeleteScreen({ postId: postId, status: true }) }}
+                                            color='white'
+                                            style={{
+                                                marginLeft: '10px',
+                                                cursor: 'pointer'
+                                            }}
+                                            size='15px' />
+                                    </IconsWrapper>
+                                </>)}
+                        </Title>
+                        <Description>
+                            <ReactTagify colors={"white"}
+                                tagClicked={(tag) => { GoToTag(tag) }} >
+                                {text}
+                            </ReactTagify>
+                            {(editPost.status && postId === editPost.postId) ?
+                                (<EditInput
+                                    postId={postId}
+                                    SetEditPost={SetEditPost}
+                                    handleChange={handleChange}
+                                    message={message}
+                                    setMessage={setMessage}
+                                    text={text}
+                                />)
+                                :
+                                ('')}
+                        </Description>
+                        <a href={`${urlMetadataOBJ.url}`}
+                            target="_blank"
+                            rel="noopener noreferrer">
+                            <UrlMetadaSpace>
+                                <UrlMetadaDetails>
+                                    <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                                    <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                                    <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                                </UrlMetadaDetails>
+                                <ImageUrl>
+                                    <img src={urlMetadataOBJ.image?.url}
+                                        alt='image not found &#x1F625;' />
+                                </ImageUrl>
+                            </UrlMetadaSpace>
+                        </a>
+                    </Main>
+                </PostHTML>)
+        }</>)
 }
 
 const PostHTML = styled.div`

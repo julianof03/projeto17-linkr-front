@@ -1,7 +1,7 @@
 import { createRepost } from "../../../Services/api.js";
 import getConfig from "../../../Services/getConfig.js";
 
-export default async function sharePost(postUserId, postId, repost, setRepost) {
+async function sharePost(postUserId, postId, repost, setRepost) {
   setRepost({ status: true, postId: postId, userId: postUserId });
   const token = localStorage.getItem("token");
 
@@ -14,4 +14,8 @@ export default async function sharePost(postUserId, postId, repost, setRepost) {
     .catch((res) => {
       console.log("algo deu errado");
     });
+}
+
+export {
+  sharePost,
 }
