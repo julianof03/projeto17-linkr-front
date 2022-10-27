@@ -10,6 +10,6 @@ export default function RenderPosts(props) {
                     text={postData.text}
                     link={postData.link}
                     likesQtd={postData.likesQtd}
-                    liked={postData.liked}
+                    userLiked={postData.userLiked}
                     postUserId={postData.userId}/>
     ))}
