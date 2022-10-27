@@ -6,6 +6,7 @@ import { MdSecurityUpdateGood } from "react-icons/md";
 
 
 export default function RenderPosts(props) {
+
     return (
         <Wrapper>
             <InfiniteScroll
