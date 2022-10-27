@@ -40,7 +40,7 @@ export default function TopMenu() {
 
         }
 
-    }, [setHeader]);
+    }, [setHeader, setProfileImage]);
 
     if (!header) {
         return (<></>);

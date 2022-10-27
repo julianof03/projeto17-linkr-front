@@ -3,88 +3,111 @@ import Post from "../Components/Post/Post.js";
 import Trending from "../Components/Trending/Trending.js";
 import GlobalContext from "../contexts/globalContext.js";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { userImage, logOut } from '../Services/api.js';
+import { useNavigate, useParams } from "react-router-dom";
 import getConfig from "../Services/getConfig.js";
+import { getUser } from '../Services/api.js'
+import {FollowBox} from "../Styles/FollowStyle.js"
 
 export default function UserPage() {
     const navigate = useNavigate();
 
-    const { setHeader } = useContext(GlobalContext);
+    const {
+        token, setToken,
+        reRender, setReRender,
+        posts, 
+        setHeader
+    } = useContext(GlobalContext);
     setHeader(true);
 
-    const { posts, userId } = useContext(GlobalContext)
-    
+    const userId = useParams().id;
 
-    const userPosts = []/* posts.filter((value) => value.postUserId === userId) */
-    console.log(userPosts)
+    const [userPosts, setUserPosts] = useState({
+        array: [],
+        size: 0
+    })
+    const [follows, setFollows] = useState(false);
 
-    let name = 'Gojo Satoru';
+    const [n, setN] = useState(0)
+    useEffect(() => {
+        getUser( userId,getConfig(token))
+            .then((res) => {
+                const allUserPosts = res.data.Posts;
+                if(res.data.isFollowing){
+                    setFollows(true);
+                };
 
-    const { token, setToken } = useContext(GlobalContext);
-    const [profileImage, setProfileImage] = useState('');
-    useEffect(async () => {
+                setUserPosts({
+                    array: allUserPosts.slice(n, n + 20),
+                    size: allUserPosts.length
+                });
 
-        const tokenLs = localStorage.getItem("token");
+            })
 
-        if (token === '') {
-            if (!tokenLs) {
-                navigate('/signin');
-                return;
+    }, [reRender])
+
+    function nextPage() {
+        if (n + 20 > posts.size) {
+
+            let add = posts.size - n
+
+            if (add > 0) {
+                setN(n + add)
             }
-            setToken(`${tokenLs}`);
+            return
         }
+        setN(n + 20)
 
-        try {
-            setProfileImage((await userImage(getConfig(tokenLs))).data);
+        window.scrollTo(0, 0)
+        setReRender(!reRender)
+    }
 
-        } catch (error) {
-
-            if (error.response.status === 401) {
-                navigate('/signin');
-            };
-            return;
-
-        }
-
-    }, [setHeader]);
 
     return (
-        <Wrapper>
-            <LeftWrapper>
-                <Title>
-                    <ImgWrapper>
-                        <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg'
-                        />
-                    </ImgWrapper>
-                    <h1>{name}'s posts'</h1>
+        <>
+            {(userPosts.array.length === 0) ? (
+                <>LOADING</>
+            ) : (
 
-                </Title>
+                <Wrapper>
+                    <LeftWrapper>
+                        <Title>
+                            <ImgWrapper>
+                                <img src={userPosts.array[0].userImg}
+                                />
+                            </ImgWrapper>
+                            <h1>{userPosts.array[0].username}'s posts'</h1>
 
-                <PostWrapper>
-                    {userPosts.map((value, index) =>
-                        <Post
-                            key={index}
-                            username={value.username}
-                            img={value.img}
-                            text={value.text}
-                            link={value.link}
-                            likesQtd={value.likesQtd}
-                            liked={value.liked}
-                        />
-                    )}
+                        </Title>
 
-                </PostWrapper>
+                        <PostWrapper>
+                            {userPosts.array.map((value, index) =>
+                                <Post
+                                    key={index}
+                                    username={value.username}
+                                    userImg={value.userImg}
+                                    text={value.text}
+                                    link={value.link}
+                                    likesQtd={value.likesQtd}
+                                    liked={value.liked}
+                                />
+                            )}
 
-            </LeftWrapper>
+                        </PostWrapper>
 
-            <RightWrapper>
-                <TrendingWrapper>
-                    <Trending />
-                </TrendingWrapper>
-            </RightWrapper>
+                    </LeftWrapper>
 
-        </Wrapper>
+                    <RightWrapper>
+                        <FollowBox follow={false}>
+                            Follow
+                        </FollowBox>
+                        <TrendingWrapper>
+                            <Trending />
+                        </TrendingWrapper>
+                    </RightWrapper>
+
+                </Wrapper>
+            )}
+        </>
     );
 };
 
@@ -103,7 +126,6 @@ justify-content: center;
 const RightWrapper = styled.div`
 height: 500px;
 width: 21vw;
-
 position:relative;
 `;
 const LeftWrapper = styled.div`
@@ -141,13 +163,13 @@ const PostWrapper = styled.div`
 width: 100%;
 display: flex;
 flex-direction: column;
-/* background-color: red; */
+background-color: red; 
 
 border-radius: 10px;
 
 `;
 const TrendingWrapper = styled.div`
-height: 100%;
+height: 100vh;
 /* background-color: aqua; */
 /* position:absolute; */
 top:112px;

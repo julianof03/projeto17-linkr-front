@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const URL = "https://projeto17linkr.herokuapp.com";
-const URL = "http://localhost:5000";
+const URL = "http://localhost:5002";
 
 // Sign-Up--------------------------------
 function signUp(body) {
@@ -51,6 +51,11 @@ function getHashtagPosts(getConfig, hashtag) {
     return axios.get(`${URL}/hashtag/${hashtag}`, getConfig);
 }
 
+// User Page--------------------------------
+function getUser(id, getConfig) {
+    return axios.get(`${URL}/users/${id}`, getConfig);
+};
+
 export {
     signUp,
     signIn,
@@ -62,5 +67,6 @@ export {
     userImage,
     deletePost,
     createPost,
-    EditPost
+    EditPost,
+    getUser,
 }
