@@ -14,7 +14,7 @@ export default function TimeLine() {
   const { reRender, setReRender, setHeader, deleteScreen, setYoungestPost, youngestPost } = useContext(GlobalContext);
   const token = localStorage.getItem("token");
   const [posts, setPosts] = useState({ array: [], size: 0 });
-  // const [n, setN] = useState(0);
+  const [n, setN] = useState(0);
   setHeader(true);
 
   useEffect(() => {

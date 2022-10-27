@@ -42,12 +42,18 @@ export default function Post(
     const navigate = useNavigate()
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+    const handleChange = event => {
+        if (!message) { setMessage(text) }
+        setMessage(event.target.value);
+    };
 
     useEffect(async () => {
         SetEditPost({ postId: '', status: false })
         if (!message) { setMessage(text) }
 
+        console.log('antes userLiked',like)
         if (userLiked) {
+            console.log('depois userLiked',like)
             setLike(true)
         }
 
@@ -63,64 +69,16 @@ export default function Post(
         setUrlMetadataOBJ(data)
     }, [reRender, setReRender])
 
-
-    const inputRef = useRef();
-    useEffect(async () => {
-        inputRef.current.focus();
-    }, [])
-
-    function goTo(tag) {
-        const newTag = tag.replace('#', '')
-        navigate(`/hashtag/${newTag}`)
-    }
-
-
-    const handleChange = event => {
-        if (!message) { setMessage(text) }
-        setMessage(event.target.value);
-    };
-    const handleClick = event => {
-        event.preventDefault();
-
-        // value of input field
-
-        // set value of input field
-        setMessage('New value');
-    };
-
-    function sendForm(e) {
-        e.preventDefault()
-        const id = postId;
-        const body = {
-            text: message,
-        }
-
-        const promise = editPost(body, id)
-
-        promise.then((res) => {
-            document.location.reload()
-            SetEditPost({ postId: '', status: false })
-        })
-        promise.catch((err) => alert(err.message))
-    }
-
-    document.onkeydown = function (e) {
-        if (e.key === 'Escape') {
-            setMessage(text);
-            SetEditPost({ postId: '', status: false })
-        }
-    }
-
     function HandleLike(like) {
         const body = { postId }
 
         try {
             if (!like) {
-                console.log('like')
+                // console.log('like')
                 updateLike(getConfig(token), body)
                 setReRender(!reRender)
             } else {
-                console.log('dislike')
+                // console.log('dislike')
                 updateDislike(getConfig(token), body)
                 setReRender(!reRender)
             }
@@ -159,6 +117,7 @@ export default function Post(
                                             setLike(true)
                                             HandleLike(like)
                                         }}
+                                        
                                     />
                                 )}
                             <ReactTooltip
@@ -264,7 +223,7 @@ export default function Post(
         }</>)
 }
 
-const Text = styled.div``
+
 const PostHTML = styled.div`
     display: flex;
     width: 610px;
@@ -406,3 +365,10 @@ const TextInput = styled.input`
         color: #949494;
     }
 `
+// const ToolTip = styled.div`
+// max-height: 50px;
+// display: flex;
+// justify-content: center;
+// align-items: center;
+
+// `
