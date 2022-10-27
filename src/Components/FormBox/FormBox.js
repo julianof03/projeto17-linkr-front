@@ -9,12 +9,12 @@ import GlobalContext from "../../contexts/globalContext";
 
 export default function FormBox({img}) {
     const navigate = useNavigate()
-
-    const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
     const [disable, setDisable] = useState(false)
     const [form, setForm] = useState({ link: '', text: ''})
-    const [profileImage, setProfileImage] = useState('')
-    const [buttonText, SetButtonText] = useState('Publish');
+    const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
+    //useState
+    const [profileImage, setProfileImage]   = useState('')
+    const [buttonText, SetButtonText]       = useState('Publish');
 
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -24,19 +24,16 @@ export default function FormBox({img}) {
         if (disable === true) return
         setDisable(true)
         SetButtonText("Publishing...");
-        
         const body = {
             link: form.link,
             text: form.text,
         }
         const promise = createPost(getConfig(token), body )
-        
         promise.then( () => { window.location.reload(false) } )
         promise.catch( (err) => console.log('Deu Erro logout',err) )
         setTimeout(() => {
             SetButtonText("Publish")
-            clearForm()
-        })
+            clearForm()})
     }
     function clearForm() {
         setForm({

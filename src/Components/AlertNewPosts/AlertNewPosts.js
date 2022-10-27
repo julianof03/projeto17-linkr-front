@@ -4,18 +4,19 @@ import { getAlertNewPosts } from "../../Services/api"
 import GlobalContext from "../../contexts/globalContext";
 
 export default function AlertNewPosts(){
-    const { youngestPost, pos } = useContext(GlobalContext);
+    const { youngestPost } = useContext(GlobalContext);
     const [numbNewPosts, setNumbNewPosts] = useState(0)
-    let body = { createdAt: youngestPost.createdAt }
+    // let body = { createdAt: youngestPost.createdAt }
     
     useEffect(() => {
-        setInterval(() => {
-            console.log('youngest POST:', youngestPost)
-            getAlertNewPosts(body)
-                .then((res) =>{ })
-                .catch((error) => console.log('error catch getAlertNewPost :', error))
-        }, 5000)
-      }, []);
+      interval()
+    }, [])
+
+    function interval(){
+      setInterval(() => {
+        console.log('youngest POST:', youngestPost)
+    }, 5000)
+    }
 
     return (
         <AlertBox>

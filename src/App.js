@@ -29,8 +29,8 @@ export default function App() {
     const [hashposts, setHashposts] = useState({ array: [], size: 0 });
     const [posts, setPosts] = useState({ array: [], size: 0 })
     const [clicked, setClicked] = useState(false);
-    const [youngestPost, setYoungestPost] = useState({})
-    
+    const [youngestPost, setYoungestPost] = useState([])
+
     return (
         <div>
             <GlobalStyle />

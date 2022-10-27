@@ -1,6 +1,7 @@
 import Post from "../../../Components/Post/Post"
 
 export default function RenderPosts(props) {
+
     return (
         props.postsList.map((postData, index) =>
             <Post   postId={postData.postId}
