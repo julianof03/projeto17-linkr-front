@@ -21,12 +21,13 @@ function deletePost(id, getConfig) {
 function EditPost(body, id) {
     return axios.post(`${URL}/timeline/${id}`, body);
 };
-
+function getAlertNewPosts(body) {
+    return axios.get(`${URL}/timeline/getalertnewposts`, body);
+};
 // updateLike ---------------------------------
 function updateLike(body, getConfig){
     return axios.post(`${URL}/likeUpdate`, body, getConfig );
 }
-
 function userImage(getConfig) {
     return axios.get(`${URL}/userImage`, getConfig);
 };
@@ -62,5 +63,6 @@ export {
     userImage,
     deletePost,
     createPost,
-    EditPost
+    EditPost,
+    getAlertNewPosts
 }
