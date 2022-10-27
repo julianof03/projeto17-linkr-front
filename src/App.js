@@ -11,6 +11,7 @@ import TimeLine from './Pages/TimeLine.js';
 import Hashtag from './Pages/hashtagPage';
 import UserPage from './Pages/UserPage';
 
+
 export default function App() {
 
     const [reRender, setReRender] = useState(true);
@@ -50,6 +51,7 @@ export default function App() {
             }>
                 <BrowserRouter>
                     <Routes>
+                        <Route path="/" element={<SignIn />} />
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/signup" element={<SingUp />} />
                         <Route path="/timeLine" element={<TimeLine />} />

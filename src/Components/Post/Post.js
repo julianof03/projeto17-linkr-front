@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdChatBubbleOutline} from "react-icons/md";
 import { ReactTagify } from "react-tagify";
 import React from "react";
 import { useContext, useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 
 import { OnClickEditPost } from "./postInteractions/editPost";
 import EditInput from "./postInteractions/editInput";
+import {ChatSection, CallChat} from "./postInteractions/comment";
 
 export default function Post(
     {
@@ -34,6 +35,8 @@ export default function Post(
     const [isShown, setIsShown] = useState(false)
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
     const [form, setForm] = useState({ link: '', text: '' })
+    const [chatState, setChatState] = useState(false);
+
     const {
         deleteScreen, setDeleteScreen,
         editPost, SetEditPost,
@@ -118,7 +121,11 @@ export default function Post(
                             <p>vários likes pra tu ficá feliz</p>
 
                         </Likes>
-
+                            <CallChat
+                            chatState = {chatState} 
+                            setChatState = {setChatState}
+                            />
+                            
                     </ImgWrapper>
                     <Main>
                         <Title>
@@ -184,6 +191,10 @@ export default function Post(
                                 </ImageUrl>
                             </UrlMetadaSpace>
                         </a>
+                        <ChatSection
+                            postId = {postId}
+                            chatState = {chatState} 
+                            setChatState = {setChatState}/>
                     </Main>
                 </PostHTML>)
         }</>)
@@ -257,7 +268,7 @@ const ImgWrapper = styled.div`
         object-fit: cover;
     }
     p{
-        margin-top: 5px;
+        margin-top: 2px;
         color: white;
     }
 `
@@ -317,7 +328,7 @@ const Likes = styled.div`
     transition: all 0.5s ease-out;
     p{
         color: #505050;
-        font-size: 13px;
+        font-size: 5px;
         font-weight: 700;
     }
     position: absolute;

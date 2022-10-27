@@ -32,7 +32,7 @@ export default function FormBox({img}) {
         const promise = createPost(getConfig(token), body )
         
         promise.then( () => { window.location.reload(false) } )
-        promise.catch( (err) => console.log('Deu Erro logout',err) )
+        promise.catch( (err) => alert("Houve um erro ao publicar seu link") )
         setTimeout(() => {
             SetButtonText("Publish")
             clearForm()
