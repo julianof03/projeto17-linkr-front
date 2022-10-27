@@ -18,60 +18,68 @@ export default function TimeLine() {
   setHeader(true);
 
   useEffect(() => {
+
+    // console.log('reRender', reRender)
     getTimeLine(getConfig(token)).then((res) => {
       setPosts({
-        array: res.data.slice(n, n + 20),
+        array: res.data.slice(0, n + 5),
         size: res.data.length,
       });
     });
-  }, [reRender, setReRender]);
+  }, [reRender, n]);
 
-//   function nextPage() {
-//     if (n + 20 > posts.size) {
+  //   function nextPage() {
+  //     if (n + 10 > posts.size) {
 
-//         let add = posts.size - n
+  //         let add = posts.size - n
 
-//         if (add > 0) {
-//             setN(n + add)
-//         }
-//         return
-//     }
+  //         if (add > 0) {
+  //             setN(n + add)
+  //         }
+  //         return
+  //     }
 
-//     setN(n + 20)
+  //     setN(n + 10)
 
-//     window.scrollTo(0, 0)
-//     setReRender(!reRender)
-// }
+  //     window.scrollTo(0, 0)
+  //     setReRender(!reRender)
+  // }
 
   return (
     (posts.array.length === 0) ?
-        (<Wrapper>
-          <MainContent>
-            <Title> <h1>timeline</h1> </Title>
+      (<Wrapper>
+        <MainContent>
+          <Title> <h1>timeline</h1> </Title>
 
-            {/* <AlertNewPosts /> */}
-            
-            <FormBox />
-            <PropagateLoader color="#b3b3b3" />
-          </MainContent>
-        </Wrapper>)
+          {/* <AlertNewPosts /> */}
+
+          <FormBox />
+          <PropagateLoader color="#b3b3b3" />
+        </MainContent>
+      </Wrapper>)
       :
-        (<Wrapper>
-          {deleteScreen.status ? <DeleteBox /> : <></>}
-          <MainContent>
-              <Title> <h1>timeline</h1> </Title>
+      (<Wrapper>
+        {deleteScreen.status ? <DeleteBox /> : <></>}
+        <MainContent>
+          <Title> <h1>timeline</h1> </Title>
 
-              {/* <AlertNewPosts /> */}
+          {/* <AlertNewPosts /> */}
 
-              <FormBox />
-              <RenderPosts postsList={posts.array} />
-          </MainContent>
-          <AsideContent>
-              <TrendingWrapper> 
-                <Trending /> 
-              </TrendingWrapper>
-          </AsideContent>
-        </Wrapper>))
+          <FormBox />
+
+          <RenderPosts
+            postsList={posts.array}
+            n={n}
+            setN={setN}
+          />
+
+        </MainContent>
+        <AsideContent>
+          <TrendingWrapper>
+            <Trending />
+          </TrendingWrapper>
+        </AsideContent>
+      </Wrapper>))
 }
 
 const Wrapper = styled.div`

@@ -52,6 +52,7 @@ export default function Post(
         if (!message) { setMessage(text) }
 
         if (userLiked) {
+
             setLike(true)
         }
 
@@ -65,7 +66,7 @@ export default function Post(
             }
         })
         setUrlMetadataOBJ(data)
-    }, [reRender, setReRender])
+    }, [])
 
     function HandleLike(like) {
         const body = { postId }
@@ -104,7 +105,7 @@ export default function Post(
                                     <BsHeartFill
                                         size='20px'
                                         onClick={() => {
-                                            setLike(false)
+                                            setLike(false)                                            
                                             HandleLike(like)
                                         }}
                                     />
@@ -115,7 +116,7 @@ export default function Post(
                                             setLike(true)
                                             HandleLike(like)
                                         }}
-                                        
+
                                     />
                                 )}
 
@@ -203,6 +204,7 @@ export default function Post(
                                 ('')}
                         </Description>
                         <a href={`${urlMetadataOBJ.url}`}
+
                             target="_blank"
                             rel="noopener noreferrer">
                             <UrlMetadaSpace>
@@ -280,7 +282,7 @@ const ImgWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     div{
-        color: ${props => props.like ? 'red' : 'white'};
+        color: ${props => props.like? 'red' : 'white'};
         cursor: pointer;
     }
     img{
