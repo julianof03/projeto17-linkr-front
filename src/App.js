@@ -25,6 +25,7 @@ export default function App() {
     const [config, setConfig] = useState({});
     const [userId, setUserId] = useState('')
     const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:'' } )
+    const [repost, setRepost] = useState({ status:false, postId:'', userId:'' })
     const [header, setHeader] = useState(false)
     const [editPost, SetEditPost] = useState({ status: false, postId: '' })
     const [hashposts, setHashposts] = useState({ array: [], size: 0 });
@@ -45,7 +46,8 @@ export default function App() {
                     deleteScreen, setDeleteScreen,
                     editPost, SetEditPost,
                     hashposts, setHashposts,
-                    clicked, setClicked
+                    clicked, setClicked,
+                    repost, setRepost
                 }
             }>
                 <BrowserRouter>

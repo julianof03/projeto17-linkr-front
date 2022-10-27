@@ -51,6 +51,10 @@ function getHashtagPosts(getConfig, hashtag) {
     return axios.get(`${URL}/hashtag/${hashtag}`, getConfig);
 }
 
+function createRepost(getConfig, repostData) {
+    return axios.post(`${URL}/share`, repostData, getConfig);
+}
+
 export {
     signUp,
     signIn,
@@ -62,5 +66,6 @@ export {
     userImage,
     deletePost,
     createPost,
-    EditPost
+    EditPost, 
+    createRepost
 }
