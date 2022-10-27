@@ -3,88 +3,103 @@ import Post from "../Components/Post/Post.js";
 import Trending from "../Components/Trending/Trending.js";
 import GlobalContext from "../contexts/globalContext.js";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { userImage, logOut } from '../Services/api.js';
 import getConfig from "../Services/getConfig.js";
+import { getUserPosts } from '../Services/api.js'
 
 export default function UserPage() {
     const navigate = useNavigate();
 
-    const { setHeader } = useContext(GlobalContext);
+    const {
+        token, setToken,
+        reRender, setReRender,
+        posts, 
+        setHeader
+    } = useContext(GlobalContext);
     setHeader(true);
 
-    const { posts, userId } = useContext(GlobalContext)
-    
+    const userId = useParams().id;
 
-    const userPosts = []/* posts.filter((value) => value.postUserId === userId) */
-    console.log(userPosts)
+    const [userPosts, setUserPosts] = useState({
+        array: [],
+        size: 0
+    })
 
-    let name = 'Gojo Satoru';
+    const [n, setN] = useState(0)
+    useEffect(() => {
+        getUserPosts(getConfig(token), userId)
+            .then((res) => {
 
-    const { token, setToken } = useContext(GlobalContext);
-    const [profileImage, setProfileImage] = useState('');
-    useEffect(async () => {
+                setUserPosts({
+                    array: res.data.slice(n, n + 20),
+                    size: res.data.length
+                })
 
-        const tokenLs = localStorage.getItem("token");
+            })
 
-        if (token === '') {
-            if (!tokenLs) {
-                navigate('/signin');
-                return;
+    }, [reRender])
+
+    function nextPage() {
+        if (n + 20 > posts.size) {
+
+            let add = posts.size - n
+
+            if (add > 0) {
+                setN(n + add)
             }
-            setToken(`${tokenLs}`);
+            return
         }
+        setN(n + 20)
 
-        try {
-            setProfileImage((await userImage(getConfig(tokenLs))).data);
+        window.scrollTo(0, 0)
+        setReRender(!reRender)
+    }
 
-        } catch (error) {
-
-            if (error.response.status === 401) {
-                navigate('/signin');
-            };
-            return;
-
-        }
-
-    }, [setHeader]);
 
     return (
-        <Wrapper>
-            <LeftWrapper>
-                <Title>
-                    <ImgWrapper>
-                        <img src='https://uploads.jovemnerd.com.br/wp-content/uploads/2021/09/jujutsu-kaisen-0-gojo-nova-imagem.jpg'
-                        />
-                    </ImgWrapper>
-                    <h1>{name}'s posts'</h1>
+        <>
+            {(userPosts.array.length === 0) ? (
+                <>LOADING</>
+            ) : (
 
-                </Title>
+                <Wrapper>
+                    <LeftWrapper>
+                        <Title>
+                            <ImgWrapper>
+                                <img src={userPosts.array[0].userImg}
+                                />
+                            </ImgWrapper>
+                            <h1>{userPosts.array[0].username}'s posts'</h1>
 
-                <PostWrapper>
-                    {userPosts.map((value, index) =>
-                        <Post
-                            key={index}
-                            username={value.username}
-                            img={value.img}
-                            text={value.text}
-                            link={value.link}
-                            likesQtd={value.likesQtd}
-                            liked={value.liked}
-                        />
-                    )}
+                        </Title>
 
-                </PostWrapper>
+                        <PostWrapper>
+                            {userPosts.array.map((value, index) =>
+                                <Post
+                                    key={index}
+                                    username={value.username}
+                                    userImg={value.userImg}
+                                    text={value.text}
+                                    link={value.link}
+                                    likesQtd={value.likesQtd}
+                                    liked={value.liked}
+                                />
+                            )}
 
-            </LeftWrapper>
+                        </PostWrapper>
 
-            <RightWrapper>
-                <TrendingWrapper>
-                    <Trending />
-                </TrendingWrapper>
-            </RightWrapper>
+                    </LeftWrapper>
 
-        </Wrapper>
+                    <RightWrapper>
+                        <TrendingWrapper>
+                            <Trending />
+                        </TrendingWrapper>
+                    </RightWrapper>
+
+                </Wrapper>
+            )}
+        </>
     );
 };
 
