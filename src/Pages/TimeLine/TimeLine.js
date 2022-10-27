@@ -11,12 +11,12 @@ import RenderPosts from "./Functions/renderPosts.js";
 import AlertNewPosts from "../../Components/AlertNewPosts/AlertNewPosts.js";
 
 export default function TimeLine() {
-  const { reRender, setHeader, deleteScreen, setYoungestPost, youngestPost } = useContext(GlobalContext);
+  const { reRender, setReRender, setHeader, deleteScreen, setYoungestPost, youngestPost } = useContext(GlobalContext);
   const token = localStorage.getItem("token");
   const [posts, setPosts] = useState({ array: [], size: 0 });
   const [n, setN] = useState(0);
-  
   setHeader(true);
+
   useEffect(() => {
     getTimeLine(getConfig(token)).then((res) => {
       setPosts({
@@ -24,7 +24,24 @@ export default function TimeLine() {
         size: res.data.length,
       });
     });
-  }, []);
+  }, [reRender, setReRender]);
+
+//   function nextPage() {
+//     if (n + 20 > posts.size) {
+
+//         let add = posts.size - n
+
+//         if (add > 0) {
+//             setN(n + add)
+//         }
+//         return
+//     }
+
+//     setN(n + 20)
+
+//     window.scrollTo(0, 0)
+//     setReRender(!reRender)
+// }
 
 
   return (

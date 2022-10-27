@@ -7,7 +7,7 @@ import { createPost, userImage, logOut } from "../../Services/api";
 import GlobalContext from "../../contexts/globalContext";
 
 
-export default function FormBox({img}) {
+export default function FormBox() {
     const navigate = useNavigate()
 
     const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
@@ -18,7 +18,9 @@ export default function FormBox({img}) {
 
     function handleForm(e) {
         setForm({ ...form, [e.target.name]: e.target.value })
+        setReRender(false)
     }
+
     function sendForm(e) {
         e.preventDefault()
         if (disable === true) return
@@ -36,15 +38,19 @@ export default function FormBox({img}) {
         setTimeout(() => {
             SetButtonText("Publish")
             clearForm()
-        })
+        },500)
+        setReRender(false)
     }
+
     function clearForm() {
+        
         setForm({
             link: '',
             text: '',
         })
         setDisable(false)
-        setReRender(!reRender)
+        setReRender(false)
+        
     }
     useEffect(async () => {
         const tokenLs = localStorage.getItem("token");
@@ -65,7 +71,8 @@ export default function FormBox({img}) {
             };
             return;
         }
-    }, [setReRender]);
+
+    }, [reRender, setReRender]);
 
     return (
         <FormBoxWrapper >
