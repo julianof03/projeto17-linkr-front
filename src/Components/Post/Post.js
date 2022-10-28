@@ -22,7 +22,7 @@ export default function Post({
   userImg, text,
   link, likesQtd,
   postId, userLiked,
-  repostCount, repostId, repostUser, commentCount
+  repostCount, repostId, respostUserName, commentCount
 }) {
   //useState
   const [like, setLike] = useState(false);
@@ -92,7 +92,7 @@ export default function Post({
 
   return (
     <>
-    {repostId === null ? <></> : <RepostHeader repostUser = {repostUser}/>}
+    {repostId === null ? <></> : <RepostHeader respostUserName = {respostUserName}/>}
       {!urlMetadataOBJ.url ? (
         <PropagateLoader color="#b3b3b3" />
       ) : (
