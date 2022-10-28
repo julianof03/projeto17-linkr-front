@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './Styles/globalStyle';
-import {  useState } from 'react';
+import { useState } from 'react';
 import GlobalContext from './contexts/globalContext';
 import React from 'react';
 import Header from './Components/Head/TopMenu.js';
@@ -19,18 +19,16 @@ export default function App() {
         name: '',
         likesQtd: '',
         liked: ''
-    });
+    })
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
-    const [config, setConfig] = useState({});
-    const [userId, setUserId] = useState('')
-    const [deleteScreen, setDeleteScreen] = useState( { status:false, postId:'' } )
     const [header, setHeader] = useState(false)
     const [editPost, SetEditPost] = useState({ status: false, postId: '' })
     const [hashposts, setHashposts] = useState({ array: [], size: 0 });
     const [posts, setPosts] = useState({ array: [], size: 0 })
     const [clicked, setClicked] = useState(false);
     const [youngestPost, setYoungestPost] = useState({})
+    const [deleteScreen, setDeleteScreen] = useState({ postId: '', status: false })
     
     return (
         <div>
@@ -38,16 +36,16 @@ export default function App() {
             <GlobalContext.Provider value={
                 {
                     reRender, setReRender,
+                    post, setPost,
+                    posts, setPosts,
                     token, setToken,
                     user, setUser,
-                    config, setConfig,
                     header, setHeader,
-                    userId, setUserId,
-                    deleteScreen, setDeleteScreen,
-                    editPost, SetEditPost,
                     hashposts, setHashposts,
                     clicked, setClicked,
-                    youngestPost, setYoungestPost
+                    youngestPost, setYoungestPost,
+                    deleteScreen, setDeleteScreen,
+                    editPost,SetEditPost
                 }
             }>
                 <BrowserRouter>
@@ -56,7 +54,7 @@ export default function App() {
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/signup" element={<SingUp />} />
                         <Route path="/timeLine" element={<TimeLine />} />
-                        <Route path="/user/:id" element={<UserPage />} />
+                        <Route path="/users/:id" element={<UserPage />} />
                         <Route path="/hashtag/:hashtag" element={<Hashtag />} />
                     </Routes>
                     <Header />

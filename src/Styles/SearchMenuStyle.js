@@ -27,7 +27,7 @@ const SearchBox = styled.div`
         background-color: transparent;
     }
 
-    @media only screen and (max-width:600px) {
+    @media only screen and (max-width:800px) {
         width: calc(90vw);
         position: fixed;
         left: calc(5vw);
@@ -47,7 +47,7 @@ const SearchIcon = styled(BiSearchAlt)`
 
     cursor: pointer;
 
-    @media only screen and (max-width:600px) {
+    @media only screen and (max-width:800px) {
         position: fixed;
         left: calc(85vw);
         top: 110px;
@@ -68,7 +68,7 @@ const FoundUsers = styled.div`
     border-radius: 0 0 20px 20px;
 
     cursor: pointer;
-    @media only screen and (max-width:600px) {
+    @media only screen and (max-width:800px) {
         width: calc(90vw);
         position: fixed;
         left: calc(5vw);
@@ -77,6 +77,13 @@ const FoundUsers = styled.div`
 
     }
 
+`
+const FollowUser = styled.div`
+    display:${(props) => props.isFollowing};
+    color: #C5C5C5;
+    font-size: 13px;
+    font-family: Lato;
+    margin-left: 5px;
 `
 
 const UsersImage = styled.div`
@@ -87,7 +94,7 @@ const UsersImage = styled.div`
         margin: 10px;
         border-top: 1px gray;
 
-        @media only screen and (max-width:600px) {
+        @media only screen and (max-width:800px) {
         width: calc(90vw);
     }
 `
@@ -107,4 +114,4 @@ const ImageUsers = styled.div`
         margin-right: 10px;
         
 `
-export{SearchBox, SearchIcon, UsersImage, FoundUsers, ImageUsers, UsersName}
+export{SearchBox, FollowUser, SearchIcon, UsersImage, FoundUsers, ImageUsers, UsersName}
