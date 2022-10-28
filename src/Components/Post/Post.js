@@ -84,11 +84,9 @@ export default function Post({
 
         try {
             if (!like) {
-                console.log('like', postId)
                 updateLike(getConfig(token), body);
                 setReRender(!reRender);
             } else {
-                console.log('dislike', postId)
                 updateDislike(getConfig(token), body);
                 setReRender(!reRender);
             }
@@ -98,13 +96,10 @@ export default function Post({
     }
 
     
-    // const frase = 'bolinha linha linha'
     async function getLikers(postId) {
 
         const likers = await getPostLikers(getConfig(token), postId)
         setFrase(likers.data)
-        console.log(likers.data)
-        console.log(frase)
     }
 
     async function cleanLikers() {
@@ -126,6 +121,8 @@ export default function Post({
               {like ? (
                 <BsHeartFill
                   size="20px"
+                  onMouseEnter={()=> getLikers(postId)}
+                  onMouseLeave={()=>cleanLikers()}
                   onClick={() => {
                     setLike(false);
                     HandleLike(like);
@@ -134,6 +131,8 @@ export default function Post({
               ) : (
                 <BsHeart
                   size="20px"
+                  onMouseEnter={()=> getLikers(postId)}
+                  onMouseLeave={()=>cleanLikers()}
                   onClick={() => {
                     setLike(true);
                     HandleLike(like);
