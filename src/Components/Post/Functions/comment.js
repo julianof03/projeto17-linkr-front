@@ -36,7 +36,7 @@ function ChatSection({
     chatState,    setChatState,
     postUserId,   postId, 
     allComments,  setAllComments,
-    userId
+    userId,       userImg
 }) {
 
     const [message, setMessage] = useState('');
@@ -106,7 +106,7 @@ function ChatSection({
                     </EditContainer>
                     <Form >
                         <form onSubmit={sendForm}>
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
+                            <img src={userImg}></img>
                             <TextInput
                                 type="text" id="message"
                                 name="message" onChange={handleChange}

@@ -8,7 +8,7 @@ import getConfig from "../../Services/getConfig.js";
 export default function Trending() {
   const token = localStorage.getItem("token");
   const [trendingHashtags, setTrendingHashtags] = useState([]);
-  const { setHashposts, setClicked } = useContext(GlobalContext);
+  const { setHashposts, setClicked, reRender, setReRender } = useContext(GlobalContext);
   useEffect(() => {
     getHashtagTrending(getConfig(token))
       .then((res) => {
@@ -17,7 +17,7 @@ export default function Trending() {
       .catch((res) => {
         console.log(res);
       });
-  }, []);
+  }, [reRender]);
 
   const navigate = useNavigate();
 

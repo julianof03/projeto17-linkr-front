@@ -54,6 +54,7 @@ const NoGoBack = styled.button`
     letter-spacing: 0em;
     text-align: center;
     color: #1877f2;
+    cursor: pointer;
   }
   background-color: #ffffff;
 `;
@@ -72,6 +73,7 @@ const YesDeleteIt = styled.button`
     letter-spacing: 0em;
     text-align: center;
     color: #fff;
+    cursor: pointer;
   }
   background-color: #1877f2;
 `;
