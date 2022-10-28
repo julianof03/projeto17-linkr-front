@@ -12,8 +12,7 @@ export default function TopMenu() {
     const navigate = useNavigate();
 
     const [logout, setLogout] = useState(false);
-    const [profileImage, setProfileImage] = useState('');
-    const { header, setHeader, token, setToken } = useContext(GlobalContext);
+    const { header, setHeader, token, setToken,profileImage, setProfileImage, reRender, setReRender } = useContext(GlobalContext);
 
 
     useEffect(async () => {
@@ -30,6 +29,7 @@ export default function TopMenu() {
 
         try {
             setProfileImage((await userImage(getConfig(tokenLs))).data);
+            setReRender(!reRender)
 
         } catch (error) {
 

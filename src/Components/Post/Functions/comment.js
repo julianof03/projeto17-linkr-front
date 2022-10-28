@@ -36,12 +36,12 @@ function ChatSection({
     chatState,    setChatState,
     postUserId,   postId, 
     allComments,  setAllComments,
-    userId,       userImg
+    userId
 }) {
 
     const [message, setMessage] = useState('');
 
-    const{reRender, setReRender} = useContext(GlobalContext)
+    const{reRender, setReRender, profileImage} = useContext(GlobalContext)
     
     document.onkeydown = function (e) {
         if (e.key === 'Escape') {
@@ -61,6 +61,7 @@ function ChatSection({
     function GetAllComments(){
         GetComments(userId, postId)
         .then((res) => {
+            console.log(res.data)
             setAllComments(res.data)
         });
     }
@@ -106,7 +107,7 @@ function ChatSection({
                     </EditContainer>
                     <Form >
                         <form onSubmit={sendForm}>
-                            <img src={userImg}></img>
+                            <img src={profileImage}></img>
                             <TextInput
                                 type="text" id="message"
                                 name="message" onChange={handleChange}
