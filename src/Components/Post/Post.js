@@ -15,8 +15,6 @@ import EditInput from "./Functions/editInput";
 import { GoToTag } from "./Functions/goToTag";
 import { updateLike, updateDislike } from "../../Services/api.js";
 import getConfig from "../../Services/getConfig.js";
-import repostScreen from "../RepostScreen/repostScreen.js"
-
 
 export default function Post({
   username,
@@ -38,7 +36,6 @@ export default function Post({
     setDeleteScreen,
     editPost,
     SetEditPost,
-    repost,
     setRepost,
     postId_global,
     setPostId_global,
