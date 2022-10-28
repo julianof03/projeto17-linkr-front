@@ -16,6 +16,7 @@ import { GoToTag } from "./Functions/goToTag";
 import { updateLike, updateDislike, getPostLikers } from "../../Services/api.js";
 import getConfig from "../../Services/getConfig.js";
 import { ChatSection, CallChat } from "./Functions/comment";
+
 export default function Post({
     username, postUserId,
     userImg, text,
@@ -30,6 +31,7 @@ export default function Post({
     const [form, setForm] = useState({ link: "", text: "" });
     const [chatState, setChatState] = useState(false);
     const [allComments, setAllComments] = useState('');
+    const [frase, setFrase] = useState('')
     //GlobalContext
     const {
         setDeleteScreen, editPost,
@@ -50,6 +52,9 @@ export default function Post({
     };
 
     useEffect(async () => {
+
+        
+        
         SetEditPost({ postId: "", status: false });
         if (!message) {
             setMessage(text);
@@ -71,6 +76,8 @@ export default function Post({
         setUrlMetadataOBJ(data);
     }, []);
 
+    
+
     function HandleLike(like) {
         const body = { postId };
 
@@ -89,13 +96,14 @@ export default function Post({
         }
     }
 
-    const [frase, setFrase] = useState('')
+    
     // const frase = 'bolinha linha linha'
     async function getLikers(postId) {
 
         const likers = await getPostLikers(getConfig(token), postId)
         setFrase(likers.data)
         console.log(likers.data)
+        console.log(frase)
     }
 
     async function cleanLikers() {
@@ -138,22 +146,17 @@ export default function Post({
 
                                     <></>
                                 ) : (
-                                    <ToolTip
-                                        style={{ backgroundColor: 'white' }}
-                                    >
 
-                                        <ReactTooltip
-                                            style={{
-                                                backgroundColor: 'white'
-                                            }}
-                                            id="registerTip"
-                                            place="bottom"
-                                            backgroundColor="#FFFFFF">
-                                            <p style={{ color: "white" }}>
-                                                {frase}
-                                            </p>
-                                        </ReactTooltip>
-                                    </ToolTip>
+                                    <ReactTooltip
+                                        type="light"
+                                        id="registerTip"
+                                        place="bottom"
+                                    >
+                                        <p style={{ color: "#000" }}>
+                                            {frase}
+                                        </p>
+                                    </ReactTooltip>
+
 
                                 )}
 
@@ -182,6 +185,7 @@ export default function Post({
                         commentCount={commentCount}
                         chatState={chatState}
                         setChatState={setChatState}
+                        
                     />
                     <Main>
                         <Title>
@@ -258,7 +262,8 @@ export default function Post({
                                 allComments={allComments}
                                 setAllComments={setAllComments}
                                 postUserId={postUserId}
-                                userId={userId} />) : (''))}
+                                userId={userId}
+                                userImg={userImg} />) : (''))}
                     </Main>
                 </PostHTML >
             )
