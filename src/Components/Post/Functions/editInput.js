@@ -11,6 +11,7 @@ export default function EditInput({
     text
 }) {
 
+    console.log("edit")
     document.onkeydown = function (e) {
         if (e.key === 'Escape') {
             setMessage(text);
@@ -34,7 +35,7 @@ export default function EditInput({
     }
 
     return (
-        <>
+        <EditWrapper>
             <EditContainer></EditContainer>
             <form onSubmit={sendForm}>
                 <TextInput
@@ -43,11 +44,14 @@ export default function EditInput({
                     required={true} value={message}
                 ></TextInput>
             </form>
-        </>
+        </EditWrapper>
     );
 }
-
+const EditWrapper = styled.div`
+position:relative;
+`;
 const EditContainer = styled.div`
+    position:relative;
     background-color:  black;
     width: 100%;
     height: 30px;
@@ -56,10 +60,10 @@ const EditContainer = styled.div`
 `;
 const TextInput = styled.input`
     position:absolute;
-    top:40px;
-    left:85px;
-    width:83%;
-    height: 16%;
+    top:-30px;
+    left:0px;
+    width:100%;
+    height: 180%;
     border: unset;
     border-radius:5px;
     margin-top: 10px;

@@ -1,244 +1,215 @@
 import styled from "styled-components";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
+import { BiRepost } from "react-icons/bi";
 import { MdModeEdit } from "react-icons/md";
 import { ReactTagify } from "react-tagify";
 import React from "react";
 import { useContext, useEffect, useState } from "react";
-import mql from '@microlink/mql'
+import mql from "@microlink/mql";
 import { useNavigate } from "react-router-dom";
-import ReactTooltip from 'react-tooltip';
+import ReactTooltip from "react-tooltip";
 import GlobalContext from "../../contexts/globalContext";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { OnClickEditPost } from "./Functions/editPost";
 import EditInput from "./Functions/editInput";
 import { GoToTag } from "./Functions/goToTag";
-
-import { updateLike, updateDislike, getPostLikers } from '../../Services/api.js'
-import getConfig from "../../Services/getConfig";
-
-export default function Post(
-    {
-        username,
-        postUserId,
-        userImg,
-        text,
-        link,
-        likesQtd,
-        postId,
-        userLiked
-    }
-) {
+import { updateLike, updateDislike, getPostLikers } from "../../Services/api.js";
+import getConfig from "../../Services/getConfig.js";
+import { ChatSection, CallChat } from "./Functions/comment";
+export default function Post({
+    username, postUserId,
+    userImg, text,
+    link, likesQtd,
+    postId, userLiked,
+    repostCount, commentCount
+}) {
     //useState
-    const [like, setLike] = useState(false)
-    const [message, setMessage] = useState('');
-    const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
-    const [form, setForm] = useState({ link: '', text: '' })
+    const [like, setLike] = useState(false);
+    const [message, setMessage] = useState("");
+    const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({});
+    const [form, setForm] = useState({ link: "", text: "" });
+    const [chatState, setChatState] = useState(false);
+    const [allComments, setAllComments] = useState('');
     //GlobalContext
     const {
-        setDeleteScreen, editPost, SetEditPost,
-        postId_global, setPostId_global,
-        reRender, setReRender } = useContext(GlobalContext);
+        setDeleteScreen, editPost,
+        SetEditPost, repost,
+        setRepost, postId_global,
+        setPostId_global, reRender,
+        setReRender,
+    } = useContext(GlobalContext);
     // generic const declaration
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
-    const handleChange = event => {
-        if (!message) { setMessage(text) }
+    const handleChange = (event) => {
+        if (!message) {
+            setMessage(text);
+        }
         setMessage(event.target.value);
     };
 
     useEffect(async () => {
-        SetEditPost({ postId: '', status: false })
-        if (!message) { setMessage(text) }
+        SetEditPost({ postId: "", status: false });
+        if (!message) {
+            setMessage(text);
+        }
 
         if (userLiked) {
-
-            setLike(true)
+            setLike(true);
         }
 
         const { data } = await mql(link, {
             data: {
                 avatar: {
-                    selector: '#avatar',
-                    type: 'image',
-                    attr: 'src'
-                }
-            }
-        })
-        setUrlMetadataOBJ(data)
-    }, [])
+                    selector: "#avatar",
+                    type: "image",
+                    attr: "src",
+                },
+            },
+        });
+        setUrlMetadataOBJ(data);
+    }, []);
 
     function HandleLike(like) {
-        const body = { postId }
+        const body = { postId };
 
         try {
             if (!like) {
                 // console.log('like')
-                updateLike(getConfig(token), body)
-                setReRender(!reRender)
+                updateLike(getConfig(token), body);
+                setReRender(!reRender);
             } else {
                 // console.log('dislike')
-                updateDislike(getConfig(token), body)
-                setReRender(!reRender)
+                updateDislike(getConfig(token), body);
+                setReRender(!reRender);
             }
-
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
     const [frase, setFrase] = useState('')
     async function getLikers(postId) {
-        // console.log('passou', postId)
         const likers = await getPostLikers(getConfig(token), postId)
-        // console.log(likers.data)
         setFrase(likers.data)
     }
 
     return (
-        <>{
-            (!urlMetadataOBJ.url) ?
-                (<PropagateLoader color="#b3b3b3" />)
-                :
-                (<PostHTML>
-                    {/* {console.log(postUserId)} */}
-
-                    <ImgWrapper
-                        like={like}
-                    >
+        <>
+            {!urlMetadataOBJ.url ? (
+                <PropagateLoader color="#b3b3b3" />
+            ) : (
+                <PostHTML>
+                    <ImgWrapper like={like}>
                         <img src={userImg} />
-                        <div
-                            data-tip data-for="registerTip"
-                        >
-                            {like ?
-                                (
-
+                        <LikeWrapper>
+                            <div className="Register" data-tip data-for="registerTip">
+                                {like ? (
                                     <BsHeartFill
-
-                                        size='20px'
-                                        onMouseEnter={() => getLikers(postId)}
-
+                                        size="20px"
                                         onClick={() => {
-                                            setLike(false)
-                                            HandleLike(like)
+                                            setLike(false);
+                                            HandleLike(like);
                                         }}
                                     />
                                 ) : (
                                     <BsHeart
-                                        size='20px'
-                                        onMouseEnter={() => getLikers(postId)}
+                                        size="20px"
                                         onClick={() => {
-                                            setLike(true)
-                                            HandleLike(like)
+                                            setLike(true);
+                                            HandleLike(like);
                                         }}
-
                                     />
                                 )}
-                            <ToolTip>
-                                {(!frase) ? (
-                                    <ReactTooltip
-                                        id="registerTip"
-                                        place="bottom"
-                                        backgroundColor='#FFFFFF'
-                                    >
-                                        <p
-                                            style={{ color: 'black' }}
-                                        >
-                                            {/* {frase} */}
-                                        </p>
-                                    </ReactTooltip>
-                                ) : (
-                                    <ReactTooltip
-                                        id="registerTip"
-                                        place="bottom"
-                                        backgroundColor='#FFFFFF'
-                                    >
-                                        <p
-                                            style={{ color: 'black' }}
-                                        >
-                                            {frase}
-                                        </p>
 
-                                    </ReactTooltip>
-                                )}
+                                <ReactTooltip id="registerTip" place="bottom" backgroundColor="#FFFFFF">
+                                    <p style={{ color: "black" }}>
+                                        {frase}
+                                    </p>
+                                </ReactTooltip>
+                            </div>
+
+                            <p>
+                                {!likesQtd ? "0 likes" : <>{likesQtd > 1 ? <p>{likesQtd} likes</p> : "1 like"}</>}
+                            </p>
+
+                        </LikeWrapper>
 
 
-                            </ToolTip>
-
-                        </div>
-
-
-                        <p>
-                            {!likesQtd ? (
-                                '0 likes'
-                            ) : (
-                                <>
-                                    {(likesQtd > 1) ? (
-                                        <p>
-                                            {likesQtd} likes
-                                        </p>
-                                    ) : (
-                                        '1 like'
-                                    )}
-                                </>
-                            )}
-                        </p>
+                        <ButtomWrapper>
+                            <BiRepost
+                                size="30px"
+                                onClick={() => setRepost({ status: true, postId: postId, userId: postUserId })}
+                            />
+                            <p>{repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>}
+                            </p>
+                            <p className="Comentario">{commentCount === null ? "0 Comments" : <>{commentCount > 1 ? <p>{commentCount} Comments</p> : "1 Comments"}</>}
+                            </p>
+                        </ButtomWrapper>
 
                     </ImgWrapper>
+                    <CallChat
+                        commentCount={commentCount}
+                        chatState={chatState}
+                        setChatState={setChatState}
+                    />
                     <Main>
                         <Title>
-                            {userId != postUserId ?
-                                (<h1 onClick={() => navigate(`/user/${postUserId}`)} >
-                                    {username}
-                                </h1>)
-                                :
-                                (<>
-                                    <h1 onClick={() => navigate(`/user/${postUserId}`)} >
-                                        {username}
-                                    </h1>
+                            {userId != postUserId ? (
+                                <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
+                            ) : (
+                                <>
+                                    <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
                                     <IconsWrapper>
                                         <MdModeEdit
                                             onClick={() => {
-                                                OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId })
+                                                OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId });
                                             }}
-                                            color='white'
+                                            color="white"
                                             style={{
-                                                marginLeft: '10px',
-                                                cursor: 'pointer'
+                                                marginLeft: "10px",
+                                                cursor: "pointer",
                                             }}
                                         />
-                                        <BsFillTrashFill onClick={() => { setDeleteScreen({ postId: postId, status: true }) }}
-                                            color='white'
-                                            style={{
-                                                marginLeft: '10px',
-                                                cursor: 'pointer'
+                                        <BsFillTrashFill
+                                            onClick={() => {
+                                                setDeleteScreen({ postId: postId, status: true });
                                             }}
-                                            size='15px' />
+                                            color="white"
+                                            style={{
+                                                marginLeft: "10px",
+                                                cursor: "pointer",
+                                            }}
+                                            size="15px"
+                                        />
                                     </IconsWrapper>
-                                </>)}
+                                </>
+                            )}
                         </Title>
                         <Description>
-
-                            <ReactTagify colors={"white"}
-                                tagClicked={(tag) => { GoToTag(tag) }} >
+                            <ReactTagify
+                                colors={"white"}
+                                tagClicked={(tag) => {
+                                    GoToTag(tag);
+                                }}
+                            >
                                 {text}
                             </ReactTagify>
-                            {(editPost.status && postId === editPost.postId) ?
-                                (<EditInput
+                            {editPost.status && postId === editPost.postId ? (
+                                <EditInput
                                     postId={postId}
                                     SetEditPost={SetEditPost}
                                     handleChange={handleChange}
                                     message={message}
                                     setMessage={setMessage}
                                     text={text}
-                                />)
-                                :
-                                ('')}
+                                />
+                            ) : (
+                                ""
+                            )}
                         </Description>
-                        <a href={`${urlMetadataOBJ.url}`}
-
-                            target="_blank"
-                            rel="noopener noreferrer">
+                        <a href={`${urlMetadataOBJ.url}`} target="_blank" rel="noopener noreferrer">
                             <UrlMetadaSpace>
                                 <UrlMetadaDetails>
                                     <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
@@ -246,24 +217,39 @@ export default function Post(
                                     <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
                                 </UrlMetadaDetails>
                                 <ImageUrl>
-                                    <img src={urlMetadataOBJ.image?.url}
-                                        alt='image not found &#x1F625;' />
+                                    <img src={urlMetadataOBJ.image?.url} alt="image not found &#x1F625;" />
                                 </ImageUrl>
                             </UrlMetadaSpace>
                         </a>
+                        {(chatState ? (
+                            <ChatSection
+                                postId={postId}
+                                chatState={chatState}
+                                setChatState={setChatState}
+                                allComments={allComments}
+                                setAllComments={setAllComments}
+                                postUserId={postUserId}
+                                userId={userId} />) : (''))}
                     </Main>
-                </PostHTML>)
-        }</>)
+                </PostHTML>
+            )}
+        </>
+    );
 }
 
-
 const PostHTML = styled.div`
+    position: relative;
     display: flex;
     width: 610px;
+    min-height:276;
     border-radius:16px;
     margin-bottom: 16px;
     background-color:  black;
-    position: relative;
+    @media only screen and (max-width:800px) {
+    width: 100vw;
+    border-radius:0px;
+    
+    }
 `
 const TitleUrl = styled.h1`
   font-family: Lato;
@@ -302,33 +288,45 @@ const UrlMetadaDetails = styled.div`
   padding: 24px 27px 5px 19px;
 `;
 const ImageUrl = styled.div`
-    img {
-        width: 154px;
-        height: 153px;
-        border-radius:  0 16px 16px 0 ;
-        object-fit: cover 
-    }
-`
+  img {
+    width: 154px;
+    height: 153px;
+    border-radius: 0 16px 16px 0;
+    object-fit: cover;
+   
+  }
+`;
 const ImgWrapper = styled.div`
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    div{
-        color: ${props => props.like ? 'red' : 'white'};
-        cursor: pointer;
-    }
-    img{
-        margin: 18px 18px 30px 18px ;
-        width:50px;
-        height:50px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-    p{
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
+
+  .Register {
+    color: ${(props) => (props.like ? "red" : "white")};
+    cursor: pointer;
+  }
+  h1 {
+    color: white;
+    cursor: pointer;
+
+  }
+  img {
+    margin: 17px 18px 20px 18px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+  p{
         margin-top: 5px;
         color: white;
     }
-`
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
+`;
 const Main = styled.div`
   padding: 0 21px 20px 0;
   /* background-color: blue; */
@@ -339,6 +337,7 @@ const Title = styled.div`
   width: 100%;
   padding: 5px 0 7px 0;
   margin-top: 16px;
+  
   /* background-color: red; */
   h1 {
     font-size: 19px;
@@ -350,60 +349,69 @@ const Title = styled.div`
 `;
 const IconsWrapper = styled.div`
   color: blue;
+  
+`;
+
+const UrlMetadaSpace = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 503px;
+  height: 155px;
+  border: solid 1px gray;
+  border-radius: 16px;
+  color: white;
+  cursor: pointer;
+  
+  /* background-color: red; */
+  :hover {
+    transition: 0.5s;
+    background-color: white;
+    background: rgba(255, 255, 255, 0.2);
+  }
 `;
 const Description = styled.div`
     margin-bottom: 15px;
+
     font-size: 17px;
     font-weight: 600;
     color: #B7B7B7;
     /* background-color: yellow; */
-`
-const UrlMetadaSpace = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 503px;
-    height: 155px;
-    margin-bottom: 10px;
-    border: solid 1px gray;
-    border-radius: 16px;
-    color: white;
-    cursor: pointer;
-    /* background-color: red; */
-    :hover { 
-        transition: 0.5s;
-        background-color: white ;
-        background: rgba(255, 255, 255, 0.2);
-    }
 `;
-const EditContainer = styled.div`
-    background-color:  black;
-    width: 100%;
-    height: 30px;
-    border: unset;
-    border-radius:5px;
+
+const LikeWrapper = styled.div`
+position: absolute;
+top: 84px;
+left: 33px;
+  p{
+    font-size: 12px;
+    line-height: 1px;
+    margin-top: 5px;
+    margin-left: -2px;
+}
 `;
-const TextInput = styled.input`
-    position:absolute;
-    top:40px;
-    left:85px;
-    width:83%;
-    height: 16%;
-    border: unset;
-    border-radius:5px;
-    margin-top: 10px;
-    background-color: #EFEFEF;
-    ::placeholder{
-        font-size: 15px;
-        font-weight: 300;
-        color: #949494;
-    }
-`
-const ToolTip = styled.div`
-max-height: 10px;
-display: flex;
-justify-content: center;
-align-items: center;
 
-background-color: red;
+const ButtomWrapper = styled.div`
+position: absolute;
+top: 190px;
+left: 30px;
+color: white;
+  p{
+    font-size: 12px;
+    line-height: 1px;
+    margin-top: 0px;
+    margin-left: -5px;
+}
+  p{
+    font-size: 12px;
+    line-height: 1px;
+    margin-top: 0px;
+    margin-left: -5px;
+}
+  .Comentario{
+    font-size: 12px;
+    line-height: 1px;
+    margin-top: -55px;
+    margin-left: -15px;
+}
+`;
 
-`

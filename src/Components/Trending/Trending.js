@@ -49,7 +49,7 @@ const TrendingWrapper = styled.div`
   background-color: #171717;
   border-radius: 16px;
   padding: 15px;
-  margin-left: 15px;
+  margin-right: calc(30vw-320px);
   margin-top: 8vh;
 
   h2 {
@@ -66,6 +66,9 @@ const TrendingWrapper = styled.div`
     color: #fff;
     cursor: pointer;
   }
+  @media only screen and (max-width:800px) {
+        display: none;
+    }
 `;
 
 const Line = styled.div`

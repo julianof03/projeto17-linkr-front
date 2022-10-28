@@ -40,7 +40,7 @@ export default function TopMenu() {
 
         }
 
-    }, [setHeader]);
+    }, [setHeader, setProfileImage]);
 
     if (!header) {
         return (<></>);
@@ -63,7 +63,10 @@ export default function TopMenu() {
         }
 
     };
-
+    function goToUserPage(){
+        const userId= localStorage.getItem("userId");
+        navigate(`/users/${userId}`);
+    }
     return (
         <div>
             <LogoutBox visible={logout} onClick={logoutUser}>
@@ -74,7 +77,7 @@ export default function TopMenu() {
                 <Title onClick={() => navigate('/timeline')}>linkr</Title>
                 <UserBox onClick={cliked}>
                     <StyledIcon isup={logout} />
-                    <ProfileImg profileImage={profileImage} />
+                    <ProfileImg profileImage={profileImage} onClick={goToUserPage}/>
                 </UserBox>
             </MenuBar>
         </div>

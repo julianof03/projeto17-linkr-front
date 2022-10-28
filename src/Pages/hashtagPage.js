@@ -6,14 +6,17 @@ import { useEffect, useState, useContext } from "react";
 import { getHashtagPosts } from "../Services/api.js";
 import getConfig from "../Services/getConfig.js";
 import GlobalContext from "../contexts/globalContext.js";
+import RepostBox from "../Components/RepostScreen/repostScreen.js";
+import DeleteBox from "../Components/DeleteScreen/deleteScreen.js";
 import RenderPosts from "./TimeLine/Functions/renderPosts.js";
+
 
 export default function Hashtag() {
   const { setHeader } = useContext(GlobalContext);
   setHeader(true);
   const token = localStorage.getItem("token");
   const { hashtag } = useParams();
-  const { reRender, setReRender, hashposts, setHashposts, setClicked, clicked } =
+  const { reRender, setReRender, hashposts, setHashposts, setClicked, clicked, repost, deleteScreen } =
     useContext(GlobalContext);
   const [n, setN] = useState(0);
 
@@ -36,6 +39,8 @@ export default function Hashtag() {
   return (
     <>
       <Wrapper>
+      {deleteScreen.status ? <DeleteBox /> : <></>}
+      {repost.status ? <RepostBox /> : <></>}
         <MainContent>
           <Title>
             <h1># {hashtag}</h1>
@@ -44,11 +49,22 @@ export default function Hashtag() {
             ""
           ) : (
             <>
-              <RenderPosts
-                postsList={hashposts.array}
-                n={n}
-                setN={setN}
-              />
+              {hashposts.array.map((value, index) => (
+                <>
+                  <Post
+                    key={index}
+                    postId={value.postId}
+                    username={value.username}
+                    userImg={value.userImg}
+                    text={value.text}
+                    link={value.link}
+                    likesQtd={value.likesQtd}
+                    liked={value.liked}
+                    postUserId={value.userId}
+                    repostCount={value.repostCount}
+                  />
+                </>
+              ))}
             </>
           )}
         </MainContent>
