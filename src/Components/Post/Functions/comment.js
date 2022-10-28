@@ -1,7 +1,9 @@
 import React from 'react';
 import { MdChatBubbleOutline } from "react-icons/md";
 import { SlPaperPlane } from "react-icons/sl";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { GetComments } from "../../../Services/api";
+import { addComments } from "../../../Services/api";
 
 import styled from 'styled-components';
 
@@ -12,6 +14,7 @@ function CallChat({ chatState, setChatState }) {
         <MdChatBubbleOutline
             onClick={() => {
                 setChatState(!chatState);
+
             }}
             style={{
                 width: '25px',
@@ -22,113 +25,109 @@ function CallChat({ chatState, setChatState }) {
             }} />
     );
 }
-function ChatSection({ chatState, setChatState, postId}) {
+
+function ChatSection({
+    chatState,    setChatState,
+    postUserId,   postId, 
+    allComments,  setAllComments
+}) {
 
     const [message, setMessage] = useState('');
-    
+
 
     document.onkeydown = function (e) {
-         if (e.key === 'Escape') {
-             setMessage(message);
-             setChatState(!chatState);
-         }
-     }
-     const handleChange = event => {
-         if (!message) { setMessage('') }
-         setMessage(event.target.value);
-     };
+        if (e.key === 'Escape') {
+            setMessage(message);
+            setChatState(!chatState);
+        }
+    }
+    const handleChange = event => {
+        if (!message) { setMessage('') }
+        setMessage(event.target.value);
+    };
 
+
+    useEffect(() => {
+        GetComments(postId).then((res) => {
+            setAllComments(res.data)
+            console.log(res.data, "res data");
+        });
+
+    }, []);
     function sendForm(e) {
-   
+        e.preventDefault()
+        const body = {
+            comment: message,
+            userId: postUserId,
+        }
+        console.log(body, postId)
+        const promise = addComments(postId ,body);
 
-    e.preventDefault()
-     const body = {
-        text: message,
-     }
-     console.log(message);
-    
-    //     // const promise = EditPost(body, id)
-    
-    //     // promise.then((res) => {
-    //     //     document.location.reload()
-    //     //     setChatState(!chatState);
-    //     // })
-    //     // promise.catch((err) => alert(err.message))
-     }
+        promise.then(() => { console.log("publiquei")})
+        promise.catch((err) => alert(err))
+        setTimeout(() => {
+            setMessage('');
+        }, 500)
+    }
+
 
     return (<>
         {(chatState) ?
             (
                 <>
-                <EditContainer><Border></Border>
-                <Comment>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
-                </Comment>
-                <Comment>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
-                </Comment>
-                <Comment>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
-                </Comment>
-                <Comment>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
-                </Comment>
-                <Comment>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
-                </Comment>
-                <Comment>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
-                </Comment>
-                <Comment>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
-                </Comment>
-                </EditContainer>
-                <Form >
-                    <form onSubmit={sendForm}>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
-                    <TextInput
-                        type="text" id="message"
-                        name="message" onChange={handleChange}
-                        required={true} value={message}
-                        placeholder="write a comment"
-                    >
-                    </TextInput>
-                    <SlPaperPlane
-                        onClick={(e) => {
-                            sendForm(e);
-                        }}
-                        style={{
-                            position:'absolute',
-                            right:'35px',
-                            bottom:'36px',
-                            width: '16px',
-                            height: '16px',
-                            marginTop: '20px',
-                            cursor: 'pointer',
-                            color: 'white'
-                        }} />
-                    </form>
-                
-                </Form>
-            </>
+                    <EditContainer><Border></Border>
+                        {allComments ? (
+                            (allComments.map((c) => {
+                                return (
+                                    <Comment>
+                                        <div className='topName'>
+                                        <p className='Name'>{c.name}  </p>
+                                        <p className='auxName'>{(c.userId ===postUserId ? ("• post’s author"):(''))}</p>
+                                        </div>
+                                        <CommentText><p>{c.comment}</p></CommentText>
+                                        <img src={c.pictureUrl}></img>
+                                        <Line></Line>
+                                    </Comment>);
+                            }))
+                        )
+                            : ('')}
+                    </EditContainer>
+                    <Form >
+                        <form onSubmit={sendForm}>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBVRLe_WplXu2wbcbMZhYWsxvHolJbp2ELqzh5ldLKGtOUlafRJMTybN1zMpfTWJYk-c&amp;usqp=CAU"></img>
+                            <TextInput
+                                type="text" id="message"
+                                name="message" onChange={handleChange}
+                                required={true} value={message}
+                                placeholder="write a comment"
+                            >
+                            </TextInput>
+                            <SlPaperPlane
+                                onClick={(e) => {
+                                    sendForm(e);
+                                }}
+                                style={{
+                                    position: 'absolute',
+                                    right: '35px',
+                                    bottom: '36px',
+                                    width: '16px',
+                                    height: '16px',
+                                    marginTop: '20px',
+                                    cursor: 'pointer',
+                                    color: 'white'
+                                }} />
+                        </form>
+
+                    </Form>
+                </>
             ) : ('')}
     </>
     );
 }
-
-
-
-
 export {
     CallChat,
     ChatSection
 }
-
-
-const Comment = styled.div`
-margin-top:20px;
-
-`;
 
 const Border = styled.div`
     position:absolute;
@@ -140,7 +139,6 @@ const Border = styled.div`
     min-height:25px;
     border-radius:10px;
 `;
-
 const EditContainer = styled.div`
     position:relative;
     background-color: #1e1e1e;
@@ -150,13 +148,8 @@ const EditContainer = styled.div`
     padding:25px;
     width: 121.2%;
     margin-left:-86px;
-    min-height:200px;
     height:fit-content;
-    img{
-    width:42px;
-    height:42px;
-    border-radius:25px;
-}
+    
 `;
 const TextInput = styled.input`
     position:absolute;
@@ -186,13 +179,72 @@ const Form = styled.div`
     margin-bottom:-26px;
     border-bottom-left-radius:20px;
     border-bottom-right-radius:20px;
-    height:90px;
+    height:65px;
     img{
-    position:absolute;
-    left:20px;
-    bottom:28px;
-    width:42px;
-    height:42px;
-    border-radius:25px;
-}
+        position:absolute;
+        left:20px;
+        bottom:25px;
+        width:42px;
+        height:42px;
+        border-radius:25px;
+    }
 `;
+const Comment = styled.div`
+    display:flex;
+    position:relative;
+    min-height:70px;
+    max-height:fit-content;
+    img{
+        position:absolute;
+        left:10px;
+        top:15px;
+        width:42px;
+        height:42px;
+        border-radius:25px;
+    }
+    p{
+        font-size:14px;
+        font-family:lato;
+        font-weight:bold;
+    }
+    .topName{
+        display:flex;
+        position:absolute;
+        top:20px;
+        left:60px;
+        height:20px;
+    }
+    .Name{  
+        font-size:14px;
+        margin-top:0px;
+    }
+    .auxName{
+        color:#565656;
+        margin-left:15px;
+        margin-top:0px;
+    }
+    `;
+const Line = styled.div`
+        position:absolute;
+        width:100%;
+        bottom:0px;
+        height:1px;
+        background-color:#353535;
+    `;
+const CommentText = styled.div`
+        position:relative;
+        margin-top:20px;
+        margin-left:60px;
+        width:100%;
+        font-size:14px;
+        font-family:lato;
+        font-weight:bold;
+        p{
+            position:relative;
+            top: -10px;
+            font-size:14px;
+            font-family:lato;
+            font-weight:400;
+            color:#acacac;
+        }
+    `;

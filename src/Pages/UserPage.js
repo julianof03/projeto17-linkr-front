@@ -162,8 +162,6 @@ border-radius: 10px;
 
 `;
 const TrendingWrapper = styled.div`
-height: 100%;
-/* background-color: aqua; */
-/* position:absolute; */
-top:112px;
+  height: 100%;
+  top: 50px;
 `;

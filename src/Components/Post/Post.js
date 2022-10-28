@@ -14,22 +14,16 @@ import EditInput from "./Functions/editInput";
 import { GoToTag } from "./Functions/goToTag";
 
 
-import { OnClickEditPost } from "./postInteractions/editPost";
-import EditInput from "./postInteractions/editInput";
-import {ChatSection, CallChat} from "./postInteractions/comment";
+import {ChatSection, CallChat} from "./Functions/comment";
 import { updateLike, updateDislike } from '../../Services/api.js'
 import getConfig from "../../Services/getConfig";
 
 export default function Post(
     {
-        username,
-        postUserId,
-        userImg,
-        text,
-        link,
-        likesQtd,
-        postId,
-        userLiked
+        username,  postUserId,
+        userImg,   text,       
+        link,      likesQtd,        
+        postId,    userLiked
     }
 ) {
     //useState
@@ -38,6 +32,7 @@ export default function Post(
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
     const [form, setForm] = useState({ link: '', text: '' })
     const [chatState, setChatState] = useState(false);
+    const [allComments, setAllComments] = useState('');
 
     //GlobalContext
     const {
@@ -141,7 +136,6 @@ export default function Post(
 
                         </div>
 
-
                         <p>
                             {!likesQtd ? (
                                 '0 likes'
@@ -157,6 +151,10 @@ export default function Post(
                                 </>
                             )}
                         </p>
+                        <CallChat
+                            chatState = {chatState} 
+                            setChatState = {setChatState}
+                            />
 
                     </ImgWrapper>
                     <Main>
@@ -225,10 +223,15 @@ export default function Post(
                                 </ImageUrl>
                             </UrlMetadaSpace>
                         </a>
+                        {(chatState ? (
                         <ChatSection
                             postId = {postId}
                             chatState = {chatState} 
-                            setChatState = {setChatState}/>
+                            setChatState = {setChatState}
+                            allComments = {allComments}
+                            setAllComments = {setAllComments}
+                            postUserId = {postUserId} />) : (''))}
+                        
                     </Main>
                 </PostHTML>)
         }</>)

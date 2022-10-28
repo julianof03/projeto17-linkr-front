@@ -24,6 +24,16 @@ function EditPost(body, id) {
 function getAlertNewPosts(body) {
     return axios.get(`${URL}/timeline/getalertnewposts`, body);
 };
+
+//GetComments
+
+function GetComments(postId) {
+    return axios.get(`${URL}/timeline/${postId}/comments`);
+};
+function addComments(postId, body) {
+    return axios.post(`${URL}/timeline/${postId}/comments`, body);
+};
+
 // updateLike ---------------------------------
 
 function updateLike(body, getConfig) {
@@ -76,5 +86,7 @@ export {
     getUserPosts,
     updateLike,
     updateDislike,
-    getAlertNewPosts
+    getAlertNewPosts,
+    GetComments,
+    addComments,
 }
