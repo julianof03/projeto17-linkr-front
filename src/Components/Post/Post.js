@@ -90,77 +90,64 @@ export default function Post({
     }
   }
 
+  if(!urlMetadataOBJ.url){
+    return(
+      <PropagateLoader color="#b3b3b3" />
+    )
+  }
+
   return (
     <>
-    {repostId === null ? <></> : <RepostHeader repostUser = {repostUser}/>}
-      {!urlMetadataOBJ.url ? (
-        <PropagateLoader color="#b3b3b3" />
-      ) : (
-        
-        <PostHTML>
-              <ImgWrapper like={like}>
+        {console.log('postUser por post : ', repostUser)}
+        {repostUser === null ? <></> : <RepostHeader repostUser = {repostUser}/>}        
+        <PostHTML style = {repostUser ? { borderRadius: "0 0 16px 16px" } : {borderRadius: "16px 16px 16px 16px"} } >
+          <ImgWrapper like={like}>
             <img src={userImg} />
             <LikeWrapper>
-            <div className="Register" data-tip data-for="registerTip">
-              {like ? (
-                <BsHeartFill
-                  size="20px"
-                  onClick={() => {
-                    setLike(false);
-                    HandleLike(like);
-                  }}
-                />
-              ) : (
-                <BsHeart
-                  size="20px"
-                  onClick={() => {
-                    setLike(true);
-                    HandleLike(like);
-                  }}
-                />
-              )}
+          <div className="Register" data-tip data-for="registerTip">
+            {like ? (
+              <BsHeartFill
+                size="20px"
+                onClick={() => {
+                  setLike(false);
+                  HandleLike(like);
+                }}
+              />
+            ) : (
+              <BsHeart
+                size="20px"
+                onClick={() => {
+                  setLike(true);
+                  HandleLike(like);
+                }}
+              />
+            )}
 
-              <ReactTooltip id="registerTip" place="bottom" backgroundColor="#FFFFFF">
-                <p style={{ color: "black" }}>Tooltip for the register button</p>
-              </ReactTooltip>
-            </div>
+            <ReactTooltip id="registerTip" place="bottom" backgroundColor="#FFFFFF">
+              <p style={{ color: "black" }}>Tooltip for the register button</p>
+            </ReactTooltip>
+          </div>
 
-            <p>
-              {!likesQtd ? "0 likes" : <>{likesQtd > 1 ? <p>{likesQtd} likes</p> : "1 like"}</>}
-            </p>
+          <p>
+            {!likesQtd ? "0 likes" : <>{likesQtd > 1 ? <p>{likesQtd} likes</p> : "1 like"}</>}
+          </p>
 
             </LikeWrapper>
-            
-            
             <ButtomWrapper>
-            <BiRepost
-                size="30px"
-                onClick={() => setRepost({ status: true, postId: postId, userId: postUserId })}
-              />
-              <p>{repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>} 
-           </p>
-            <p className="Comentario">{commentCount === null ? "0 Comments" : <>{commentCount > 1 ? <p>{commentCount} Comments</p> : "1 Comments"}</>} 
-            </p>
+              <BiRepost size="30px"
+                        onClick={() => setRepost({ status: true, postId: postId, userId: userId })}/>
+              <p> {repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>} </p>
+              <p className="Comentario">{commentCount === null ? "0 Comments" : <>{commentCount > 1 ? <p>{commentCount} Comments </p> : "1 Comments"}</>}  </p>
             </ButtomWrapper>
-
           </ImgWrapper>
-          
-           
-          <CallChat
-              commentCount= {commentCount}
+          <CallChat commentCount= {commentCount}
               chatState={chatState}
-              setChatState={setChatState}
-            />
-            
+                    setChatState={setChatState} />
           <Main>
-        
-            
             <Title>
-              {userId != postUserId ? (
-                <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
-              ) : (
-                <>
-                  <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
+              {userId != postUserId ? ( <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
+              ) : ( 
+              <> <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
                   <IconsWrapper>
                     <MdModeEdit
                       onClick={() => {
@@ -183,32 +170,22 @@ export default function Post({
                       }}
                       size="15px"
                     />
-                  </IconsWrapper>
-                </>
-              )}
+                  </IconsWrapper> </>)}
             </Title>
-            
             <Description>
-              <ReactTagify
-                colors={"white"}
-                tagClicked={(tag) => {
-                  GoToTag(tag);
-                }}
-              >
+              <ReactTagify  colors={"white"}
+                            tagClicked={(tag) => { GoToTag(tag) }}>
                 {text}
               </ReactTagify>
-              {editPost.status && postId === editPost.postId ? (
-                <EditInput
+              {editPost.status && postId === editPost.postId ? 
+              (<EditInput
                   postId={postId}
                   SetEditPost={SetEditPost}
                   handleChange={handleChange}
                   message={message}
                   setMessage={setMessage}
-                  text={text}
-                />
-              ) : (
-                ""
-              )}
+                  text={text} />
+                ) : ( "" )}
             </Description>
             <a href={`${urlMetadataOBJ.url}`} target="_blank" rel="noopener noreferrer">
               <UrlMetadaSpace>
@@ -222,18 +199,18 @@ export default function Post({
                 </ImageUrl>
               </UrlMetadaSpace>
             </a>
-            {(chatState ? (
-              <ChatSection
-                postId={postId}
-                chatState={chatState}
-                setChatState={setChatState}
-                allComments={allComments}
-                setAllComments={setAllComments}
-                postUserId={postUserId} 
-                userId = {userId}/>) : (''))}
+            {(chatState ? ( <ChatSection  postId={postId}
+                                          chatState={chatState}
+                                          setChatState={setChatState}
+                                          allComments={allComments}
+                                          setAllComments={setAllComments}
+                                          postUserId={postUserId} 
+                                          userId = {userId}/>
+                          ) : 
+                          ('')
+              )}
           </Main>
         </PostHTML>
-      )}
     </>
   );
 }
@@ -243,16 +220,13 @@ const PostHTML = styled.div`
     display: flex;
     width: 610px;
     min-height:276;
-    border-radius:0 0 16px 16px;
     margin-bottom: 16px;
     background-color:  black;
     @media only screen and (max-width:800px) {
     width: 100vw;
     border-radius:0px;
-    
     }
 `
-
 const TitleUrl = styled.h1`
   font-family: Lato;
   font-size: 16px;
@@ -299,7 +273,6 @@ const ImageUrl = styled.div`
   }
 `;
 const ImgWrapper = styled.div`
-
   .Register {
     color: ${(props) => (props.like ? "red" : "white")};
     cursor: pointer;
