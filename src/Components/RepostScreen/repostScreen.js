@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import GlobalContext from "../../contexts/globalContext";
 import styled from "styled-components";
-import {sharePost} from "../Post/Functions/sharePost";
+import {sharePost} from "./Function/sharePost";
 
 export default function RepostBox(postUserId, postId) {
     const { repost, setRepost } = useContext(GlobalContext);
+    console.log('repostBox info repost :', repost)
 
     return (
       <FullScreen>

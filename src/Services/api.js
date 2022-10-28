@@ -53,6 +53,7 @@ function logOut(getConfig, body) {
   return axios.put(`${URL}/signout`, body, getConfig);
 }
 
+//TIME LINE 
 function getTimeLine(getConfig) {
   return axios.get(`${URL}/timeline`, getConfig);
 }
@@ -69,8 +70,9 @@ function getHashtagPosts(getConfig, hashtag) {
   return axios.get(`${URL}/hashtag/${hashtag}`, getConfig);
 }
 
-function createRepost(getConfig, repostData) {
-  return axios.post(`${URL}/share`, repostData, getConfig);
+function createRepost(repostData) {
+    console.log('REPOST DATA : ', repostData)
+  return axios.post(`${URL}/repost`, repostData);
 }
 
 // User Page--------------------------------

@@ -23,7 +23,7 @@ export default function Post({
     userImg, text,
     link, likesQtd,
     postId, userLiked,
-    repostCount, repostId, respostUserName, commentCount
+    repostCount, commentCount, repostUser
 }) {
     //useState
     const [like, setLike] = useState(false);
@@ -53,9 +53,6 @@ export default function Post({
     };
 
     useEffect(async () => {
-
-        
-        
         SetEditPost({ postId: "", status: false });
         if (!message) {
             setMessage(text);
@@ -77,8 +74,6 @@ export default function Post({
         setUrlMetadataOBJ(data);
     }, []);
 
-    
-
     function HandleLike(like) {
         const body = { postId };
 
@@ -95,7 +90,6 @@ export default function Post({
         }
     }
 
-    
     async function getLikers(postId) {
 
         const likers = await getPostLikers(getConfig(token), postId)
@@ -106,168 +100,128 @@ export default function Post({
         setFrase('')
     }
 
+  if(!urlMetadataOBJ.url){
+    return(
+      <PropagateLoader color="#b3b3b3" />
+    )
+  }
+
   return (
     <>
-    {respostUserName === null ? <></> : <RepostHeader respostUserName = {respostUserName}/>}
-      {!urlMetadataOBJ.url ? (
-        <PropagateLoader color="#b3b3b3" />
-      ) : (
-        
-        <PostHTML>
-              <ImgWrapper like={like}>
+        {repostUser === null ? <></> : <RepostHeader repostUser = {repostUser}/>}        
+        <PostHTML style = {repostUser ? { borderRadius: "0 0 16px 16px" } : {borderRadius: "16px 16px 16px 16px"} } >
+          <ImgWrapper like={like}>
             <img src={userImg} />
             <LikeWrapper>
-            <div className="Register" data-tip data-for="registerTip">
-              {like ? (
-                <BsHeartFill
-                  size="20px"
-                  onMouseEnter={()=> getLikers(postId)}
-                  onMouseLeave={()=>cleanLikers()}
-                  onClick={() => {
-                    setLike(false);
-                    HandleLike(like);
-                  }}
-                />
-              ) : (
-                <BsHeart
-                  size="20px"
-                  onMouseEnter={()=> getLikers(postId)}
-                  onMouseLeave={()=>cleanLikers()}
-                  onClick={() => {
-                    setLike(true);
-                    HandleLike(like);
-                  }}
-                />
-              )}
+          <div className="Register" data-tip data-for="registerTip">
+            {like ? (
+              <BsHeartFill
+                size="20px"
+                onClick={() => {
+                  setLike(false);
+                  HandleLike(like);
+                }}
+              />
+            ) : (
+              <BsHeart
+                size="20px"
+                onClick={() => {
+                  setLike(true);
+                  HandleLike(like);
+                }}
+              />
+            )}
 
-                                {(frase === '') ? (
+            <ReactTooltip id="registerTip" place="bottom" backgroundColor="#FFFFFF">
+              <p style={{ color: "black" }}>Tooltip for the register button</p>
+            </ReactTooltip>
+          </div>
 
-                                    <></>
-                                ) : (
+          <p>
+            {!likesQtd ? "0 likes" : <>{likesQtd > 1 ? <p>{likesQtd} likes</p> : "1 like"}</>}
+          </p>
 
-                                    <ReactTooltip
-                                        type="light"
-                                        id="registerTip"
-                                        place="bottom"
-                                    >
-                                        <p style={{ color: "#000" }}>
-                                            {frase}
-                                        </p>
-                                    </ReactTooltip>
-
-
-                                )}
-
-                            </div>
-
-                            <p>
-                                {!likesQtd ? "0 likes" : <>{likesQtd > 1 ? <p>{likesQtd} likes</p> : "1 like"}</>}
-                            </p>
-
-                        </LikeWrapper>
-
-
-                        <ButtomWrapper>
-                            <BiRepost
-                                size="30px"
-                                onClick={() => setRepost({ status: true, postId: postId, userId: postUserId })}
-                            />
-                            <p>{repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>}
-                            </p>
-                            <p className="Comentario">{commentCount === null ? "0 Comments" : <>{commentCount > 1 ? <p>{commentCount} Comments</p> : "1 Comments"}</>}
-                            </p>
-                        </ButtomWrapper>
-
-                    </ImgWrapper>
-                    <CallChat
-                        commentCount={commentCount}
-                        chatState={chatState}
-                        setChatState={setChatState}
-                        
+            </LikeWrapper>
+            <ButtomWrapper>
+              <BiRepost size="30px"
+                        onClick={() => setRepost({ status: true, postId: postId, userId: userId })}/>
+              <p> {repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>} </p>
+              <p className="Comentario">{commentCount === null ? "0 Comments" : <>{commentCount > 1 ? <p>{commentCount} Comments </p> : "1 Comments"}</>}  </p>
+            </ButtomWrapper>
+          </ImgWrapper>
+          <CallChat commentCount= {commentCount}
+              chatState={chatState}
+                    setChatState={setChatState} />
+          <Main>
+            <Title>
+              {userId != postUserId ? ( <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
+              ) : ( 
+              <> <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
+                  <IconsWrapper>
+                    <MdModeEdit
+                      onClick={() => {
+                        OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId });
+                      }}
+                      color="white"
+                      style={{
+                        marginLeft: "10px",
+                        cursor: "pointer",
+                      }}
                     />
-                    <Main>
-                        <Title>
-                            {userId != postUserId ? (
-                                <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
-                            ) : (
-                                <>
-                                    <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
-                                    <IconsWrapper>
-                                        <MdModeEdit
-                                            onClick={() => {
-                                                OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId });
-                                            }}
-                                            color="white"
-                                            style={{
-                                                marginLeft: "10px",
-                                                cursor: "pointer",
-                                            }}
-                                        />
-                                        <BsFillTrashFill
-                                            onClick={() => {
-                                                setDeleteScreen({ postId: postId, status: true });
-                                            }}
-                                            color="white"
-                                            style={{
-                                                marginLeft: "10px",
-                                                cursor: "pointer",
-                                            }}
-                                            size="15px"
-                                        />
-                                    </IconsWrapper>
-                                </>
-                            )}
-                        </Title>
-                        <Description>
-                            <ReactTagify
-                                colors={"white"}
-                                tagClicked={(tag) => {
-                                    GoToTag(tag);
-                                }}
-                            >
-                                {text}
-                            </ReactTagify>
-                            {editPost.status && postId === editPost.postId ? (
-                                <EditInput
-                                    postId={postId}
-                                    SetEditPost={SetEditPost}
-                                    handleChange={handleChange}
-                                    message={message}
-                                    setMessage={setMessage}
-                                    text={text}
-                                />
-                            ) : (
-                                ""
-                            )}
-                        </Description>
-                        <a href={`${urlMetadataOBJ.url}`} target="_blank" rel="noopener noreferrer">
-                            <UrlMetadaSpace>
-                                <UrlMetadaDetails>
-                                    <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
-                                    <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
-                                    <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
-                                </UrlMetadaDetails>
-                                <ImageUrl>
-                                    <img src={urlMetadataOBJ.image?.url} alt="image not found &#x1F625;" />
-                                </ImageUrl>
-                            </UrlMetadaSpace>
-                        </a>
-                        {(chatState ? (
-                            <ChatSection
-                                postId={postId}
-                                chatState={chatState}
-                                setChatState={setChatState}
-                                allComments={allComments}
-                                setAllComments={setAllComments}
-                                postUserId={postUserId}
-                                userId={userId}
-                                userImg={userImg} />) : (''))}
-                    </Main>
-                </PostHTML >
-            )
-            }
-        </>
-    );
+                    <BsFillTrashFill
+                      onClick={() => {
+                        setDeleteScreen({ postId: postId, status: true });
+                      }}
+                      color="white"
+                      style={{
+                        marginLeft: "10px",
+                        cursor: "pointer",
+                      }}
+                      size="15px"
+                    />
+                  </IconsWrapper> </>)}
+            </Title>
+            <Description>
+              <ReactTagify  colors={"white"}
+                            tagClicked={(tag) => { GoToTag(tag) }}>
+                {text}
+              </ReactTagify>
+              {editPost.status && postId === editPost.postId ? 
+              (<EditInput
+                  postId={postId}
+                  SetEditPost={SetEditPost}
+                  handleChange={handleChange}
+                  message={message}
+                  setMessage={setMessage}
+                  text={text} />
+                ) : ( "" )}
+            </Description>
+            <a href={`${urlMetadataOBJ.url}`} target="_blank" rel="noopener noreferrer">
+              <UrlMetadaSpace>
+                <UrlMetadaDetails>
+                  <TitleUrl> {`${urlMetadataOBJ.title}`} </TitleUrl>
+                  <DescriptionUrl> {`${urlMetadataOBJ.description}`} </DescriptionUrl>
+                  <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
+                </UrlMetadaDetails>
+                <ImageUrl>
+                  <img src={urlMetadataOBJ.image?.url} alt="image not found &#x1F625;" />
+                </ImageUrl>
+              </UrlMetadaSpace>
+            </a>
+            {(chatState ? ( <ChatSection  postId={postId}
+                                          chatState={chatState}
+                                          setChatState={setChatState}
+                                          allComments={allComments}
+                                          setAllComments={setAllComments}
+                                          postUserId={postUserId} 
+                                          userId = {userId}/>
+                          ) : 
+                          ('')
+              )}
+          </Main>
+        </PostHTML>
+    </>
+  );
 }
 
 const PostHTML = styled.div`
@@ -275,13 +229,11 @@ const PostHTML = styled.div`
     display: flex;
     width: 610px;
     min-height:276;
-    border-radius:0 0 16px 16px;
     margin-bottom: 16px;
     background-color:  black;
     @media only screen and (max-width:800px) {
     width: 100vw;
     border-radius:0px;
-    
     }
 `
 const TitleUrl = styled.h1`
@@ -330,13 +282,6 @@ const ImageUrl = styled.div`
   }
 `;
 const ImgWrapper = styled.div`
-    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
-
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
-    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
-
   .Register {
     color: ${(props) => (props.like ? "red" : "white")};
     cursor: pointer;
