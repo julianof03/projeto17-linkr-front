@@ -125,7 +125,6 @@ const TrendingWrapper = styled.div`
   height: 100%;
   top: 50px;
 `;
-
 const AlignBox = styled.div`
 width: 30px;
 height: 10px;

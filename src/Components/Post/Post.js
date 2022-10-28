@@ -76,11 +76,11 @@ export default function Post({
 
         try {
             if (!like) {
-                // console.log('like')
+                console.log('like', postId)
                 updateLike(getConfig(token), body);
                 setReRender(!reRender);
             } else {
-                // console.log('dislike')
+                console.log('dislike', postId)
                 updateDislike(getConfig(token), body);
                 setReRender(!reRender);
             }
@@ -90,9 +90,16 @@ export default function Post({
     }
 
     const [frase, setFrase] = useState('')
+    // const frase = 'bolinha linha linha'
     async function getLikers(postId) {
+
         const likers = await getPostLikers(getConfig(token), postId)
         setFrase(likers.data)
+        console.log(likers.data)
+    }
+
+    async function cleanLikers() {
+        setFrase('')
     }
 
     return (
@@ -108,6 +115,8 @@ export default function Post({
                                 {like ? (
                                     <BsHeartFill
                                         size="20px"
+                                        onMouseEnter={() => getLikers(postId)}
+                                        onMouseLeave={() => cleanLikers()}
                                         onClick={() => {
                                             setLike(false);
                                             HandleLike(like);
@@ -116,6 +125,8 @@ export default function Post({
                                 ) : (
                                     <BsHeart
                                         size="20px"
+                                        onMouseEnter={() => getLikers(postId)}
+                                        onMouseLeave={() => cleanLikers()}
                                         onClick={() => {
                                             setLike(true);
                                             HandleLike(like);
@@ -123,11 +134,29 @@ export default function Post({
                                     />
                                 )}
 
-                                <ReactTooltip id="registerTip" place="bottom" backgroundColor="#FFFFFF">
-                                    <p style={{ color: "black" }}>
-                                        {frase}
-                                    </p>
-                                </ReactTooltip>
+                                {(frase === '') ? (
+
+                                    <></>
+                                ) : (
+                                    <ToolTip
+                                        style={{ backgroundColor: 'white' }}
+                                    >
+
+                                        <ReactTooltip
+                                            style={{
+                                                backgroundColor: 'white'
+                                            }}
+                                            id="registerTip"
+                                            place="bottom"
+                                            backgroundColor="#FFFFFF">
+                                            <p style={{ color: "white" }}>
+                                                {frase}
+                                            </p>
+                                        </ReactTooltip>
+                                    </ToolTip>
+
+                                )}
+
                             </div>
 
                             <p>
@@ -231,8 +260,9 @@ export default function Post({
                                 postUserId={postUserId}
                                 userId={userId} />) : (''))}
                     </Main>
-                </PostHTML>
-            )}
+                </PostHTML >
+            )
+            }
         </>
     );
 }
@@ -299,9 +329,9 @@ const ImageUrl = styled.div`
 const ImgWrapper = styled.div`
     /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
 
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; */
     /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
 
   .Register {
@@ -321,10 +351,10 @@ const ImgWrapper = styled.div`
     object-fit: cover;
   }
 /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-  p{
+  /* p{
         margin-top: 5px;
         color: white;
-    }
+    } */
     /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
 `;
 const Main = styled.div`
@@ -415,3 +445,6 @@ color: white;
 }
 `;
 
+const ToolTip = styled.div`
+background-color: #FFF;
+`

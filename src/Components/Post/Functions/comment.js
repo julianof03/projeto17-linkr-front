@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { MdChatBubbleOutline } from "react-icons/md";
 import { SlPaperPlane } from "react-icons/sl";
 import { useState, useEffect } from 'react';
@@ -7,6 +7,7 @@ import { addComments } from "../../../Services/api";
 
 import styled from 'styled-components';
 import getConfig from '../../../Services/getConfig';
+import GlobalContext from '../../../contexts/globalContext';
 
 
 
@@ -39,6 +40,8 @@ function ChatSection({
 }) {
 
     const [message, setMessage] = useState('');
+
+    const{reRender, setReRender} = useContext(GlobalContext)
     
     document.onkeydown = function (e) {
         if (e.key === 'Escape') {
@@ -52,7 +55,7 @@ function ChatSection({
     };
     useEffect(() => {
         GetAllComments()
-    }, []);
+    }, [reRender]);
 
 
     function GetAllComments(){
@@ -69,7 +72,10 @@ function ChatSection({
         }
         const promise = addComments(postId ,body);
 
-        promise.then(() => { console.log("publiquei")})
+        promise.then(() => {
+             console.log("publiquei")
+             setReRender(!reRender)
+            })
         promise.catch((err) => alert(err))
         setTimeout(() => {
             setMessage('');
