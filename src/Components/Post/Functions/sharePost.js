@@ -9,7 +9,7 @@ async function sharePost(repost, setRepost) {
   createRepost(getConfig(token), repostData)
     .then((res) => {
       setRepost({ status: false, postId: "", userId: "" });
-      console.log("foi")
+      window.location.reload(false)
     })
     .catch((res) => {
       setRepost({ status: false, postId: "", userId: "" });

@@ -25,6 +25,7 @@ export default function Post({
   likesQtd,
   postId,
   userLiked,
+  repostCount
 }) {
   //useState
   const [like, setLike] = useState(false);
@@ -135,7 +136,9 @@ export default function Post({
                 onClick={() => setRepost({ status: true, postId: postId, userId: postUserId })}
               />
             </div>
-            <p>0 re-posts</p>
+            
+            <p>{repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>} 
+           </p>
           </ImgWrapper>
           <Main>
             <Title>
@@ -261,6 +264,7 @@ const ImageUrl = styled.div`
     height: 153px;
     border-radius: 0 16px 16px 0;
     object-fit: cover;
+   
   }
 `;
 const ImgWrapper = styled.div`
