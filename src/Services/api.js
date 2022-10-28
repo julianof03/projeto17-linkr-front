@@ -61,6 +61,11 @@ function getHashtagPosts(getConfig, hashtag) {
     return axios.get(`${URL}/hashtag/${hashtag}`, getConfig);
 }
 
+function getPostLikers(getConfig, postId){
+    return axios.get(`${URL}/likes/${postId}`, getConfig);
+
+}
+
 export {
     signUp,
     signIn,
@@ -76,5 +81,6 @@ export {
     getUserPosts,
     updateLike,
     updateDislike,
-    getAlertNewPosts
+    getAlertNewPosts,
+    getPostLikers
 }

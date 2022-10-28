@@ -13,7 +13,7 @@ import { OnClickEditPost } from "./Functions/editPost";
 import EditInput from "./Functions/editInput";
 import { GoToTag } from "./Functions/goToTag";
 
-import { updateLike, updateDislike } from '../../Services/api.js'
+import { updateLike, updateDislike, getPostLikers } from '../../Services/api.js'
 import getConfig from "../../Services/getConfig";
 
 export default function Post(
@@ -87,12 +87,22 @@ export default function Post(
         }
     }
 
+    const [frase, setFrase] = useState('')
+    async function getLikers(postId) {
+        // console.log('passou', postId)
+        const likers = await getPostLikers(getConfig(token), postId)
+        // console.log(likers.data)
+        setFrase(likers.data)
+    }
+
     return (
         <>{
             (!urlMetadataOBJ.url) ?
                 (<PropagateLoader color="#b3b3b3" />)
                 :
                 (<PostHTML>
+                    {/* {console.log(postUserId)} */}
+
                     <ImgWrapper
                         like={like}
                     >
@@ -102,16 +112,21 @@ export default function Post(
                         >
                             {like ?
                                 (
+
                                     <BsHeartFill
+
                                         size='20px'
+                                        onMouseEnter={() => getLikers(postId)}
+
                                         onClick={() => {
-                                            setLike(false)                                            
+                                            setLike(false)
                                             HandleLike(like)
                                         }}
                                     />
                                 ) : (
                                     <BsHeart
                                         size='20px'
+                                        onMouseEnter={() => getLikers(postId)}
                                         onClick={() => {
                                             setLike(true)
                                             HandleLike(like)
@@ -119,19 +134,36 @@ export default function Post(
 
                                     />
                                 )}
+                            <ToolTip>
+                                {(!frase) ? (
+                                    <ReactTooltip
+                                        id="registerTip"
+                                        place="bottom"
+                                        backgroundColor='#FFFFFF'
+                                    >
+                                        <p
+                                            style={{ color: 'black' }}
+                                        >
+                                            {/* {frase} */}
+                                        </p>
+                                    </ReactTooltip>
+                                ) : (
+                                    <ReactTooltip
+                                        id="registerTip"
+                                        place="bottom"
+                                        backgroundColor='#FFFFFF'
+                                    >
+                                        <p
+                                            style={{ color: 'black' }}
+                                        >
+                                            {frase}
+                                        </p>
 
-                            <ReactTooltip
-                                id="registerTip"
-                                place="bottom"
-                                backgroundColor='#FFFFFF'
-                            >
-                                <p
-                                    style={{ color: 'black' }}
-                                >
-                                    Tooltip for the register button
-                                </p>
+                                    </ReactTooltip>
+                                )}
 
-                            </ReactTooltip>
+
+                            </ToolTip>
 
                         </div>
 
@@ -282,7 +314,7 @@ const ImgWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     div{
-        color: ${props => props.like? 'red' : 'white'};
+        color: ${props => props.like ? 'red' : 'white'};
         cursor: pointer;
     }
     img{
@@ -366,10 +398,12 @@ const TextInput = styled.input`
         color: #949494;
     }
 `
-// const ToolTip = styled.div`
-// max-height: 50px;
-// display: flex;
-// justify-content: center;
-// align-items: center;
+const ToolTip = styled.div`
+max-height: 10px;
+display: flex;
+justify-content: center;
+align-items: center;
 
-// `
+background-color: red;
+
+`

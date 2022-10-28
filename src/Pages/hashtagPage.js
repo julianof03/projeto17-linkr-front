@@ -6,6 +6,7 @@ import { useEffect, useState, useContext } from "react";
 import { getHashtagPosts } from "../Services/api.js";
 import getConfig from "../Services/getConfig.js";
 import GlobalContext from "../contexts/globalContext.js";
+import RenderPosts from "./TimeLine/Functions/renderPosts.js";
 
 export default function Hashtag() {
   const { setHeader } = useContext(GlobalContext);
@@ -21,8 +22,9 @@ export default function Hashtag() {
 
     getHashtagPosts(getConfig(token), hashtag)
       .then((res) => {
+        console.log(res.data)
         setHashposts({
-          array: res.data.slice(n, n + 50),
+          array: res.data.slice(0, n + 5),
           size: res.data.length,
         });
       })
@@ -30,22 +32,6 @@ export default function Hashtag() {
         console.log("algo deu errado");
       });
   }, [clicked, reRender]);
-
-  function nextPage() {
-    if (n + 50 > hashposts.size) {
-      let add = hashposts.size - n;
-
-      if (add > 0) {
-        setN(n + add);
-      }
-      return;
-    }
-
-    setN(n + 50);
-
-    // window.scrollTo(0, 0)
-    setReRender(!reRender);
-  }
 
   return (
     <>
@@ -58,28 +44,11 @@ export default function Hashtag() {
             ""
           ) : (
             <>
-              {hashposts.array.map((value, index) => (
-                <>
-                  <Post
-                    key={index}
-                    postId={value.postId}
-                    username={value.username}
-                    userImg={value.userImg}
-                    text={value.text}
-                    link={value.link}
-                    likesQtd={value.likesQtd}
-                    liked={value.liked}
-                    postUserId={value.userId}
-                  />
-                </>
-              ))}
-              <NextPage
-                onClick={() => {
-                  nextPage();
-                }}
-              >
-                Carregar mais
-              </NextPage>
+              <RenderPosts
+                postsList={hashposts.array}
+                n={n}
+                setN={setN}
+              />
             </>
           )}
         </MainContent>

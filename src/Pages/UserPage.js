@@ -6,7 +6,8 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { userImage, logOut } from '../Services/api.js';
 import getConfig from "../Services/getConfig.js";
-import { getUserPosts } from '../Services/api.js'
+import { getUserPosts } from '../Services/api.js';
+import RenderPosts from "./TimeLine/Functions/renderPosts.js";
 
 export default function UserPage() {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function UserPage() {
     const {
         token, setToken,
         reRender, setReRender,
-        posts, 
+        posts,
         setHeader
     } = useContext(GlobalContext);
     setHeader(true);
@@ -30,9 +31,9 @@ export default function UserPage() {
     useEffect(() => {
         getUserPosts(getConfig(token), userId)
             .then((res) => {
-
+                
                 setUserPosts({
-                    array: res.data.slice(n, n + 20),
+                    array: res.data.slice(n, n + 5),
                     size: res.data.length
                 })
 
@@ -40,32 +41,17 @@ export default function UserPage() {
 
     }, [reRender])
 
-    function nextPage() {
-        if (n + 20 > posts.size) {
-
-            let add = posts.size - n
-
-            if (add > 0) {
-                setN(n + add)
-            }
-            return
-        }
-        setN(n + 20)
-
-        window.scrollTo(0, 0)
-        setReRender(!reRender)
-    }
-
-
     return (
         <>
             {(userPosts.array.length === 0) ? (
+
                 <>LOADING</>
             ) : (
 
                 <Wrapper>
                     <LeftWrapper>
                         <Title>
+                            
                             <ImgWrapper>
                                 <img src={userPosts.array[0].userImg}
                                 />
@@ -75,17 +61,12 @@ export default function UserPage() {
                         </Title>
 
                         <PostWrapper>
-                            {userPosts.array.map((value, index) =>
-                                <Post
-                                    key={index}
-                                    username={value.username}
-                                    userImg={value.userImg}
-                                    text={value.text}
-                                    link={value.link}
-                                    likesQtd={value.likesQtd}
-                                    liked={value.liked}
-                                />
-                            )}
+                        
+                            <RenderPosts
+                                postsList={userPosts.array}
+                                n={n}
+                                setN={setN}
+                            />
 
                         </PostWrapper>
 
