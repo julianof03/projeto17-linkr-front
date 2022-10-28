@@ -38,7 +38,7 @@ export default function TimeLine() {
         (<Wrapper>
           {deleteScreen.status ? <DeleteBox /> : <></>}
           <MainContent>
-              <Title> <h1>timeline</h1> </Title>
+              <Title> <h1>timeline</h1> <AlignBox></AlignBox></Title>
               {/* {!youngestPost ? <></> : <AlertNewPosts youngestPost={youngestPost} /> } */}
               <FormBox />
               {loader ? <PropagateLoader color="#b3b3b3" /> : <></>}
@@ -59,37 +59,67 @@ const Wrapper = styled.div`
   height: 100%;
   padding-top: 80px;
   background-color: #333333;
+  @media only screen and (max-width:800px) {
+        margin-top:80px;
+    }
+
 `;
 const AsideContent = styled.div`
   height: 500px;
-  width: 21vw;
+  width: 30vw;
+  @media only screen and (max-width:800px) {
+        display: none;
+    }
 `;
 const MainContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 610px;
-    margin-top: 100px;
+width: 70vw;
+
+display: flex;
+flex-direction: column;
+justify-content: right;
+align-items: center;
+margin-left: calc(70vw-610px);
+
     p{
         margin-top:30px;
         color:white;
     }
+
+    @media only screen and (max-width:800px) {
+    width: 100vw;
+    }
+
     /* background-color: black; */
 `
 const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 45px;
-  h1 {
+width: 610px;
+display: flex;
+justify-content: flex-start;
+align-items: center;
+margin-bottom: 10px;
+margin-top: 10px;
+
+h1{
     font-size: 43px;
     font-weight: 700;
     margin-bottom: 10px;
     color: #fff;
-    font-family: "Oswald";
-  }
+    font-family: 'Oswald';
+}
+@media only screen and (max-width:800px) {
+    width: 100vw;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 0px;
+    }
 `;
 const TrendingWrapper = styled.div`
   height: 100%;
   top: 50px;
 `;
+
+const AlignBox = styled.div`
+width: 30px;
+height: 10px;
+background-color:transparent;
+`

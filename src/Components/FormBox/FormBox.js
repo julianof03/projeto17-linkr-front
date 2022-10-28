@@ -99,6 +99,11 @@ const FormBoxWrapper = styled.div`
     border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     background-color: #FFFFFF;
+    @media only screen and (max-width:800px) {
+    width: 100vw;
+    border-radius: 0px;
+    }
+
 `
 const ImgWrapper = styled.img`
     margin: 15px;

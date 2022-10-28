@@ -39,6 +39,7 @@ const ProfileImg = styled.div`
         background-position: center;
         border-radius:50%;
         margin-right: 10px;
+        cursor: pointer;
         
 `
 
@@ -55,6 +56,7 @@ const LogoutBox = styled.div`
     right: 0;
     top: 80px;
     color: #fff;
+    z-index: 5;
     cursor: pointer;
 
     h3{
