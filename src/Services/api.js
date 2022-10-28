@@ -26,8 +26,8 @@ function getAlertNewPosts(body) {
 }
 //GetComments
 
-function GetComments(postId) {
-    return axios.get(`${URL}/timeline/${postId}/comments`);
+function GetComments(userId, postId) {
+    return axios.get(`${URL}/timeline/${postId}/comments/${userId}`);
 };
 function addComments(postId, body) {
     return axios.post(`${URL}/timeline/${postId}/comments`, body);

@@ -30,7 +30,6 @@ export default function TopMenu() {
 
         try {
             setProfileImage((await userImage(getConfig(tokenLs))).data);
-            console.log(profileImage)
 
         } catch (error) {
 

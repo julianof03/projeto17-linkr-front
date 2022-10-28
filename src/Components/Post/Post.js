@@ -21,7 +21,7 @@ export default function Post({
   userImg, text,
   link, likesQtd,
   postId, userLiked,
-  repostCount
+  repostCount, commentCount
 }) {
   //useState
   const [like, setLike] = useState(false);
@@ -97,7 +97,8 @@ export default function Post({
         <PostHTML>
           <ImgWrapper like={like}>
             <img src={userImg} />
-            <div data-tip data-for="registerTip">
+            <LikeWrapper>
+            <div className="Register" data-tip data-for="registerTip">
               {like ? (
                 <BsHeartFill
                   size="20px"
@@ -125,17 +126,23 @@ export default function Post({
               {!likesQtd ? "0 likes" : <>{likesQtd > 1 ? <p>{likesQtd} likes</p> : "1 like"}</>}
             </p>
 
-            <h1>
-              <BiRepost
+            </LikeWrapper>
+            
+            
+            <ButtomWrapper>
+            <BiRepost
                 size="30px"
                 onClick={() => setRepost({ status: true, postId: postId, userId: postUserId })}
               />
-            </h1>
-            
-            <p>{repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>} 
+              <p>{repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>} 
            </p>
+            <p className="Comentario">{commentCount === null ? "0 Comments" : <>{commentCount > 1 ? <p>{commentCount} Comments</p> : "1 Comments"}</>} 
+            </p>
+            </ButtomWrapper>
+
           </ImgWrapper>
           <CallChat
+              commentCount= {commentCount}
               chatState={chatState}
               setChatState={setChatState}
             />
@@ -213,7 +220,8 @@ export default function Post({
                 setChatState={setChatState}
                 allComments={allComments}
                 setAllComments={setAllComments}
-                postUserId={postUserId} />) : (''))}
+                postUserId={postUserId} 
+                userId = {userId}/>) : (''))}
           </Main>
         </PostHTML>
       )}
@@ -222,16 +230,20 @@ export default function Post({
 }
 
 const PostHTML = styled.div`
+    position: relative;
     display: flex;
     width: 610px;
+    min-height:276;
     border-radius:16px;
     margin-bottom: 16px;
     background-color:  black;
     @media only screen and (max-width:800px) {
     width: 100vw;
     border-radius:0px;
+    
     }
 `
+
 const TitleUrl = styled.h1`
   font-family: Lato;
   font-size: 16px;
@@ -278,28 +290,22 @@ const ImageUrl = styled.div`
   }
 `;
 const ImgWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  div {
+
+  .Register {
     color: ${(props) => (props.like ? "red" : "white")};
     cursor: pointer;
   }
   h1 {
     color: white;
     cursor: pointer;
+    
   }
   img {
-    margin: 18px 18px 30px 18px;
+    margin: 17px 18px 20px 18px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
-  }
-  p {
-    margin-top: 2px;
-    margin-bottom: 6px;
-    color: white;
   }
 `;
 const Main = styled.div`
@@ -312,6 +318,7 @@ const Title = styled.div`
   width: 100%;
   padding: 5px 0 7px 0;
   margin-top: 16px;
+  
   /* background-color: red; */
   h1 {
     font-size: 19px;
@@ -323,30 +330,33 @@ const Title = styled.div`
 `;
 const IconsWrapper = styled.div`
   color: blue;
+  
 `;
-const Description = styled.div`
-  margin-bottom: 15px;
-  font-size: 17px;
-  font-weight: 600;
-  color: #b7b7b7;
-  /* background-color: yellow; */
-`;
+
 const UrlMetadaSpace = styled.div`
   display: flex;
   justify-content: space-between;
   width: 503px;
   height: 155px;
-  margin-bottom: 10px;
   border: solid 1px gray;
   border-radius: 16px;
   color: white;
   cursor: pointer;
+  
   /* background-color: red; */
   :hover {
     transition: 0.5s;
     background-color: white;
     background: rgba(255, 255, 255, 0.2);
   }
+`;
+const Description = styled.div`
+    margin-bottom: 15px;
+
+    font-size: 17px;
+    font-weight: 600;
+    color: #B7B7B7;
+    /* background-color: yellow; */
 `;
 const Likes = styled.div`
     width: auto;
@@ -364,29 +374,43 @@ const Likes = styled.div`
     position: absolute;
     top:50%;
 `
-const EditContainer = styled.div`
-  background-color: black;
-  width: 100%;
-  height: 30px;
-  border: unset;
-  border-radius: 5px;
-`;
-const TextInput = styled.input`
-  position: absolute;
-  top: 40px;
-  left: 85px;
-  width: 83%;
-  height: 16%;
-  border: unset;
-  border-radius: 5px;
-  margin-top: 10px;
-  background-color: #efefef;
-  ::placeholder {
-    font-size: 15px;
-    font-weight: 300;
-    color: #949494;
+const LikeWrapper = styled.div`
+position:absolute;
+top: 84px;
+left:33px;
+  p{
+    font-size:12px;
+    line-height:1px;
+    margin-top:5px;
+    margin-left:-2px;
   }
 `;
+
+const ButtomWrapper = styled.div`
+position:absolute;
+top: 190px;
+left:30px;
+color:white;
+  p{
+    font-size:12px;
+    line-height:1px;
+    margin-top:0px;
+    margin-left:-5px;
+  }
+  p{
+    font-size:12px;
+    line-height:1px;
+    margin-top:0px;
+    margin-left:-5px;
+  }
+  .Comentario{
+    font-size:12px;
+    line-height:1px;
+    margin-top:-55px;
+    margin-left:-15px;
+  }
+`;
+
 // const ToolTip = styled.div`
 // max-height: 50px;
 // display: flex;

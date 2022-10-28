@@ -6,12 +6,14 @@ import { GetComments } from "../../../Services/api";
 import { addComments } from "../../../Services/api";
 
 import styled from 'styled-components';
+import getConfig from '../../../Services/getConfig';
 
 
 
-function CallChat({ chatState, setChatState }) {
+function CallChat({ chatState, setChatState, commentCount }) {
     return (
-        <MdChatBubbleOutline
+        <ButtomWrapper>
+            <MdChatBubbleOutline
             onClick={() => {
                 setChatState(!chatState);
 
@@ -23,18 +25,21 @@ function CallChat({ chatState, setChatState }) {
                 cursor: 'pointer',
                 color: 'white'
             }} />
+           
+        </ButtomWrapper>
+        
     );
 }
 
 function ChatSection({
     chatState,    setChatState,
     postUserId,   postId, 
-    allComments,  setAllComments
+    allComments,  setAllComments,
+    userId
 }) {
 
     const [message, setMessage] = useState('');
-
-
+    
     document.onkeydown = function (e) {
         if (e.key === 'Escape') {
             setMessage(message);
@@ -45,22 +50,23 @@ function ChatSection({
         if (!message) { setMessage('') }
         setMessage(event.target.value);
     };
-
-
     useEffect(() => {
-        GetComments(postId).then((res) => {
-            setAllComments(res.data)
-            console.log(res.data, "res data");
-        });
-
+        GetAllComments()
     }, []);
+
+
+    function GetAllComments(){
+        GetComments(userId, postId)
+        .then((res) => {
+            setAllComments(res.data)
+        });
+    }
     function sendForm(e) {
         e.preventDefault()
         const body = {
             comment: message,
-            userId: postUserId,
+            userId: userId,
         }
-        console.log(body, postId)
         const promise = addComments(postId ,body);
 
         promise.then(() => { console.log("publiquei")})
@@ -81,8 +87,8 @@ function ChatSection({
                                 return (
                                     <Comment>
                                         <div className='topName'>
-                                        <p className='Name'>{c.name}  </p>
-                                        <p className='auxName'>{(c.userId ===postUserId ? ("• post’s author"):(''))}</p>
+                                        <p className='Name'>{c.name}</p>
+                                        <p className='auxName'>{(c.userId === postUserId ? ("• post’s author"):(c.follows ? ('• following'):('')))}</p>
                                         </div>
                                         <CommentText><p>{c.comment}</p></CommentText>
                                         <img src={c.pictureUrl}></img>
@@ -128,7 +134,15 @@ export {
     CallChat,
     ChatSection
 }
-
+const ButtomWrapper = styled.div`
+    position:absolute;
+    top: 115px;
+    left:32px;
+    p{
+    font-size:12px;
+    margin-top:0px;
+    margin-left:-20px;}
+`;
 const Border = styled.div`
     position:absolute;
     background-color: black;
@@ -233,7 +247,7 @@ const Line = styled.div`
     `;
 const CommentText = styled.div`
         position:relative;
-        margin-top:20px;
+        margin-top:50px;
         margin-left:60px;
         width:100%;
         font-size:14px;
