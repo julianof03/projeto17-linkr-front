@@ -34,7 +34,7 @@ export default function Hashtag() {
     getHashtagPosts(getConfig(token), hashtag)
       .then((res) => {
         setHashposts({
-          array: res.data.slice(n, n + 50),
+          array: res.data.slice(0, n + 5),
           size: res.data.length,
           status: true
         });
@@ -45,22 +45,6 @@ export default function Hashtag() {
         console.log("algo deu errado");
       });
   }, [clicked, reRender]);
-
-  function nextPage() {
-    if (n + 50 > hashposts.size) {
-      let add = hashposts.size - n;
-
-      if (add > 0) {
-        setN(n + add);
-      }
-      return;
-    }
-
-    setN(n + 50);
-
-    // window.scrollTo(0, 0)
-    setReRender(!reRender);
-  }
 
   return (
     <>

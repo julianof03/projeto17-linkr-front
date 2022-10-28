@@ -39,7 +39,7 @@ export default function SearchBar() {
 
     function goToUserpage(id) {
         setFindUsers([]);
-        navigate(`/user/${id}`);
+        navigate(`/users/${id}`);
     };
 
     return (

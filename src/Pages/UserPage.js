@@ -5,8 +5,9 @@ import GlobalContext from "../contexts/globalContext.js";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import getConfig from "../Services/getConfig.js";
-import { getUser, follow, unfollow } from '../Services/api.js'
+import { getUser, follow, unfollow , getUserPosts} from '../Services/api.js'
 import {FollowBox, FollowBoxMobile} from "../Styles/FollowStyle.js"
+import RenderPosts from "./TimeLine/Functions/renderPosts.js";
 
 export default function UserPage() {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function UserPage() {
     const {
         token, setToken,
         reRender, setReRender,
-        posts, 
+        posts,
         setHeader
     } = useContext(GlobalContext);
     setHeader(true);
@@ -65,22 +66,6 @@ export default function UserPage() {
 
     }, [reRender]);
 
-    function nextPage() {
-        if (n + 20 > posts.size) {
-
-            let add = posts.size - n
-
-            if (add > 0) {
-                setN(n + add);
-            };
-            return;
-        };
-        setN(n + 20);
-
-        window.scrollTo(0, 0);
-        setReRender(!reRender);
-    };
-
     async function changeFollow(){
         setCanFollow(false)
         const id = {id:userId};
@@ -104,15 +89,18 @@ export default function UserPage() {
 
     };
 
+
     return (
         <>
             {(userPosts.array.length === 0) ? (
+
                 <>LOADING</>
             ) : (
 
                 <Wrapper>
                     <LeftWrapper>
                         <Title>
+                            
                             <ImgWrapper>
                                 <img src={userPosts.array[0].userImg}
                                 />
@@ -124,17 +112,12 @@ export default function UserPage() {
                         </Title>
 
                         <PostWrapper>
-                            {userPosts.array.map((value, index) =>
-                                <Post
-                                    key={index}
-                                    username={value.username}
-                                    userImg={value.userImg}
-                                    text={value.text}
-                                    link={value.link}
-                                    likesQtd={value.likesQtd}
-                                    liked={value.liked}
-                                />
-                            )}
+                        
+                            <RenderPosts
+                                postsList={userPosts.array}
+                                n={n}
+                                setN={setN}
+                            />
 
                         </PostWrapper>
 
