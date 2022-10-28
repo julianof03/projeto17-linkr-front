@@ -87,6 +87,11 @@ function unfollow(id, getConfig){
     return axios.delete(`${URL}/follow/${id}`, getConfig );
 }
 
+function getPostLikers(getConfig, postId){
+    return axios.get(`${URL}/likes/${postId}`, getConfig);
+
+}
+
 export {
     signUp,               signIn,
     logOut,               getTimeLine,
@@ -98,5 +103,5 @@ export {
     getAlertNewPosts,     GetComments,
     addComments,          createRepost,
     follow,               unfollow,  
-    getUser
+    getUser,              getPostLikers
 }

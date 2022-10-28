@@ -2,30 +2,41 @@ import Post from "../../../Components/Post/Post"
 import InfiniteScroll from "react-infinite-scroll-component";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import styled from "styled-components";
-import { MdSecurityUpdateGood } from "react-icons/md";
+import { useContext, useState } from "react";
+import GlobalContext from "../../../contexts/globalContext";
 
 
 export default function RenderPosts(props) {
 
+    const [hasMore, setHasMore] = useState(true)
+    const {reRender, setReRender} = useContext(GlobalContext)    
+
+    async function loadMoreFunc() {
+        
+        if (props.n <= props.postsList.length) {
+            setTimeout(() => 
+            props.setN(props.n + 10)
+            , 2000)
+        } else {
+            setHasMore(false)
+        }
+        
+    }
+
+
     return (
         <Wrapper>
             <InfiniteScroll
-
                 dataLength={props.postsList.length}
-                next={() => {
-                    console.log(props.n)
-                    props.setN(props.n + 5)
-                }
-                }
+                next={loadMoreFunc}
                 hasMore={true}
-                style={{
-                    msOverflowStyle: 'none',
-                    scrollbarWidth: 'none'
-                }}
+                
             >
                 {props.postsList.map((postData, index) =>
-                    <Post postId={postData.postId}
+
+                    <Post
                         key={index}
+                        postId={postData.postId}
                         username={postData.username}
                         userImg={postData.userImg}
                         text={postData.text}
@@ -37,21 +48,24 @@ export default function RenderPosts(props) {
                         commentCount = {postData.commentCount} />
                 )}
 
+                    
+                {/* {console.log('N',props.n ,'postList', props.postsList.length)} */}
+                {(props.n <= props.postsList.length) ? (
+                    <EndLoader>
 
-                {props.n > props.postsList ?
-                    (
                         <PropagateLoader
                             color="#b3b3b3"
-                            style={{
-                                marginLeft: '50%'
-                            }} />
-                    ) : (
-                        <EndTimeline>
-                            <p>
-                                No posts found from your friends
-                            </p>
-                        </EndTimeline>
-                    )}
+                        />
+
+                    </EndLoader>
+                ) : (
+                    <EndTimeline>
+
+                        <p>No posts found from your friends</p>
+
+                    </EndTimeline>
+                )}
+
             </InfiniteScroll>
         </Wrapper >
 
@@ -66,15 +80,37 @@ padding-top: 5px;
 display: flex;
 align-items: center;
 
+h4{
+    color: white;
+    margin-left: 50%;
+    font-size: 50px;
+}
 `
 const EndTimeline = styled.div`
 display: flex;
 align-items: center;
 justify-content: center;
+color: #FFF;
+margin-bottom: 50px;
+margin-top: 50px;
+
+transition: transform 2s;
+
+
 
 p{
-    margin-bottom: 20px;
+    margin-bottom: 50px;
+    margin-top: 50px;
     color: #FFF;
     font-size: 20px;
+
 }
+`
+const EndLoader = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+
+margin-bottom: 50px;
+margin-top: 50px;
 `

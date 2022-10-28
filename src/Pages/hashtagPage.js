@@ -8,6 +8,8 @@ import getConfig from "../Services/getConfig.js";
 import GlobalContext from "../contexts/globalContext.js";
 import RepostBox from "../Components/RepostScreen/repostScreen.js";
 import DeleteBox from "../Components/DeleteScreen/deleteScreen.js";
+import RenderPosts from "./TimeLine/Functions/renderPosts.js";
+
 
 export default function Hashtag() {
   const { setHeader } = useContext(GlobalContext);
@@ -25,7 +27,7 @@ export default function Hashtag() {
       .then((res) => {
         console.log(res.data)
         setHashposts({
-          array: res.data.slice(n, n + 50),
+          array: res.data.slice(0, n + 5),
           size: res.data.length,
         });
       })
@@ -33,22 +35,6 @@ export default function Hashtag() {
         console.log("algo deu errado");
       });
   }, [clicked, reRender]);
-
-  function nextPage() {
-    if (n + 50 > hashposts.size) {
-      let add = hashposts.size - n;
-
-      if (add > 0) {
-        setN(n + add);
-      }
-      return;
-    }
-
-    setN(n + 50);
-
-    // window.scrollTo(0, 0)
-    setReRender(!reRender);
-  }
 
   return (
     <>
@@ -79,13 +65,6 @@ export default function Hashtag() {
                   />
                 </>
               ))}
-              <NextPage
-                onClick={() => {
-                  nextPage();
-                }}
-              >
-                Carregar mais
-              </NextPage>
             </>
           )}
         </MainContent>

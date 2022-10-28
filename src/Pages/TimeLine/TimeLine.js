@@ -12,11 +12,11 @@ import RenderPosts from "./Functions/renderPosts.js";
 import AlertNewPosts from "../../Components/AlertNewPosts/AlertNewPosts.js";
 
 export default function TimeLine() {
-  const { reRender, setReRender, setHeader, deleteScreen, repost} = useContext(GlobalContext);
+  const { reRender, setReRender, setHeader, deleteScreen, repost } = useContext(GlobalContext);
   const token = localStorage.getItem("token");
-  const [n, setN] = useState(0);
+  const [n, setN] = useState(20);
   //useState
-  const [posts, setPosts]   = useState({ array: [], size: 0, status: false });
+  const [posts, setPosts] = useState({ array: [], size: 0, status: false });
   const [loader, setLoader] = useState(true)
   // const [numbNewPosts, setNumbNewPosts] = useState(0)
   // const [youngestPost, setYoungestPost] = useState({})
@@ -25,7 +25,7 @@ export default function TimeLine() {
   useEffect(() => {
     getTimeLine(getConfig(token)).then((res) => {
       setPosts({
-        array: res.data.slice(0, n + 5),
+        array: res.data.slice(0, n),
         size: res.data.length,
         status: true
       });
@@ -44,11 +44,18 @@ export default function TimeLine() {
               {/* {!youngestPost ? <></> : <AlertNewPosts youngestPost={youngestPost} /> } */}
               <FormBox />
               {loader ? <PropagateLoader color="#b3b3b3" /> : <></>}
-              {posts.status ? <RenderPosts postsList={posts.array} /> : <></>}
+              {posts.status ?
+              <RenderPosts
+                postsList={posts.array}
+                n={n}
+                setN={setN}
+                reRender={reRender}
+                setReRender={setReRender}
+              /> : <></>}
           </MainContent>
           <AsideContent>
-              <TrendingWrapper> 
-                <Trending /> 
+              <TrendingWrapper>
+                <Trending />
               </TrendingWrapper>
           </AsideContent>
         </Wrapper>))}
@@ -118,7 +125,6 @@ const TrendingWrapper = styled.div`
   height: 100%;
   top: 50px;
 `;
-
 const AlignBox = styled.div`
 width: 30px;
 height: 10px;
