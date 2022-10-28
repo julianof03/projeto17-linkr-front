@@ -13,7 +13,6 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import { OnClickEditPost } from "./Functions/editPost";
 import EditInput from "./Functions/editInput";
 import { GoToTag } from "./Functions/goToTag";
-import { sharePost } from "./Functions/sharePost";
 import { updateLike, updateDislike } from "../../Services/api.js";
 import getConfig from "../../Services/getConfig.js";
 import { ChatSection, CallChat } from "./Functions/comment";
@@ -22,6 +21,7 @@ export default function Post({
   userImg, text,
   link, likesQtd,
   postId, userLiked,
+  repostCount
 }) {
   //useState
   const [like, setLike] = useState(false);
@@ -125,18 +125,20 @@ export default function Post({
               {!likesQtd ? "0 likes" : <>{likesQtd > 1 ? <p>{likesQtd} likes</p> : "1 like"}</>}
             </p>
 
-            <div>
+            <h1>
               <BiRepost
                 size="30px"
-                onClick={() => sharePost(postUserId, postId, repost, setRepost)}
+                onClick={() => setRepost({ status: true, postId: postId, userId: postUserId })}
               />
-            </div>
-            <p>0 re-posts</p>
-            <CallChat
+            </h1>
+            
+            <p>{repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>} 
+           </p>
+          </ImgWrapper>
+          <CallChat
               chatState={chatState}
               setChatState={setChatState}
             />
-          </ImgWrapper>
           <Main>
             <Title>
               {userId != postUserId ? (
@@ -272,6 +274,7 @@ const ImageUrl = styled.div`
     height: 153px;
     border-radius: 0 16px 16px 0;
     object-fit: cover;
+   
   }
 `;
 const ImgWrapper = styled.div`
@@ -280,6 +283,10 @@ const ImgWrapper = styled.div`
   align-items: center;
   div {
     color: ${(props) => (props.like ? "red" : "white")};
+    cursor: pointer;
+  }
+  h1 {
+    color: white;
     cursor: pointer;
   }
   img {

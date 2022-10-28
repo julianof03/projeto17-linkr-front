@@ -15,6 +15,7 @@ export default function SignIn() {
     async function sendForm(e) {
         e.preventDefault();
         const body = { email, password };
+        console.log(body)
         try {
             const login = await signIn(body);
             setToken(`${login.data.token}`);
@@ -23,7 +24,7 @@ export default function SignIn() {
             localStorage.setItem("userId",`${login.data.userId}`);
             navigate('/timeline')
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
             if (error.response.status === 401) {
                 alert('Email ou Senha incorretos! Tente novamente.');
                 return
