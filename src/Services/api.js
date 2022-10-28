@@ -24,6 +24,15 @@ function EditPost(body, id) {
 function getAlertNewPosts(body) {
   return axios.get(`${URL}/timeline/getalertnewposts`, body);
 }
+//GetComments
+
+function GetComments(userId, postId) {
+    return axios.get(`${URL}/timeline/${postId}/comments/${userId}`);
+};
+function addComments(postId, body) {
+    return axios.post(`${URL}/timeline/${postId}/comments`, body);
+};
+
 // updateLike ---------------------------------
 
 function updateLike(body, getConfig) {
@@ -79,23 +88,15 @@ function unfollow(id, getConfig){
 }
 
 export {
-  signUp,
-  signIn,
-  logOut,
-  getTimeLine,
-  getHashtagTrending,
-  getHashtagPosts,
-  searchUsers,
-  userImage,
-  deletePost,
-  createPost,
-  EditPost,
-  createRepost,
-  getAlertNewPosts,
-  getUserPosts,
-  updateLike,
-  updateDislike,
-  follow,
-  unfollow,
-  getUser
-};
+    signUp,               signIn,
+    logOut,               getTimeLine,
+    getHashtagTrending,   getHashtagPosts,
+    searchUsers,          userImage,
+    deletePost,           createPost,
+    EditPost,             getUserPosts,
+    updateLike,           updateDislike,
+    getAlertNewPosts,     GetComments,
+    addComments,          createRepost,
+    follow,               unfollow,  
+    getUser
+}

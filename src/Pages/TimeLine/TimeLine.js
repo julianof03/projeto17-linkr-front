@@ -83,7 +83,6 @@ align-items: center;
 margin-left: calc(70vw-610px);
 
     p{
-        margin-top:30px;
         color:white;
     }
 
