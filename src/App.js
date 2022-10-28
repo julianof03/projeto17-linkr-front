@@ -29,6 +29,8 @@ export default function App() {
   const [youngestPost, setYoungestPost] = useState({});
   const [deleteScreen, setDeleteScreen] = useState({ postId: "", status: false });
   const [repost, setRepost] = useState({ status: false, postId: "", userId: "" });
+  const [profileImage, setProfileImage] = useState('');
+
     
     return (
         <div>
@@ -46,7 +48,8 @@ export default function App() {
                     youngestPost, setYoungestPost,
                     deleteScreen, setDeleteScreen,
                     repost,       setRepost,
-                    editPost,SetEditPost
+                    editPost,SetEditPost,
+                    profileImage, setProfileImage
                 }
             }>
                 <BrowserRouter>
