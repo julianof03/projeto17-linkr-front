@@ -92,7 +92,7 @@ export default function Post({
 
   return (
     <>
-    {repostId === null ? <></> : <RepostHeader respostUserName = {respostUserName}/>}
+    {respostUserName === null ? <></> : <RepostHeader respostUserName = {respostUserName}/>}
       {!urlMetadataOBJ.url ? (
         <PropagateLoader color="#b3b3b3" />
       ) : (
