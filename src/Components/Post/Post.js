@@ -130,12 +130,12 @@ export default function Post({
               {!likesQtd ? "0 likes" : <>{likesQtd > 1 ? <p>{likesQtd} likes</p> : "1 like"}</>}
             </p>
 
-            <div>
+            <h1>
               <BiRepost
                 size="30px"
                 onClick={() => setRepost({ status: true, postId: postId, userId: postUserId })}
               />
-            </div>
+            </h1>
             
             <p>{repostCount === null ? "0 re-post" : <>{repostCount > 1 ? <p>{repostCount} re-posts</p> : "1 re-post"}</>} 
            </p>
@@ -143,10 +143,10 @@ export default function Post({
           <Main>
             <Title>
               {userId != postUserId ? (
-                <h1 onClick={() => navigate(`/user/${postUserId}`)}>{username}</h1>
+                <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
               ) : (
                 <>
-                  <h1 onClick={() => navigate(`/user/${postUserId}`)}>{username}</h1>
+                  <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
                   <IconsWrapper>
                     <MdModeEdit
                       onClick={() => {
@@ -215,13 +215,16 @@ export default function Post({
 }
 
 const PostHTML = styled.div`
-  display: flex;
-  width: 610px;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  background-color: black;
-  position: relative;
-`;
+    display: flex;
+    width: 610px;
+    border-radius:16px;
+    margin-bottom: 16px;
+    background-color:  black;
+    @media only screen and (max-width:800px) {
+    width: 100vw;
+    border-radius:0px;
+    }
+`
 const TitleUrl = styled.h1`
   font-family: Lato;
   font-size: 16px;
@@ -273,6 +276,10 @@ const ImgWrapper = styled.div`
   align-items: center;
   div {
     color: ${(props) => (props.like ? "red" : "white")};
+    cursor: pointer;
+  }
+  h1 {
+    color: white;
     cursor: pointer;
   }
   img {

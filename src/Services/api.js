@@ -38,8 +38,8 @@ function userImage(getConfig) {
 }
 
 function searchUsers(getConfig, startsWith) {
-  return axios.get(`${URL}/users/${startsWith}`, getConfig);
-}
+    return axios.get(`${URL}/users${startsWith}`, getConfig);
+};
 
 function logOut(getConfig, body) {
   return axios.put(`${URL}/signout`, body, getConfig);
@@ -65,6 +65,19 @@ function createRepost(getConfig, repostData) {
   return axios.post(`${URL}/share`, repostData, getConfig);
 }
 
+// User Page--------------------------------
+function getUser(id, getConfig) {
+    return axios.get(`${URL}/users/${id}`, getConfig);
+};
+
+// Follow --------------------------------
+function follow(id, getConfig){
+    return axios.post(`${URL}/follow`, id, getConfig );
+}
+function unfollow(id, getConfig){
+    return axios.delete(`${URL}/follow/${id}`, getConfig );
+}
+
 export {
   signUp,
   signIn,
@@ -82,4 +95,7 @@ export {
   getUserPosts,
   updateLike,
   updateDislike,
+  follow,
+  unfollow,
+  getUser
 };

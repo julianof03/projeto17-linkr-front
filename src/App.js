@@ -22,13 +22,14 @@ export default function App() {
   const [user, setUser] = useState("");
   const [config, setConfig] = useState({});
   const [userId, setUserId] = useState("");
-  const [deleteScreen, setDeleteScreen] = useState({ status: false, postId: "" });
-  const [repost, setRepost] = useState({ status: false, postId: "", userId: "" });
   const [header, setHeader] = useState(false);
   const [editPost, SetEditPost] = useState({ status: false, postId: "" });
   const [hashposts, setHashposts] = useState({ array: [], size: 0 });
   const [posts, setPosts] = useState({ array: [], size: 0 });
   const [clicked, setClicked] = useState(false);
+  const [youngestPost, setYoungestPost] = useState({});
+  const [deleteScreen, setDeleteScreen] = useState({ postId: "", status: false });
+  const [repost, setRepost] = useState({ status: false, postId: "", userId: "" });
 
   return (
     <div>
@@ -37,26 +38,28 @@ export default function App() {
         value={{
           reRender,
           setReRender,
+          post,
+          setPost,
+          posts,
+          setPosts,
           token,
           setToken,
           user,
           setUser,
-          config,
-          setConfig,
           header,
           setHeader,
-          userId,
-          setUserId,
-          deleteScreen,
-          setDeleteScreen,
-          editPost,
-          SetEditPost,
           hashposts,
           setHashposts,
           clicked,
           setClicked,
+          youngestPost,
+          setYoungestPost,
+          deleteScreen,
+          setDeleteScreen,
           repost,
           setRepost,
+          editPost,
+          SetEditPost,
         }}
       >
         <BrowserRouter>
@@ -64,7 +67,7 @@ export default function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SingUp />} />
             <Route path="/timeLine" element={<TimeLine />} />
-            <Route path="/user/:id" element={<UserPage />} />
+            <Route path="/users/:id" element={<UserPage />} />
             <Route path="/hashtag/:hashtag" element={<Hashtag />} />
           </Routes>
           <Header />
