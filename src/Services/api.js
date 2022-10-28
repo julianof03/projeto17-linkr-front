@@ -97,6 +97,6 @@ export {
     updateLike,           updateDislike,
     getAlertNewPosts,     GetComments,
     addComments,          createRepost,
-    getUserPosts,         follow,
-    unfollow,             getUser
+    follow,               unfollow,  
+    getUser
 }

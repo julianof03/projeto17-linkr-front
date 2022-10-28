@@ -237,11 +237,6 @@ border-radius: 10px;
 
 `;
 const TrendingWrapper = styled.div`
-<<<<<<< HEAD
-  height: 100%;
-  top: 50px;
-`;
-=======
 height: 100vh;
 margin-right: calc(30vw-300px);
 `;
@@ -251,4 +246,3 @@ width: 30px;
 height: 10px;
 background-color:transparent;
 `
->>>>>>> main

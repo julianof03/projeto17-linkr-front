@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { BsFillTrashFill, BsHeart, BsHeartFill } from "react-icons/bs";
-import { MdModeEdit } from "react-icons/md";
 import { BiRepost } from "react-icons/bi";
 import { MdModeEdit } from "react-icons/md";
 import { ReactTagify } from "react-tagify";
@@ -17,10 +16,7 @@ import { GoToTag } from "./Functions/goToTag";
 import { sharePost } from "./Functions/sharePost";
 import { updateLike, updateDislike } from "../../Services/api.js";
 import getConfig from "../../Services/getConfig.js";
-
 import { ChatSection, CallChat } from "./Functions/comment";
-import { updateLike, updateDislike } from '../../Services/api.js'
-import getConfig from "../../Services/getConfig";
 export default function Post({
   username, postUserId,
   userImg, text,
@@ -32,6 +28,8 @@ export default function Post({
   const [message, setMessage] = useState("");
   const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({});
   const [form, setForm] = useState({ link: "", text: "" });
+  const [chatState, setChatState] = useState(false);
+  const [allComments, setAllComments] = useState('');
   //GlobalContext
   const {
     setDeleteScreen, editPost,
