@@ -32,7 +32,8 @@ export default function RenderPosts(props) {
                         link={postData.link}
                         likesQtd={postData.likesQtd}
                         userLiked={postData.userLiked}
-                        postUserId={postData.userId} />
+                        postUserId={postData.userId}
+                        repostCount={postData.repostCount} />
                 )}
 
 

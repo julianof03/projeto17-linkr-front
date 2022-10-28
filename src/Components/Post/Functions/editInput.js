@@ -11,6 +11,7 @@ export default function EditInput({
     text
 }) {
 
+    console.log("edit")
     document.onkeydown = function (e) {
         if (e.key === 'Escape') {
             setMessage(text);
