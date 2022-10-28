@@ -13,24 +13,35 @@ import { OnClickEditPost } from "./Functions/editPost";
 import EditInput from "./Functions/editInput";
 import { GoToTag } from "./Functions/goToTag";
 
+import { updateLike, updateDislike } from '../../Services/api.js'
+import getConfig from "../../Services/getConfig";
+
 export default function Post(
-    {   
-        username, postUserId, userImg,
-        text, link, likesQtd, liked,
-        postId
-    }) {
+    {
+        username,
+        postUserId,
+        userImg,
+        text,
+        link,
+        likesQtd,
+        postId,
+        userLiked
+    }
+) {
     //useState
-    const [like, setLike]                     = useState(liked)
-    const [props, setProps]                   = useState('false')
-    const [message, setMessage]               = useState('');
-    const [isShown, setIsShown]               = useState(false)
+    const [like, setLike] = useState(false)
+    const [message, setMessage] = useState('');
     const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({})
-    const [form, setForm]                     = useState({ link: '', text: '' })
+    const [form, setForm] = useState({ link: '', text: '' })
     //GlobalContext
-    const { setDeleteScreen, editPost, SetEditPost } = useContext(GlobalContext);
+    const {
+        setDeleteScreen, editPost, SetEditPost,
+        postId_global, setPostId_global,
+        reRender, setReRender } = useContext(GlobalContext);
     // generic const declaration
     const navigate = useNavigate()
     const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
     const handleChange = event => {
         if (!message) { setMessage(text) }
         setMessage(event.target.value);
@@ -39,7 +50,12 @@ export default function Post(
     useEffect(async () => {
         SetEditPost({ postId: '', status: false })
         if (!message) { setMessage(text) }
-        if (like) { setProps('true') }
+
+        if (userLiked) {
+
+            setLike(true)
+        }
+
         const { data } = await mql(link, {
             data: {
                 avatar: {
@@ -52,61 +68,100 @@ export default function Post(
         setUrlMetadataOBJ(data)
     }, [])
 
+    function HandleLike(like) {
+        const body = { postId }
+
+        try {
+            if (!like) {
+                // console.log('like')
+                updateLike(getConfig(token), body)
+                setReRender(!reRender)
+            } else {
+                // console.log('dislike')
+                updateDislike(getConfig(token), body)
+                setReRender(!reRender)
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <>{
             (!urlMetadataOBJ.url) ?
-                ( <PropagateLoader color="#b3b3b3" />)
+                (<PropagateLoader color="#b3b3b3" />)
                 :
                 (<PostHTML>
-                    <ImgWrapper props={props}>
+                    <ImgWrapper
+                        like={like}
+                    >
                         <img src={userImg} />
-                        <div>
-                            {props === 'true' ?
+                        <div
+                            data-tip data-for="registerTip"
+                        >
+                            {like ?
                                 (
                                     <BsHeartFill
                                         size='20px'
                                         onClick={() => {
-                                            setLike(!like)
-                                            setProps('false')
+                                            setLike(false)                                            
+                                            HandleLike(like)
                                         }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
                                     />
                                 ) : (
                                     <BsHeart
                                         size='20px'
                                         onClick={() => {
-                                            setLike(!like)
-                                            setProps('true')
+                                            setLike(true)
+                                            HandleLike(like)
                                         }}
-                                        onMouseEnter={() => setIsShown(true)}
-                                        onMouseLeave={() => setIsShown(false)}
+
                                     />
                                 )}
 
+                            <ReactTooltip
+                                id="registerTip"
+                                place="bottom"
+                                backgroundColor='#FFFFFF'
+                            >
+                                <p
+                                    style={{ color: 'black' }}
+                                >
+                                    Tooltip for the register button
+                                </p>
+
+                            </ReactTooltip>
+
                         </div>
 
-                        <p>{likesQtd}</p>
 
-                        <Likes
-                            onMouseEnter={() => setIsShown(true)}
-                            onMouseLeave={() => setIsShown(false)}
-                            isShown={isShown}
-                        >
-                            <p>vários likes pra tu ficá feliz</p>
-
-                        </Likes>
+                        <p>
+                            {!likesQtd ? (
+                                '0 likes'
+                            ) : (
+                                <>
+                                    {(likesQtd > 1) ? (
+                                        <p>
+                                            {likesQtd} likes
+                                        </p>
+                                    ) : (
+                                        '1 like'
+                                    )}
+                                </>
+                            )}
+                        </p>
 
                     </ImgWrapper>
                     <Main>
                         <Title>
                             {userId != postUserId ?
-                                (<h1 onClick={() => navigate(`/user/${userId}`)} >
+                                (<h1 onClick={() => navigate(`/user/${postUserId}`)} >
                                     {username}
                                 </h1>)
                                 :
                                 (<>
-                                    <h1 onClick={() => navigate(`/user/${userId}`)} >
+                                    <h1 onClick={() => navigate(`/user/${postUserId}`)} >
                                         {username}
                                     </h1>
                                     <IconsWrapper>
@@ -114,7 +169,7 @@ export default function Post(
                                             onClick={() => {
                                                 OnClickEditPost({ text, editPost, setMessage, SetEditPost, postId })
                                             }}
-                                            color='white' DeleteScreen
+                                            color='white'
                                             style={{
                                                 marginLeft: '10px',
                                                 cursor: 'pointer'
@@ -131,6 +186,7 @@ export default function Post(
                                 </>)}
                         </Title>
                         <Description>
+
                             <ReactTagify colors={"white"}
                                 tagClicked={(tag) => { GoToTag(tag) }} >
                                 {text}
@@ -148,6 +204,7 @@ export default function Post(
                                 ('')}
                         </Description>
                         <a href={`${urlMetadataOBJ.url}`}
+
                             target="_blank"
                             rel="noopener noreferrer">
                             <UrlMetadaSpace>
@@ -167,12 +224,17 @@ export default function Post(
         }</>)
 }
 
+
 const PostHTML = styled.div`
     display: flex;
     width: 610px;
     border-radius:16px;
     margin-bottom: 16px;
     background-color:  black;
+    @media only screen and (max-width:800px) {
+    width: 100vw;
+    border-radius:0px;
+    }
 `
 const TitleUrl = styled.h1`
   font-family: Lato;
@@ -223,7 +285,7 @@ const ImgWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     div{
-        color: ${props => props.like === true ? 'red' : 'white'};
+        color: ${props => props.like? 'red' : 'white'};
         cursor: pointer;
     }
     img{
@@ -284,19 +346,33 @@ const UrlMetadaSpace = styled.div`
         background: rgba(255, 255, 255, 0.2);
     }
 `;
-const Likes = styled.div`
-    width: auto;
-    height: auto;
-    padding: 5px;
-    background-color: #FFF;
-    opacity:${props => props.isShown ? '1' : '0'};
-    z-index: ${props => props.isShown ? '1' : '-1'};;
-    transition: all 0.5s ease-out;
-    p{
-        color: #505050;
-        font-size: 13px;
-        font-weight: 700;
-    }
-    position: absolute;
-    top:50%;
+const EditContainer = styled.div`
+    background-color:  black;
+    width: 100%;
+    height: 30px;
+    border: unset;
+    border-radius:5px;
 `;
+const TextInput = styled.input`
+    position:absolute;
+    top:40px;
+    left:85px;
+    width:83%;
+    height: 16%;
+    border: unset;
+    border-radius:5px;
+    margin-top: 10px;
+    background-color: #EFEFEF;
+    ::placeholder{
+        font-size: 15px;
+        font-weight: 300;
+        color: #949494;
+    }
+`
+// const ToolTip = styled.div`
+// max-height: 50px;
+// display: flex;
+// justify-content: center;
+// align-items: center;
+
+// `

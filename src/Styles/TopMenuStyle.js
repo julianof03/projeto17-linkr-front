@@ -39,6 +39,7 @@ const ProfileImg = styled.div`
         background-position: center;
         border-radius:50%;
         margin-right: 10px;
+        cursor: pointer;
         
 `
 

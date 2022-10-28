@@ -36,6 +36,7 @@ export default function App() {
                 {
                     reRender, setReRender,
                     post, setPost,
+                    posts, setPosts,
                     token, setToken,
                     user, setUser,
                     header, setHeader,

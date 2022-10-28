@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import getConfig from "../Services/getConfig.js";
 import { getUser, follow, unfollow } from '../Services/api.js'
-import {FollowBox} from "../Styles/FollowStyle.js"
+import {FollowBox, FollowBoxMobile} from "../Styles/FollowStyle.js"
 
 export default function UserPage() {
     const navigate = useNavigate();
@@ -20,19 +20,19 @@ export default function UserPage() {
     setHeader(true);
 
     const userId = useParams().id;
-
+    const [isUserPage, setIsUserPage] = useState(false);
     const [userPosts, setUserPosts] = useState({
         array: [],
         size: 0
     })
     const [follows, setFollows] = useState(false);
+    const [canFollow,setCanFollow] = useState(true);
 
     const [n, setN] = useState(0)
     useEffect(async () => {
 
         try{
             let allUserPosts;
-            console.log(userId)
             const tokenLs = localStorage.getItem("token");
 
             if (token === '') {
@@ -43,16 +43,16 @@ export default function UserPage() {
                 setToken(`${tokenLs}`);
                 allUserPosts = (await getUser(userId,getConfig(tokenLs))).data
             } else{
-
                 allUserPosts = (await getUser(userId,getConfig(token))).data
-            }
-            console.log(allUserPosts)
-
-                if(allUserPosts[0].isFollowing){
+            };
+                const userPageId = localStorage.getItem("userId");
+                if(userId==userPageId){
+                    setIsUserPage(true);
+                }else if(allUserPosts[0].isFollowing){
                     setFollows(true);
                 }else{
                     setFollows(false);
-                }
+                };
 
                 setUserPosts({
                     array: allUserPosts.slice(n, n + 20),
@@ -60,10 +60,10 @@ export default function UserPage() {
                 });
 
             } catch(error){
-                console.log(error)
-            }
+                console.log(error);
+            };
 
-    }, [reRender])
+    }, [reRender]);
 
     function nextPage() {
         if (n + 20 > posts.size) {
@@ -71,17 +71,18 @@ export default function UserPage() {
             let add = posts.size - n
 
             if (add > 0) {
-                setN(n + add)
-            }
-            return
-        }
-        setN(n + 20)
+                setN(n + add);
+            };
+            return;
+        };
+        setN(n + 20);
 
-        window.scrollTo(0, 0)
-        setReRender(!reRender)
-    }
+        window.scrollTo(0, 0);
+        setReRender(!reRender);
+    };
 
     async function changeFollow(){
+        setCanFollow(false)
         const id = {id:userId};
             try{
             if (!follows){
@@ -91,15 +92,17 @@ export default function UserPage() {
             }else{
             await unfollow(userId, getConfig(token));
             setFollows(false);
-            }
+            };
 
-            console.log('follow',follows);
+            setCanFollow(true);
             
             }catch(error){
              console.log(error);
-            }
+             setCanFollow(true);
+             alert('Não foi possivel seguir o usuário, tente novamente.');
+            };
 
-    }
+    };
 
     return (
         <>
@@ -115,6 +118,9 @@ export default function UserPage() {
                                 />
                             </ImgWrapper>
                             <h1>{userPosts.array[0].username}'s posts</h1>
+                            {isUserPage?<AlignBox></AlignBox>:<FollowBoxMobile canFollow={canFollow?'auto':'none'} follow={!follows} onClick={changeFollow}>
+                                {follows?'Unfollow':'Follow'}
+                            </FollowBoxMobile>}
                         </Title>
 
                         <PostWrapper>
@@ -135,10 +141,10 @@ export default function UserPage() {
                     </LeftWrapper>
 
                     <RightWrapper>
-                        <FollowBox follow={!follows} onClick={changeFollow}>
-                            {follows?'Unfollow':'Follow'}
-                        </FollowBox>
                         <TrendingWrapper>
+                        {isUserPage?<></>:<FollowBox canFollow={canFollow?'auto':'none'} follow={!follows} onClick={changeFollow}>
+                            {follows?'Unfollow':'Follow'}
+                        </FollowBox>}
                             <Trending />
                         </TrendingWrapper>
                     </RightWrapper>
@@ -159,36 +165,39 @@ background-color: #333333 ;
 
 display: flex;
 justify-content: center;
-@media only screen and (max-width:600px) {
+@media only screen and (max-width:800px) {
         margin-top:80px;
     }
 
 `;
 const RightWrapper = styled.div`
 height: 500px;
-width: 21vw;
+width: 30vw;
 display: flex;
 flex-direction: column;
 justify-content: left;
-@media only screen and (max-width:600px) {
+align-items: flex-start;
+
+@media only screen and (max-width:800px) {
     width: 0vw;
     }
 `;
 const LeftWrapper = styled.div`
-width: 42vw;
+width: 70vw;
 
 display: flex;
 flex-direction: column;
 justify-content: right;
-align-items: baseline;
+align-items: center;
+margin-left: calc(70vw-610px);
 
-@media only screen and (max-width:600px) {
+@media only screen and (max-width:800px) {
     width: 100vw;
     align-items: center;
     }
 `;
 const Title = styled.div`
-width:100vw;
+width: 610px;
 display: flex;
 justify-content: flex-start;
 align-items: center;
@@ -200,7 +209,11 @@ h1{
     color: #fff;
     font-family: 'Oswald';
 }
-
+@media only screen and (max-width:800px) {
+    width: 100vw;
+    align-items: center;
+    justify-content: space-around;
+    }
 `;
 const ImgWrapper = styled.div`
 img{
@@ -213,14 +226,23 @@ object-fit: cover;
 
 `;
 const PostWrapper = styled.div`
-width: 100%;
+width: 610px;
 display: flex;
 flex-direction: column;
-
 border-radius: 10px;
+@media only screen and (max-width:800px) {
+    width: 100vw;
+    align-items: center;
+    }
 
 `;
 const TrendingWrapper = styled.div`
 height: 100vh;
-
+margin-right: calc(30vw-300px);
 `;
+
+const AlignBox = styled.div`
+width: 30px;
+height: 10px;
+background-color:transparent;
+`

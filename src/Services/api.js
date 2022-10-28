@@ -13,7 +13,7 @@ function signIn(body) {
 }
 // createPost
 function createPost(getConfig, body) {
-    return axios.post(`${URL}/timeline`, body, getConfig );
+    return axios.post(`${URL}/timeline`, body, getConfig);
 };
 function deletePost(id, getConfig) {
     return axios.delete(`${URL}/timeline/${id}`, getConfig)
@@ -25,8 +25,13 @@ function getAlertNewPosts(body) {
     return axios.get(`${URL}/timeline/getalertnewposts`, body);
 };
 // updateLike ---------------------------------
-function updateLike(body, getConfig){
-    return axios.post(`${URL}/likeUpdate`, body, getConfig );
+
+function updateLike(body, getConfig) {
+    return axios.put(`${URL}/timeline/likeUpdate`, getConfig, body);
+}
+
+function updateDislike(body, getConfig) {
+    return axios.put(`${URL}/timeline/dislikeUpdate`, getConfig, body);
 }
 function userImage(getConfig) {
     return axios.get(`${URL}/userImage`, getConfig);
@@ -44,8 +49,12 @@ function getTimeLine(getConfig) {
     return axios.get(`${URL}/timeline`, getConfig)
 }
 
+function getUserPosts(getConfig, id) {
+    return axios.get(`${URL}/users/${id}`, getConfig)
+}
+
 function getHashtagTrending(getConfig) {
-    return axios.get(`${URL}/trending`, getConfig);
+    return axios.get(`${URL}/trending`,getConfig);
 }
 
 function getHashtagPosts(getConfig, hashtag) {
@@ -77,6 +86,9 @@ export {
     deletePost,
     createPost,
     EditPost,
+    getUserPosts,
+    updateLike,
+    updateDislike,
     getAlertNewPosts,
     getUser,
     follow,

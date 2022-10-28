@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { SearchBox, SearchIcon, FoundUsers, UsersImage, ImageUsers, UsersName } from "../../Styles/SearchMenuStyle.js";
+import { SearchBox,FollowUser, SearchIcon, FoundUsers, UsersImage, ImageUsers, UsersName } from "../../Styles/SearchMenuStyle.js";
 import { searchUsers } from "../../Services/api.js";
 import GlobalContext from '../../contexts/globalContext.js';
 import { useContext } from 'react';
@@ -56,6 +56,7 @@ export default function SearchBar() {
                             <UsersImage onClick={() => { goToUserpage(u.id) }}>
                                 <ImageUsers profileImage={u.pictureUrl} />
                                 <UsersName>{u.name}</UsersName>
+                                <FollowUser isFollowing={u.follows!=null?'flex':'none'}>• following</FollowUser>
                             </UsersImage>
                         </div>
                     )
