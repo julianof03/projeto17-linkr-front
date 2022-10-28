@@ -23,7 +23,7 @@ export default function App() {
   const [user, setUser] = useState("");
   const [header, setHeader] = useState(false);
   const [editPost, SetEditPost] = useState({ status: false, postId: "" });
-  const [hashposts, setHashposts] = useState({ array: [], size: 0 });
+  const [hashposts, setHashposts] = useState({ array: [], size: 0, status: false });
   const [posts, setPosts] = useState({ array: [], size: 0 });
   const [clicked, setClicked] = useState(false);
   const [youngestPost, setYoungestPost] = useState({});

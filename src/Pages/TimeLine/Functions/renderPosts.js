@@ -45,7 +45,10 @@ export default function RenderPosts(props) {
                         userLiked={postData.userLiked}
                         postUserId={postData.userId}
                         repostCount={postData.repostCount}
-                        commentCount = {postData.commentCount} />
+                        repostId = {postData.postId}
+                        repostUser = {postData.repostUser}
+                        commentCount = {postData.commentCount}
+                        respostUserName = {postData.respostUserName} />
                 )}
 
                     

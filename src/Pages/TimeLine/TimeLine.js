@@ -24,6 +24,7 @@ export default function TimeLine() {
 
   useEffect(() => {
     getTimeLine(getConfig(token)).then((res) => {
+      console.log(res.data)
       setPosts({
         array: res.data.slice(0, n),
         size: res.data.length,
