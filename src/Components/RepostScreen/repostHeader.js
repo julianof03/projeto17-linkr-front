@@ -8,7 +8,8 @@ export default function RepostHeader({repostUser}) {
    return (
     <Box>
         <BiRepost size="30px" />
-       <div> Re-post by {repostUser}</div></Box>
+        <div> Re-post by {repostUser}</div>
+    </Box>
    )
     
 }
