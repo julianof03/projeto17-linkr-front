@@ -15,7 +15,7 @@ export default function SignIn() {
     async function sendForm(e) {
         e.preventDefault();
         const body = { email, password };
-        console.log(body)
+       
         try {
             const login = await signIn(body);
             setToken(`${login.data.token}`);

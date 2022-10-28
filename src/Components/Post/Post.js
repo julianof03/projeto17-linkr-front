@@ -16,12 +16,13 @@ import { GoToTag } from "./Functions/goToTag";
 import { updateLike, updateDislike } from "../../Services/api.js";
 import getConfig from "../../Services/getConfig.js";
 import { ChatSection, CallChat } from "./Functions/comment";
+import RepostHeader from "../RepostScreen/repostHeader.js";
 export default function Post({
   username, postUserId,
   userImg, text,
   link, likesQtd,
   postId, userLiked,
-  repostCount, commentCount
+  repostCount, repostId, repostUser, commentCount
 }) {
   //useState
   const [like, setLike] = useState(false);
@@ -91,11 +92,13 @@ export default function Post({
 
   return (
     <>
+    {repostId === null ? <></> : <RepostHeader repostUser = {repostUser}/>}
       {!urlMetadataOBJ.url ? (
         <PropagateLoader color="#b3b3b3" />
       ) : (
+        
         <PostHTML>
-          <ImgWrapper like={like}>
+              <ImgWrapper like={like}>
             <img src={userImg} />
             <LikeWrapper>
             <div className="Register" data-tip data-for="registerTip">
@@ -141,12 +144,17 @@ export default function Post({
             </ButtomWrapper>
 
           </ImgWrapper>
+          
+           
           <CallChat
               commentCount= {commentCount}
               chatState={chatState}
               setChatState={setChatState}
             />
+            
           <Main>
+        
+            
             <Title>
               {userId != postUserId ? (
                 <h1 onClick={() => navigate(`/users/${postUserId}`)}>{username}</h1>
@@ -179,6 +187,7 @@ export default function Post({
                 </>
               )}
             </Title>
+            
             <Description>
               <ReactTagify
                 colors={"white"}
@@ -234,7 +243,7 @@ const PostHTML = styled.div`
     display: flex;
     width: 610px;
     min-height:276;
-    border-radius:16px;
+    border-radius:0 0 16px 16px;
     margin-bottom: 16px;
     background-color:  black;
     @media only screen and (max-width:800px) {

@@ -14,8 +14,16 @@ export default function Hashtag() {
   setHeader(true);
   const token = localStorage.getItem("token");
   const { hashtag } = useParams();
-  const { reRender, setReRender, hashposts, setHashposts, setClicked, clicked, repost, deleteScreen } =
-    useContext(GlobalContext);
+  const {
+    reRender,
+    setReRender,
+    hashposts,
+    setHashposts,
+    setClicked,
+    clicked,
+    repost,
+    deleteScreen,
+  } = useContext(GlobalContext);
   const [n, setN] = useState(0);
 
   useEffect(() => {
@@ -23,7 +31,6 @@ export default function Hashtag() {
 
     getHashtagPosts(getConfig(token), hashtag)
       .then((res) => {
-        console.log(res.data)
         setHashposts({
           array: res.data.slice(n, n + 50),
           size: res.data.length,
@@ -53,8 +60,8 @@ export default function Hashtag() {
   return (
     <>
       <Wrapper>
-      {deleteScreen.status ? <DeleteBox /> : <></>}
-      {repost.status ? <RepostBox /> : <></>}
+        {deleteScreen.status ? <DeleteBox /> : <></>}
+        {repost.status ? <RepostBox /> : <></>}
         <MainContent>
           <Title>
             <h1># {hashtag}</h1>
