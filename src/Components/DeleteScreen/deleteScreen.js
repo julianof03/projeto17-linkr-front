@@ -5,12 +5,14 @@ import GlobalContext from "../../contexts/globalContext";
 import styled from "styled-components";
 
 export default function DeleteBox() {
-    const { deleteScreen, setDeleteScreen } = useContext(GlobalContext);
+    const { 
+      deleteScreen, setDeleteScreen,
+      reRender, setReRender } = useContext(GlobalContext);
     const token = localStorage.getItem("token");
 
     function AxiosDeletePost(postId, token) {
         deletePost(postId, getConfig(token))
-          .then(() => window.location.reload(false))
+          .then(() => setReRender(!reRender))
           .catch((error) => console.log('error axiosDeletePost', error))
         setDeleteScreen({ postId: '', status: false })
       }
@@ -52,6 +54,7 @@ const NoGoBack = styled.button`
     letter-spacing: 0em;
     text-align: center;
     color: #1877f2;
+    cursor: pointer;
   }
   background-color: #ffffff;
 `;
@@ -70,6 +73,7 @@ const YesDeleteIt = styled.button`
     letter-spacing: 0em;
     text-align: center;
     color: #fff;
+    cursor: pointer;
   }
   background-color: #1877f2;
 `;

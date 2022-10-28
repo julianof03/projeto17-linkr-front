@@ -23,12 +23,14 @@ export default function App() {
   const [user, setUser] = useState("");
   const [header, setHeader] = useState(false);
   const [editPost, SetEditPost] = useState({ status: false, postId: "" });
-  const [hashposts, setHashposts] = useState({ array: [], size: 0 });
+  const [hashposts, setHashposts] = useState({ array: [], size: 0, status: false });
   const [posts, setPosts] = useState({ array: [], size: 0 });
   const [clicked, setClicked] = useState(false);
   const [youngestPost, setYoungestPost] = useState({});
   const [deleteScreen, setDeleteScreen] = useState({ postId: "", status: false });
   const [repost, setRepost] = useState({ status: false, postId: "", userId: "" });
+  const [profileImage, setProfileImage] = useState('');
+
     
     return (
         <div>
@@ -46,7 +48,8 @@ export default function App() {
                     youngestPost, setYoungestPost,
                     deleteScreen, setDeleteScreen,
                     repost,       setRepost,
-                    editPost,SetEditPost
+                    editPost,SetEditPost,
+                    profileImage, setProfileImage
                 }
             }>
                 <BrowserRouter>

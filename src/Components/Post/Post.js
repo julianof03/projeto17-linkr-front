@@ -13,82 +13,92 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import { OnClickEditPost } from "./Functions/editPost";
 import EditInput from "./Functions/editInput";
 import { GoToTag } from "./Functions/goToTag";
-import { updateLike, updateDislike } from "../../Services/api.js";
+import { updateLike, updateDislike, getPostLikers } from "../../Services/api.js";
 import getConfig from "../../Services/getConfig.js";
 import { ChatSection, CallChat } from "./Functions/comment";
 import RepostHeader from "../RepostScreen/repostHeader.js";
+
 export default function Post({
-  username, postUserId,
-  userImg, text,
-  link, likesQtd,
-  postId, userLiked,
-  repostCount, repostId, repostUser, commentCount
+    username, postUserId,
+    userImg, text,
+    link, likesQtd,
+    postId, userLiked,
+    repostCount, commentCount, repostUser
 }) {
-  //useState
-  const [like, setLike] = useState(false);
-  const [message, setMessage] = useState("");
-  const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({});
-  const [form, setForm] = useState({ link: "", text: "" });
-  const [chatState, setChatState] = useState(false);
-  const [allComments, setAllComments] = useState('');
-  //GlobalContext
-  const {
-    setDeleteScreen, editPost,
-    SetEditPost, repost,
-    setRepost, postId_global,
-    setPostId_global, reRender,
-    setReRender,
-  } = useContext(GlobalContext);
-  // generic const declaration
-  const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
-  const token = localStorage.getItem("token");
-  const handleChange = (event) => {
-    if (!message) {
-      setMessage(text);
+    //useState
+    const [like, setLike] = useState(false);
+    const [message, setMessage] = useState("");
+    const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({});
+    const [form, setForm] = useState({ link: "", text: "" });
+    const [chatState, setChatState] = useState(false);
+    const [allComments, setAllComments] = useState('');
+    const [frase, setFrase] = useState('')
+    //GlobalContext
+    const {
+        setDeleteScreen, editPost,
+        SetEditPost, repost,
+        setRepost, postId_global,
+        setPostId_global, reRender,
+        setReRender,
+    } = useContext(GlobalContext);
+    // generic const declaration
+    const navigate = useNavigate();
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+    const handleChange = (event) => {
+        if (!message) {
+            setMessage(text);
+        }
+        setMessage(event.target.value);
+    };
+
+    useEffect(async () => {
+        SetEditPost({ postId: "", status: false });
+        if (!message) {
+            setMessage(text);
+        }
+
+        if (userLiked) {
+            setLike(true);
+        }
+
+        const { data } = await mql(link, {
+            data: {
+                avatar: {
+                    selector: "#avatar",
+                    type: "image",
+                    attr: "src",
+                },
+            },
+        });
+        setUrlMetadataOBJ(data);
+    }, []);
+
+    function HandleLike(like) {
+        const body = { postId };
+
+        try {
+            if (!like) {
+                updateLike(getConfig(token), body);
+                setReRender(!reRender);
+            } else {
+                updateDislike(getConfig(token), body);
+                setReRender(!reRender);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
-    setMessage(event.target.value);
-  };
 
-  useEffect(async () => {
-    SetEditPost({ postId: "", status: false });
-    if (!message) {
-      setMessage(text);
+    async function getLikers(postId) {
+
+        const likers = await getPostLikers(getConfig(token), postId)
+        setFrase(likers.data)
     }
 
-    if (userLiked) {
-      setLike(true);
+    async function cleanLikers() {
+        setFrase('')
     }
-
-    const { data } = await mql(link, {
-      data: {
-        avatar: {
-          selector: "#avatar",
-          type: "image",
-          attr: "src",
-        },
-      },
-    });
-    setUrlMetadataOBJ(data);
-  }, []);
-
-  function HandleLike(like) {
-    const body = { postId };
-
-    try {
-      if (!like) {
-        // console.log('like')
-        updateLike(getConfig(token), body);
-        setReRender(!reRender);
-      } else {
-        // console.log('dislike')
-        updateDislike(getConfig(token), body);
-        setReRender(!reRender);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   if(!urlMetadataOBJ.url){
     return(
@@ -98,7 +108,6 @@ export default function Post({
 
   return (
     <>
-        {console.log('postUser por post : ', repostUser)}
         {repostUser === null ? <></> : <RepostHeader repostUser = {repostUser}/>}        
         <PostHTML style = {repostUser ? { borderRadius: "0 0 16px 16px" } : {borderRadius: "16px 16px 16px 16px"} } >
           <ImgWrapper like={like}>
@@ -280,7 +289,7 @@ const ImgWrapper = styled.div`
   h1 {
     color: white;
     cursor: pointer;
-    
+
   }
   img {
     margin: 17px 18px 20px 18px;
@@ -289,6 +298,12 @@ const ImgWrapper = styled.div`
     border-radius: 50%;
     object-fit: cover;
   }
+/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
+  /* p{
+        margin-top: 5px;
+        color: white;
+    } */
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
 `;
 const Main = styled.div`
   padding: 0 21px 20px 0;
@@ -340,63 +355,44 @@ const Description = styled.div`
     color: #B7B7B7;
     /* background-color: yellow; */
 `;
-const Likes = styled.div`
-    width: auto;
-    height: auto;
-    padding: 5px;
-    background-color: #FFF;
-    opacity:${props => props.isShown ? '1' : '0'};
-    z-index: ${props => props.isShown ? '1' : '-1'};;
-    transition: all 0.5s ease-out;
-    p{
-        color: #505050;
-        font-size: 5px;
-        font-weight: 700;
-    }
-    position: absolute;
-    top:50%;
-`
+
 const LikeWrapper = styled.div`
-position:absolute;
+position: absolute;
 top: 84px;
-left:33px;
+left: 33px;
   p{
-    font-size:12px;
-    line-height:1px;
-    margin-top:5px;
-    margin-left:-2px;
-  }
+    font-size: 12px;
+    line-height: 1px;
+    margin-top: 5px;
+    margin-left: -2px;
+}
 `;
 
 const ButtomWrapper = styled.div`
-position:absolute;
+position: absolute;
 top: 190px;
-left:30px;
-color:white;
+left: 30px;
+color: white;
   p{
-    font-size:12px;
-    line-height:1px;
-    margin-top:0px;
-    margin-left:-5px;
-  }
+    font-size: 12px;
+    line-height: 1px;
+    margin-top: 0px;
+    margin-left: -5px;
+}
   p{
-    font-size:12px;
-    line-height:1px;
-    margin-top:0px;
-    margin-left:-5px;
-  }
+    font-size: 12px;
+    line-height: 1px;
+    margin-top: 0px;
+    margin-left: -5px;
+}
   .Comentario{
-    font-size:12px;
-    line-height:1px;
-    margin-top:-55px;
-    margin-left:-15px;
-  }
+    font-size: 12px;
+    line-height: 1px;
+    margin-top: -55px;
+    margin-left: -15px;
+}
 `;
 
-// const ToolTip = styled.div`
-// max-height: 50px;
-// display: flex;
-// justify-content: center;
-// align-items: center;
-
-// `
+const ToolTip = styled.div`
+background-color: #FFF;
+`
