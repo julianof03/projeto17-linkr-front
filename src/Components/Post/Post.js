@@ -16,13 +16,14 @@ import { GoToTag } from "./Functions/goToTag";
 import { updateLike, updateDislike, getPostLikers } from "../../Services/api.js";
 import getConfig from "../../Services/getConfig.js";
 import { ChatSection, CallChat } from "./Functions/comment";
+import RepostHeader from "../RepostScreen/repostHeader.js";
 
 export default function Post({
     username, postUserId,
     userImg, text,
     link, likesQtd,
     postId, userLiked,
-    repostCount, commentCount
+    repostCount, repostId, respostUserName, commentCount
 }) {
     //useState
     const [like, setLike] = useState(false);
@@ -110,37 +111,35 @@ export default function Post({
         setFrase('')
     }
 
-    return (
-        <>
-            {!urlMetadataOBJ.url ? (
-                <PropagateLoader color="#b3b3b3" />
-            ) : (
-                <PostHTML>
-                    <ImgWrapper like={like}>
-                        <img src={userImg} />
-                        <LikeWrapper>
-                            <div className="Register" data-tip data-for="registerTip">
-                                {like ? (
-                                    <BsHeartFill
-                                        size="20px"
-                                        onMouseEnter={() => getLikers(postId)}
-                                        onMouseLeave={() => cleanLikers()}
-                                        onClick={() => {
-                                            setLike(false);
-                                            HandleLike(like);
-                                        }}
-                                    />
-                                ) : (
-                                    <BsHeart
-                                        size="20px"
-                                        onMouseEnter={() => getLikers(postId)}
-                                        onMouseLeave={() => cleanLikers()}
-                                        onClick={() => {
-                                            setLike(true);
-                                            HandleLike(like);
-                                        }}
-                                    />
-                                )}
+  return (
+    <>
+    {respostUserName === null ? <></> : <RepostHeader respostUserName = {respostUserName}/>}
+      {!urlMetadataOBJ.url ? (
+        <PropagateLoader color="#b3b3b3" />
+      ) : (
+        
+        <PostHTML>
+              <ImgWrapper like={like}>
+            <img src={userImg} />
+            <LikeWrapper>
+            <div className="Register" data-tip data-for="registerTip">
+              {like ? (
+                <BsHeartFill
+                  size="20px"
+                  onClick={() => {
+                    setLike(false);
+                    HandleLike(like);
+                  }}
+                />
+              ) : (
+                <BsHeart
+                  size="20px"
+                  onClick={() => {
+                    setLike(true);
+                    HandleLike(like);
+                  }}
+                />
+              )}
 
                                 {(frase === '') ? (
 
@@ -277,7 +276,7 @@ const PostHTML = styled.div`
     display: flex;
     width: 610px;
     min-height:276;
-    border-radius:16px;
+    border-radius:0 0 16px 16px;
     margin-bottom: 16px;
     background-color:  black;
     @media only screen and (max-width:800px) {
