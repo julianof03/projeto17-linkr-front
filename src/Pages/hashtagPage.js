@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Post from "../Components/Post/Post.js";
 import Trending from "../Components/Trending/Trending.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
@@ -42,7 +41,6 @@ export default function Hashtag() {
 
       })
       .catch((res) => {
-        console.log("algo deu errado");
       });
   }, [clicked, reRender]);
 

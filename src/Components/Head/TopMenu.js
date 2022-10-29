@@ -52,7 +52,6 @@ export default function TopMenu() {
     async function logoutUser() {
         const body = {};
         setHeader(false);
-        console.log(token)
         try {
             const logout = await logOut(getConfig(token), body);
             setLogout(!logout);

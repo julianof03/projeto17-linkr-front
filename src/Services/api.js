@@ -69,8 +69,8 @@ function getHashtagPosts(getConfig, hashtag) {
   return axios.get(`${URL}/hashtag/${hashtag}`, getConfig);
 }
 
-function createRepost(getConfig, repostData) {
-  return axios.post(`${URL}/share`, repostData, getConfig);
+function createRepost( repostData) {
+  return axios.post(`${URL}/repost`, repostData);
 }
 
 // User Page--------------------------------

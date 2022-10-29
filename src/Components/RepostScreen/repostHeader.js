@@ -4,14 +4,15 @@ import getConfig from "../../Services/getConfig.js";
 import styled from "styled-components";
 import { BiRepost } from "react-icons/bi";
 
-export default function RepostHeader({respostUserName}) {
+export default function RepostHeader({repostUser}) {
    return (
     <Box>
+        
         <BiRepost
                 size="30px"
                 
               />
-       <div> Re-post by {respostUserName}</div></Box>
+       <div> Re-post by {repostUser}</div></Box>
    )
     
 }
