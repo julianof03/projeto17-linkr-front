@@ -19,11 +19,11 @@ import { ChatSection, CallChat } from "./Functions/comment";
 import RepostHeader from "../RepostScreen/repostHeader.js";
 
 export default function Post({
-  username, postUserId,
-  userImg, text,
-  link, likesQtd,
-  postId, userLiked,
-  repostCount,commentCount, repostUser
+    username, postUserId,
+    userImg, text,
+    link, likesQtd,
+    postId, userLiked,
+    repostCount, commentCount, repostUser
 }) {
   //useState
   const [like, setLike] = useState(false);
@@ -50,6 +50,7 @@ export default function Post({
     }
     setMessage(event.target.value);
   };
+
 
   useEffect(async () => {
 
@@ -107,9 +108,9 @@ export default function Post({
     )
   }
 
+
   return (
     <>
-    
       {repostUser === null || !repostUser ? <></> : <RepostHeader repostUser={repostUser} />}
 
       <PostHTML style={repostUser ? { borderRadius: "0 0 16px 16px" } : { borderRadius: "16px 16px 16px 16px" }} >
@@ -260,13 +261,11 @@ const PostHTML = styled.div`
     display: flex;
     width: 610px;
     min-height:276;
-    border-radius:0 0 16px 16px;
     margin-bottom: 16px;
     background-color:  black;
     @media only screen and (max-width:800px) {
     width: 100vw;
     border-radius:0px;
-    
     }
 `
 const TitleUrl = styled.h1`
@@ -315,13 +314,6 @@ const ImageUrl = styled.div`
   }
 `;
 const ImgWrapper = styled.div`
-    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
-
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
-    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
-
   .Register {
     color: ${(props) => (props.like ? "red" : "white")};
     cursor: pointer;

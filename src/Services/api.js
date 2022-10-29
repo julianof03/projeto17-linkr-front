@@ -53,6 +53,7 @@ function logOut(getConfig, body) {
   return axios.put(`${URL}/signout`, body, getConfig);
 }
 
+//TIME LINE 
 function getTimeLine(getConfig) {
   return axios.get(`${URL}/timeline`, getConfig);
 }
