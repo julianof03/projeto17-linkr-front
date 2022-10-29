@@ -18,21 +18,17 @@ export default function TimeLine() {
   //useState
   const [posts, setPosts] = useState({ array: [], size: 0, status: false });
   const [loader, setLoader] = useState(true)
-  // const [numbNewPosts, setNumbNewPosts] = useState(0)
-  // const [youngestPost, setYoungestPost] = useState({})
+
   setHeader(true);
 
   useEffect(() => {
     getTimeLine(getConfig(token)).then((res) => {
-      console.log(res.data)
       setPosts({
         array: res.data.slice(0, n),
         size: res.data.length,
         status: true
       });
       setLoader(false)
-      // setYoungestPost(posts.array[0])
-      // interval()
     });
   }, [reRender, n]);
 

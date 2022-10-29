@@ -5,9 +5,10 @@ import GlobalContext from "../contexts/globalContext.js";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import getConfig from "../Services/getConfig.js";
-import { getUser, follow, unfollow , getUserPosts} from '../Services/api.js'
-import {FollowBox, FollowBoxMobile} from "../Styles/FollowStyle.js"
+import { getUser, follow, unfollow } from '../Services/api.js'
+import { FollowBox, FollowBoxMobile } from "../Styles/FollowStyle.js"
 import RenderPosts from "./TimeLine/Functions/renderPosts.js";
+import RepostBox from '../Components/RepostScreen/repostScreen'
 
 export default function UserPage() {
     const navigate = useNavigate();
@@ -15,8 +16,7 @@ export default function UserPage() {
     const {
         token, setToken,
         reRender, setReRender,
-        posts,
-        setHeader
+        setHeader, repost
     } = useContext(GlobalContext);
     setHeader(true);
 
@@ -27,12 +27,12 @@ export default function UserPage() {
         size: 0
     })
     const [follows, setFollows] = useState(false);
-    const [canFollow,setCanFollow] = useState(true);
+    const [canFollow, setCanFollow] = useState(true);
 
     const [n, setN] = useState(0)
     useEffect(async () => {
 
-        try{
+        try {
             let allUserPosts;
             const tokenLs = localStorage.getItem("token");
 
@@ -42,50 +42,49 @@ export default function UserPage() {
                     return;
                 }
                 setToken(`${tokenLs}`);
-                allUserPosts = (await getUser(userId,getConfig(tokenLs))).data
-            } else{
-                allUserPosts = (await getUser(userId,getConfig(token))).data
+                allUserPosts = (await getUser(userId, getConfig(tokenLs))).data
+            } else {
+                allUserPosts = (await getUser(userId, getConfig(token))).data
             };
-                const userPageId = localStorage.getItem("userId");
-                if(userId==userPageId){
-                    setIsUserPage(true);
-                }else if(allUserPosts[0].isFollowing){
-                    setFollows(true);
-                }else{
-                    setFollows(false);
-                };
-
-                setUserPosts({
-                    array: allUserPosts.slice(n, n + 20),
-                    size: allUserPosts.length
-                });
-
-            } catch(error){
-                console.log(error);
+            const userPageId = localStorage.getItem("userId");
+            if (userId == userPageId) {
+                setIsUserPage(true);
+            } else if (allUserPosts[0].isFollowing) {
+                setFollows(true);
+            } else {
+                setFollows(false);
             };
+
+            setUserPosts({
+                array: allUserPosts.slice(n, n + 20),
+                size: allUserPosts.length
+            });
+
+        } catch (error) {
+            console.log(error);
+        };
 
     }, [reRender]);
 
-    async function changeFollow(){
+    async function changeFollow() {
         setCanFollow(false)
-        const id = {id:userId};
-            try{
-            if (!follows){
-                console.log(id)
-             await follow(id, getConfig(token));
-            setFollows(true);
-            }else{
-            await unfollow(userId, getConfig(token));
-            setFollows(false);
+        const id = { id: userId };
+        try {
+            if (!follows) {
+                await follow(id, getConfig(token));
+                setFollows(true);
+            } else {
+                await unfollow(userId, getConfig(token));
+                setFollows(false);
             };
 
             setCanFollow(true);
-            
-            }catch(error){
-             console.log(error);
-             setCanFollow(true);
-             alert('Não foi possivel seguir o usuário, tente novamente.');
-            };
+
+        } catch (error) {
+            console.log(error);
+            setCanFollow(true);
+            alert('Não foi possivel seguir o usuário, tente novamente.');
+        };
 
     };
 
@@ -98,26 +97,30 @@ export default function UserPage() {
             ) : (
 
                 <Wrapper>
+                    {repost.status ? <RepostBox /> : <></>}
                     <LeftWrapper>
                         <Title>
-                            
+
                             <ImgWrapper>
                                 <img src={userPosts.array[0].userImg}
                                 />
                             </ImgWrapper>
                             <h1>{userPosts.array[0].username}'s posts</h1>
-                            {isUserPage?<AlignBox></AlignBox>:<FollowBoxMobile canFollow={canFollow?'auto':'none'} follow={!follows} onClick={changeFollow}>
-                                {follows?'Unfollow':'Follow'}
+                            {isUserPage ? <AlignBox></AlignBox> : <FollowBoxMobile canFollow={canFollow ? 'auto' : 'none'} follow={!follows} onClick={changeFollow}>
+                                {follows ? 'Unfollow' : 'Follow'}
                             </FollowBoxMobile>}
                         </Title>
 
                         <PostWrapper>
-                        
-                            <RenderPosts
-                                postsList={userPosts.array}
-                                n={n}
-                                setN={setN}
-                            />
+                            {userPosts.array ?
+                                <RenderPosts
+                                    postsList={userPosts.array}
+                                    n={n}
+                                    setN={setN}
+                                    reRender={reRender}
+                                    setReRender={setReRender}
+                                /> : <></>}
+
 
                         </PostWrapper>
 
@@ -125,9 +128,9 @@ export default function UserPage() {
 
                     <RightWrapper>
                         <TrendingWrapper>
-                        {isUserPage?<></>:<FollowBox canFollow={canFollow?'auto':'none'} follow={!follows} onClick={changeFollow}>
-                            {follows?'Unfollow':'Follow'}
-                        </FollowBox>}
+                            {isUserPage ? <></> : <FollowBox canFollow={canFollow ? 'auto' : 'none'} follow={!follows} onClick={changeFollow}>
+                                {follows ? 'Unfollow' : 'Follow'}
+                            </FollowBox>}
                             <Trending />
                         </TrendingWrapper>
                     </RightWrapper>

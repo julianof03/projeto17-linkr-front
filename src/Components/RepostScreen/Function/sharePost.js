@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { BsWindowSidebar } from "react-icons/bs";
+import GlobalContext from "../../../contexts/globalContext.js";
 import { createRepost } from "../../../Services/api.js";
 import getConfig from "../../../Services/getConfig.js";
 
@@ -12,7 +15,6 @@ async function sharePost(repost, setRepost) {
     })
     .catch((res) => {
       setRepost({ status: false, postId: "", userId: "" });
-      console.log("algo deu errado");
     });
 }
 

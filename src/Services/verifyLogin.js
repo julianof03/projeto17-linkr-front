@@ -10,9 +10,7 @@ export default function VerifyLogin(){
 
     const tokenLs = localStorage.getItem("token");
     if(token===''){
-        console.log('entrei')
         if(!tokenLs){
-            console.log('oi')
             navigate('/signin');
             return;
         } else{

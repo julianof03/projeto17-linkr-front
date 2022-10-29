@@ -61,7 +61,6 @@ function ChatSection({
     function GetAllComments(){
         GetComments(userId, postId)
         .then((res) => {
-            console.log(res.data)
             setAllComments(res.data)
         });
     }
@@ -74,7 +73,6 @@ function ChatSection({
         const promise = addComments(postId ,body);
 
         promise.then(() => {
-             console.log("publiquei")
              setReRender(!reRender)
             })
         promise.catch((err) => alert(err))

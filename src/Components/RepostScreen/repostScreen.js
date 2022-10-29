@@ -1,28 +1,34 @@
 import { useContext } from "react";
 import GlobalContext from "../../contexts/globalContext";
 import styled from "styled-components";
-import {sharePost} from "./Function/sharePost";
+import { sharePost } from "./Function/sharePost";
 
 export default function RepostBox(postUserId, postId) {
-    const { repost, setRepost } = useContext(GlobalContext);
-    console.log('repostBox info repost :', repost)
+  const { repost, setRepost } = useContext(GlobalContext);
 
-    return (
-      <FullScreen>
-        <Box>
-          <h1> Do you want to re-post this link? </h1>
-          <DeleteOpcions>
-            <NoGoBack onClick={() => setRepost({ status: false, postId: "", userId: "" })}>
-              <span>No, cancel</span>
-            </NoGoBack>
-            <YesDeleteIt onClick={() => sharePost(repost, setRepost)}>
-              <span>Yes, share!</span>
-            </YesDeleteIt>
-          </DeleteOpcions>
-        </Box>
-      </FullScreen>
-    )
-  }
+
+  return (
+    <FullScreen>
+      <Box>
+        <h1> Do you want to re-post this link? </h1>
+        <DeleteOpcions>
+          <NoGoBack onClick={() => setRepost({ status: false, postId: "", userId: "" })}>
+            <span>No, cancel</span>
+          </NoGoBack>
+          <YesDeleteIt 
+          onClick={() => 
+            {sharePost(repost, setRepost)
+            setRepost({ status: false, postId: "", userId: "" })}
+          }
+          
+          >
+            <span>Yes, share!</span>
+          </YesDeleteIt>
+        </DeleteOpcions>
+      </Box>
+    </FullScreen>
+  )
+}
 
 const DeleteOpcions = styled.div`
   display: flex;

@@ -9,18 +9,18 @@ import GlobalContext from "../../../contexts/globalContext";
 export default function RenderPosts(props) {
 
     const [hasMore, setHasMore] = useState(true)
-    const {reRender, setReRender} = useContext(GlobalContext)    
+    const { reRender, setReRender } = useContext(GlobalContext)
 
     async function loadMoreFunc() {
-        
+
         if (props.n <= props.postsList.length) {
-            setTimeout(() => 
-            props.setN(props.n + 10)
-            , 2000)
+            setTimeout(() =>
+                props.setN(props.n + 10)
+                , 2000)
         } else {
             setHasMore(false)
         }
-        
+
     }
 
 
@@ -30,11 +30,10 @@ export default function RenderPosts(props) {
                 dataLength={props.postsList.length}
                 next={loadMoreFunc}
                 hasMore={true}
-                
-            >
-                {props.postsList.map((postData, index) =>
 
-                    <Post
+            >
+                {props.postsList.map((postData, index) => {
+                    return <Post
                         key={index}
                         postId={postData.postId}
                         username={postData.username}
@@ -43,15 +42,19 @@ export default function RenderPosts(props) {
                         link={postData.link}
                         likesQtd={postData.likesQtd}
                         userLiked={postData.userLiked}
-                        postUserId={postData.userId}
+                        postUserId={postData.postUserId}
                         repostCount={postData.repostCount}
-                        repostId = {postData.postId}
-                        commentCount = {postData.commentCount}
-                        repostUser = {postData.repostUser}/>
+                        repostId={postData.postId}
+                        commentCount={postData.commentCount}
+                        repostUser={postData.repostUser} />
+                }
+
+
+
+
                 )}
 
-                    
-                {/* {console.log('N',props.n ,'postList', props.postsList.length)} */}
+
                 {(props.n <= props.postsList.length) ? (
                     <EndLoader>
 
