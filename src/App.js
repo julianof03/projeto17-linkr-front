@@ -9,6 +9,7 @@ import SingUp from "./Components/SignUp/SignUp";
 import TimeLine from "./Pages/TimeLine/TimeLine";
 import Hashtag from "./Pages/hashtagPage";
 import UserPage from "./Pages/UserPage";
+import OnWork from "./Components/onWork/onWork";
 
 
 export default function App() {
@@ -57,6 +58,8 @@ export default function App() {
                         <Route path="/" element={<SignIn />} />
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/signup" element={<SingUp />} />
+                        <Route path="/onWork" element={<OnWork />} />
+                        
                         <Route path="/timeLine" element={<TimeLine />} />
                         <Route path="/users/:id" element={<UserPage />} />
                         <Route path="/hashtag/:hashtag" element={<Hashtag />} />

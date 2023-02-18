@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "https://projeto17linkr.herokuapp.com";
+const URL = "https://linkr-deploy-render.onrender.com";
 
 // Sign-Up--------------------------------
 function signUp(body) {
