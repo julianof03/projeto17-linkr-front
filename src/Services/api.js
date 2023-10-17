@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "https://linkr-deploy-render.onrender.com";
+const URL = "https://good-ruby-tadpole-sari.cyclic.app";
 
 // Sign-Up--------------------------------
 function signUp(body) {

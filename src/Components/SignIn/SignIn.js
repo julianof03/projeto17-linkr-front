@@ -20,6 +20,7 @@ export default function SignIn() {
             const login = await signIn(body);
             setToken(`${login.data.token}`);
             setUser(login.data.name)
+            console.log(login);
             localStorage.setItem("token",`${login.data.token}`);
             localStorage.setItem("userId",`${login.data.userId}`);
             navigate('/timeline')

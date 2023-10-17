@@ -22,6 +22,7 @@ export default function RenderPosts(props) {
         }
 
     }
+    console.log("Posts");
 
 
     return (
