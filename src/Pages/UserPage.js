@@ -30,6 +30,7 @@ export default function UserPage() {
     const [canFollow, setCanFollow] = useState(true);
 
     const [n, setN] = useState(0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
 
         try {
@@ -47,7 +48,7 @@ export default function UserPage() {
                 allUserPosts = (await getUser(userId, getConfig(token))).data
             };
             const userPageId = localStorage.getItem("userId");
-            if (userId == userPageId) {
+            if (userId === userPageId) {
                 setIsUserPage(true);
             } else if (allUserPosts[0].isFollowing) {
                 setFollows(true);
@@ -102,8 +103,7 @@ export default function UserPage() {
                         <Title>
 
                             <ImgWrapper>
-                                <img src={userPosts.array[0].userImg}
-                                />
+                                <img alt="img" src={userPosts.array[0].userImg}/>
                             </ImgWrapper>
                             <h1>{userPosts.array[0].username}'s posts</h1>
                             {isUserPage ? <AlignBox></AlignBox> : <FollowBoxMobile canFollow={canFollow ? 'auto' : 'none'} follow={!follows} onClick={changeFollow}>
@@ -120,8 +120,6 @@ export default function UserPage() {
                                     reRender={reRender}
                                     setReRender={setReRender}
                                 /> : <></>}
-
-
                         </PostWrapper>
 
                     </LeftWrapper>

@@ -9,6 +9,7 @@ export default function Trending() {
   const token = localStorage.getItem("token");
   const [trendingHashtags, setTrendingHashtags] = useState([]);
   const { setHashposts, setClicked, reRender, setReRender } = useContext(GlobalContext);
+  console.log(token);
   useEffect(() => {
     getHashtagTrending(getConfig(token))
       .then((res) => {

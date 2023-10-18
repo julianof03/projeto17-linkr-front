@@ -25,7 +25,6 @@ export default function Post({
     postId, userLiked,
     repostCount, commentCount, repostUser
 }) {
-  //useState
   const [like, setLike] = useState(false);
   const [message, setMessage] = useState("");
   const [urlMetadataOBJ, setUrlMetadataOBJ] = useState({});
@@ -33,14 +32,12 @@ export default function Post({
   const [chatState, setChatState] = useState(false);
   const [allComments, setAllComments] = useState('');
   const [frase, setFrase] = useState('')
-  //GlobalContext
   const {
     setDeleteScreen, editPost,
     SetEditPost,setRepost,
     reRender,
     setReRender,
   } = useContext(GlobalContext);
-  // generic const declaration
   const navigate = useNavigate();
   const userId = +localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -115,7 +112,7 @@ export default function Post({
 
       <PostHTML style={repostUser ? { borderRadius: "0 0 16px 16px" } : { borderRadius: "16px 16px 16px 16px" }} >
         <ImgWrapper like={like}>
-          <img src={userImg} />
+          <img alt="img "src={userImg}/>
           <LikeWrapper>
             <div className="Register" data-tip data-for="registerTip">
               {like ? (
@@ -235,7 +232,7 @@ export default function Post({
                 <LinkUrl>{`${urlMetadataOBJ.url}`}</LinkUrl>
               </UrlMetadaDetails>
               <ImageUrl>
-                <img src={urlMetadataOBJ.image?.url} alt="image not found &#x1F625;" />
+                <img src={urlMetadataOBJ.image?.url} alt="img not found &#x1F625;" />
               </ImageUrl>
             </UrlMetadaSpace>
           </a>
@@ -330,16 +327,9 @@ const ImgWrapper = styled.div`
     border-radius: 50%;
     object-fit: cover;
   }
-/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
-  /* p{
-        margin-top: 5px;
-        color: white;
-    } */
-    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx */
 `;
 const Main = styled.div`
   padding: 0 21px 20px 0;
-  /* background-color: blue; */
 `;
 const Title = styled.div`
   display: flex;
@@ -348,7 +338,6 @@ const Title = styled.div`
   padding: 5px 0 7px 0;
   margin-top: 16px;
   
-  /* background-color: red; */
   h1 {
     font-size: 19px;
     font-weight: 400;
@@ -359,7 +348,6 @@ const Title = styled.div`
 `;
 const IconsWrapper = styled.div`
   color: blue;
-  
 `;
 
 const UrlMetadaSpace = styled.div`
@@ -371,8 +359,6 @@ const UrlMetadaSpace = styled.div`
   border-radius: 16px;
   color: white;
   cursor: pointer;
-  
-  /* background-color: red; */
   :hover {
     transition: 0.5s;
     background-color: white;
@@ -385,7 +371,6 @@ const Description = styled.div`
     font-size: 17px;
     font-weight: 600;
     color: #B7B7B7;
-    /* background-color: yellow; */
 `;
 
 const LikeWrapper = styled.div`
@@ -424,7 +409,3 @@ color: white;
     margin-left: -15px;
 }
 `;
-
-const ToolTip = styled.div`
-background-color: #FFF;
-`

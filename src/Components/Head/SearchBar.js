@@ -2,8 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { SearchBox,FollowUser, SearchIcon, FoundUsers, UsersImage, ImageUsers, UsersName } from "../../Styles/SearchMenuStyle.js";
 import { searchUsers } from "../../Services/api.js";
-import GlobalContext from '../../contexts/globalContext.js';
-import { useContext } from 'react';
 import getConfig from '../../Services/getConfig.js'
 import { useNavigate } from "react-router-dom";
 
@@ -60,9 +58,7 @@ export default function SearchBar() {
                             </UsersImage>
                         </div>
                     )
-
                 ))}
-
             </FoundUsers>
         </div>
     )

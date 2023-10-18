@@ -6,7 +6,6 @@ import { sharePost } from "./Function/sharePost";
 export default function RepostBox(postUserId, postId) {
   const { repost, setRepost } = useContext(GlobalContext);
 
-
   return (
     <FullScreen>
       <Box>
@@ -19,9 +18,7 @@ export default function RepostBox(postUserId, postId) {
           onClick={() => 
             {sharePost(repost, setRepost)
             setRepost({ status: false, postId: "", userId: "" })}
-          }
-          
-          >
+          }>
             <span>Yes, share!</span>
           </YesDeleteIt>
         </DeleteOpcions>

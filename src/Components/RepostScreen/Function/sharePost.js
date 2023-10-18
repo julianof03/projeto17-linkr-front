@@ -8,7 +8,7 @@ async function sharePost(repost, setRepost) {
   const token = localStorage.getItem("token");
   const repostData = { postId: repost.postId, userId: repost.userId };
   
-  createRepost(repostData)
+  createRepost(repostData, getConfig(token))
     .then((res) => {
       setRepost({ status: false, postId: "", userId: "" });
       window.location.reload(false);

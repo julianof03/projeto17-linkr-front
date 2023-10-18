@@ -18,9 +18,9 @@ const AlertBox = styled.div`
   width: 611px;
   height: 61px;
   background: #1877F2;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   margin-bottom: 25px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   h1 {
     font-family: 'Lato';
     font-style: normal;

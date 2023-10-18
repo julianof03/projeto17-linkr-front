@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
 import React from "react";
 import getConfig from "../../Services/getConfig"
-import { createPost, userImage, logOut } from "../../Services/api";
+import { createPost, userImage } from "../../Services/api";
 import GlobalContext from "../../contexts/globalContext";
 
 
@@ -11,7 +11,6 @@ export default function FormBox() {
     const navigate = useNavigate()
     const [disable, setDisable] = useState(false)
     const { token, setToken, reRender, setReRender } = useContext(GlobalContext)
-    //useState
     const [profileImage, setProfileImage]   = useState('')
     const [buttonText, SetButtonText]       = useState('Publish');
     const [form, setForm]                   = useState({ link: '', text: '' })
@@ -46,6 +45,7 @@ export default function FormBox() {
         })
         setDisable(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
         const tokenLs = localStorage.getItem("token");
         if (token === '') {
@@ -139,7 +139,7 @@ const LinkInput = styled.input`
 `
 const TextInput = styled.input`
     width:100%;
-    height: 66px;   /* ARRUMAR ISSO AE */
+    height: 34%;
     border: unset;
     border-radius:5px;
     margin-top: 10px;

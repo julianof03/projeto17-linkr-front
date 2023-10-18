@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const URL = "https://good-ruby-tadpole-sari.cyclic.app";
+// const URL = "https://good-ruby-tadpole-sari.cyclic.app";
+const URL = "http://localhost:4000";
+
 
 // Sign-Up--------------------------------
 function signUp(body) {
@@ -70,8 +72,8 @@ function getHashtagPosts(getConfig, hashtag) {
   return axios.get(`${URL}/hashtag/${hashtag}`, getConfig);
 }
 
-function createRepost( repostData) {
-  return axios.post(`${URL}/repost`, repostData);
+function createRepost(repostData, getConfig) {
+  return axios.post(`${URL}/share`, repostData, getConfig);
 }
 
 // User Page--------------------------------
